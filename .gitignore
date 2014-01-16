@@ -6,6 +6,9 @@
 # Compiled Dynamic libraries
 *.so
 *.dylib
+*.sql
+*.sdf
+*.suo
 
 # Compiled Static libraries
 *.lai
