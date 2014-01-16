@@ -37,15 +37,6 @@
     <Filter Include="Source Files\Game">
       <UniqueIdentifier>{fcb1c7a8-d7d1-4979-9529-c3b111051e8a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Game\Battle">
-      <UniqueIdentifier>{82ecfa3d-6768-45e1-b2cd-1d850c7529cb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Game\Overworld">
-      <UniqueIdentifier>{ae958420-5be1-4c47-b476-a6652785bc4a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Game\Status Windows">
-      <UniqueIdentifier>{bef4f959-2a51-49c6-a747-1d85295e948b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Items">
       <UniqueIdentifier>{a8f5c66b-1bee-47c7-8353-fbc6c3864ada}</UniqueIdentifier>
     </Filter>
@@ -80,6 +71,15 @@
     </ClCompile>
     <ClCompile Include="Rogue.cpp">
       <Filter>Source Files\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Battle.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="overworld.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="StatusWindow.cpp">
+      <Filter>Source Files\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

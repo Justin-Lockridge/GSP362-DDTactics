@@ -241,7 +241,6 @@ void CDirectXFramework::Shutdown()
 
 	SAFE_RELEASE(m_pD3DDevice);
 	SAFE_RELEASE(m_pD3DObject);
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//  Releases Audio
-	fmodSystem->release();
+
+	fmodSystem->release(); //  Releases Audio
 }

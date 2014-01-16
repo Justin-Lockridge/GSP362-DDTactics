@@ -1,5 +1,25 @@
 #include "DirectXFramework.h"
 
+struct RData{
+	int t, l, b, r, x, y;
+	bool  highlight;
+};
+
+void DoTheThing(RData &rd, std::vector<Button> & buttons )
+{
+	Button temp;
+	RECT rect;
+
+	// NewGame
+	rect.top = rd.t; rect.left = rd.l;
+	rect.bottom = rd.b; rect.right = rd.r;
+	temp.setPos(rd.x,rd.y);
+	temp.setHighlight(rd.highlight);
+	temp.setRect(rect);
+	buttons.push_back(temp);
+}
+
+
 void CDirectXFramework::InitMenu()
 {
 	m_musicChannel->stop();
@@ -7,40 +27,53 @@ void CDirectXFramework::InitMenu()
 	m_gameState = MENU;
 	m_buttons.clear();
 
-	Button temp;
-	RECT rect;
+	RData uiData[]  = 
+	{
+		{0, 0, 120, 500, 150, 280,false},
+		{245, 0, 340, 500, 150, 350, false},
+		{121, 0, 230, 500, 150, 420, false},
+		{345, 0, 460, 300, 150, 500, false},
+	};
 
-	// NewGame
-	rect.top = 0; rect.left = 0;
-	rect.bottom = 120; rect.right = 500;
-	temp.setPos(150,280);
-	temp.setHighlight(false);
-	temp.setRect(rect);
-	m_buttons.push_back(temp);
+	for(int i = 0; i < sizeof(uiData)/sizeof(uiData[0]); ++i)
+	{
+		DoTheThing(uiData[i],  m_buttons);
+	}
 
-	// Continue
-	rect.top = 245; rect.left = 0;
-	rect.bottom = 340; rect.right = 500;
-	temp.setPos(150,350);
-	temp.setHighlight(false);
-	temp.setRect(rect);
-	m_buttons.push_back(temp);
+	//Button temp;
+	//RECT rect;
 
-	// Options
-	rect.top = 121; rect.left = 0;
-	rect.bottom = 230; rect.right = 500;
-	temp.setPos(150,420);
-	temp.setHighlight(false);
-	temp.setRect(rect);
-	m_buttons.push_back(temp);
+	//// NewGame
+	//rect.top = 0; rect.left = 0;
+	//rect.bottom = 120; rect.right = 500;
+	//temp.setPos(150,280);
+	//temp.setHighlight(false);
+	//temp.setRect(rect);
+	//m_buttons.push_back(temp);
 
-	// Quit
-	rect.top = 345; rect.left = 0;
-	rect.bottom = 460; rect.right = 300;
-	temp.setPos(150,500);
-	temp.setHighlight(false);
-	temp.setRect(rect);
-	m_buttons.push_back(temp);
+	//// Continue
+	//rect.top = 245; rect.left = 0;
+	//rect.bottom = 340; rect.right = 500;
+	//temp.setPos(150,350);
+	//temp.setHighlight(false);
+	//temp.setRect(rect);
+	//m_buttons.push_back(temp);
+
+	//// Options
+	//rect.top = 121; rect.left = 0;
+	//rect.bottom = 230; rect.right = 500;
+	//temp.setPos(150,420);
+	//temp.setHighlight(false);
+	//temp.setRect(rect);
+	//m_buttons.push_back(temp);
+
+	//// Quit
+	//rect.top = 345; rect.left = 0;
+	//rect.bottom = 460; rect.right = 300;
+	//temp.setPos(150,500);
+	//temp.setHighlight(false);
+	//temp.setRect(rect);
+	//m_buttons.push_back(temp);
 }
 void CDirectXFramework::UpdateMenu()
 {
@@ -102,6 +135,13 @@ void CDirectXFramework::UpdateMenu()
 			}
 		} 
 	}else m_keyPressed[DIK_9] = false;
+
+	//if(buffer[DIK_B] & 0x80){
+	//	if(!m_keyPressed[DIK_B]){
+	//		m_keyPressed[DIK_B] = true;
+	//	m_gameState = BATTLE;
+	//	}
+	//}else m_keyPressed[DIK_B]=false;
 }
 void CDirectXFramework::RenderMenu()
 {

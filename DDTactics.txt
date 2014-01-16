@@ -1,0 +1,41 @@
+Menu Screen ( start, options, credits, quit ) ( can we have continue? save/load game )
+Overworld ( 2D )
+Town options (shop or tavern) ( 2d )
+Equipment screen ( job selection, unit control/equiping )
+battle screen ( 3D, A.I, 5v5, Place your units before fight)
+	2 fights
+		-outside ( repeatable )
+		-inside castle final boss dragon
+Player Classes
+	-Warrior
+	-Archer
+	-Greymage
+Non Player classes
+	-Slime
+	-Dragon
+	-Player classes are available to enemy team
+Stats
+	-Level ( cap at 5 )
+	-XP 
+	-Health cur/max
+	-Mana   cur/max
+	-Attack
+	-Magic
+	-Defense
+	-Resistance
+	-Speed
+	-Evasion
+	-hit
+Equipment
+	-Hands
+	-Helm
+	-Armor
+	-Accessory
+Inventory
+	-Gold
+	-Potion
+	-Revive
+	-Equipment
+Artwork
+	-need models for battle map and characters
+	-2d art for everything ( just use google imags )
