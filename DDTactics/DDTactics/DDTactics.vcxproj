@@ -96,7 +96,9 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="DirectxFramework.h" />
     <ClInclude Include="GreyMage.h" />
+    <ClInclude Include="Inventory.h" />
     <ClInclude Include="Job.h" />
+    <ClInclude Include="Potions.h" />
     <ClInclude Include="Rogue.h" />
     <ClInclude Include="Warrior.h" />
   </ItemGroup>
