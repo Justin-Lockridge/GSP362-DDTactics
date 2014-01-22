@@ -110,5 +110,8 @@
     <ClInclude Include="Inventory.h">
       <Filter>Header Files\Items</Filter>
     </ClInclude>
+    <ClInclude Include="Overworld.h">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

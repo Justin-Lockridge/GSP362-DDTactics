@@ -80,17 +80,21 @@ void CDirectXFramework::UpdateMenu()
 	if(!m_musicChannel){																	//check if channel im streaming to is in use
 		fmodSystem->playSound(FMOD_CHANNEL_FREE, m_menuMusic, false, &m_musicChannel);		//stream and save the channel im using
 		//m_musicChannel->setVolume(0.3f);
+		
 	}
-	char buffer[255];
-	m_pDIKeyboard->Acquire(); 
-	m_pDIKeyboard->GetDeviceState(sizeof(buffer), (LPVOID)&buffer );
-
-	DIMOUSESTATE2 mouseState;
-	m_pDIMouse->Acquire();
-	m_pDIMouse->GetDeviceState(sizeof(DIMOUSESTATE2), &mouseState );
+	
+	//////////////////////////////////////////////////////
+	//Smyth -											//
+	//Moved buffer and mouseState to DirectxFramework.h	//
+	//Moved keyboard and mouse acquire/getdevice state  //
+	//to DirectxFramework.cpp update function.			//
+	//////////////////////////////////////////////////////
+	
 
 	m_cursor.x+=mouseState.lX;
 	m_cursor.y+=mouseState.lY;
+
+	
 	if(m_cursor.x <0)		m_cursor.x=0;
 	if(m_cursor.y <0)		m_cursor.y=0;
 	if(m_cursor.x >800)		m_cursor.x=800;
@@ -136,20 +140,26 @@ void CDirectXFramework::UpdateMenu()
 		} 
 	}else m_keyPressed[DIK_9] = false;
 
-	//if(buffer[DIK_B] & 0x80){
-	//	if(!m_keyPressed[DIK_B]){
-	//		m_keyPressed[DIK_B] = true;
-	//	m_gameState = BATTLE;
-	//	}
-	//}else m_keyPressed[DIK_B]=false;
+
+
+	/*if(buffer[DIK_B] & 0x80){
+		if(!m_keyPressed[DIK_B]){
+			m_keyPressed[DIK_B] = true;
+		m_gameState = BATTLE;
+		}
+	}else m_keyPressed[DIK_B]=false;*/
 }
 void CDirectXFramework::RenderMenu()
 {
-	if(!m_pD3DDevice)
-		return;
-
-	if(SUCCEEDED(m_pD3DDevice->Clear(0, 0, D3DCLEAR_TARGET, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), 1.0f, 0))){
-		if(SUCCEEDED(m_pD3DDevice->BeginScene())){
+	
+	//////////////////////////////////////////////////////////////////////////////
+	//Smyth - moved to DirectxFramework.cpp										//
+	//		  unless all states are being done in Menu.cpp, the other files 	//
+	//		  will have to re-declare these statements.						    //
+	//////////////////////////////////////////////////////////////////////////////
+	
+	/*if(SUCCEEDED(m_pD3DDevice->Clear(0, 0, D3DCLEAR_TARGET, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), 1.0f, 0))){
+		if(SUCCEEDED(m_pD3DDevice->BeginScene())){*/
 			if(SUCCEEDED(m_pD3DSprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_DEPTH_FRONTTOBACK))){
 
 				D3DXMATRIX rotMat, worldMat, transMat, scaleMat, WIT;
@@ -211,8 +221,8 @@ void CDirectXFramework::RenderMenu()
 
 				m_pD3DSprite->End();
 			}
-			m_pD3DDevice->EndScene();
+		/*	m_pD3DDevice->EndScene();
 		}
 		m_pD3DDevice->Present(0, 0, 0, 0);
-	}
+	}*/
 }

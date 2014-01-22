@@ -59,6 +59,9 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /y "C:\Program Files (x86)\FMOD Soundsystem\FMOD Programmers API Windows\api\fmodex.dll" "$(OutputPath)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -98,6 +101,7 @@
     <ClInclude Include="GreyMage.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Job.h" />
+    <ClInclude Include="Overworld.h" />
     <ClInclude Include="Potions.h" />
     <ClInclude Include="Rogue.h" />
     <ClInclude Include="Warrior.h" />

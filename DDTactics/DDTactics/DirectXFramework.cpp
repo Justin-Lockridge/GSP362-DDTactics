@@ -12,6 +12,14 @@ CDirectXFramework::CDirectXFramework(void)
 	//m_deltaTime		= 0;
 	m_menuSelection = 0;
 	m_menuState = 0;
+	
+
+	////////////////////////////////////////////////////////
+	//Smyth - zero out buffer and mouseState			  //
+	////////////////////////////////////////////////////////
+	ZeroMemory(buffer, sizeof(buffer));
+	ZeroMemory(&mouseState, sizeof(DIMOUSESTATE2));
+
 }
 
 CDirectXFramework::~CDirectXFramework(){
@@ -165,6 +173,8 @@ void CDirectXFramework::Init(HWND& hWnd, HINSTANCE& hInst, bool bWindowed)
 		D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 
 		D3DCOLOR_XRGB(255, 0, 255), 0, 0, &m_menuTextures);
 
+
+
 	//////////////////////////////////////////////////////////////////////////
 	// DirectInput
 	//////////////////////////////////////////////////////////////////////////
@@ -181,6 +191,7 @@ void CDirectXFramework::Init(HWND& hWnd, HINSTANCE& hInst, bool bWindowed)
 	m_pDIMouse->SetCooperativeLevel(hWnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
 	m_pDIMouse->SetDataFormat(&c_dfDIMouse2);
 
+	
 	m_cursor.x = 500;
 	m_cursor.y = 300;
 	m_cursor.z = 0;
@@ -194,10 +205,13 @@ void CDirectXFramework::Init(HWND& hWnd, HINSTANCE& hInst, bool bWindowed)
 	//////////////////////////////////////////////////////////////////////////
 
 	FMOD::System_Create(&fmodSystem);
+	
 	fmodSystem->init(10, FMOD_INIT_NORMAL, 0);
-
+	
 	fmodSystem->createStream("Prelude.mp3", FMOD_LOOP_NORMAL | FMOD_2D | FMOD_HARDWARE, 0, &m_menuMusic);
 	//fmodSystem->createSound("Thwack.mp3", FMOD_DEFAULT, 0, &thwack);
+
+
 
 	//////////////////////////////////////////////////////////////////////////
 	// Game Variables
@@ -210,14 +224,36 @@ void CDirectXFramework::Init(HWND& hWnd, HINSTANCE& hInst, bool bWindowed)
 
 	//m_gameState = MENU;
 	InitMenu();
+	overworld.init(m_pD3DDevice, fmodSystem);
+	m_gameState = OVERWORLD;
+
 }
 
 void CDirectXFramework::Update(float dt)
 {
+	fmodSystem->update();
+
+	m_pDIKeyboard->Acquire(); 
+	m_pDIKeyboard->GetDeviceState(sizeof(buffer), (LPVOID)&buffer );
+
+	m_pDIMouse->Acquire();
+	m_pDIMouse->GetDeviceState(sizeof(DIMOUSESTATE2), &mouseState );
+
 	switch(m_gameState){
 	case MENU:
+		
 		UpdateMenu();
+		
 		break;
+	case OVERWORLD:
+	
+		overworld.update(BATTLE, m_gameState, mouseState, buffer, fmodSystem, m_musicChannel,
+						m_cursor);
+		
+						
+		break;
+
+
 	default:
 		DestroyWindow(m_hWnd);
 	};
@@ -225,17 +261,39 @@ void CDirectXFramework::Update(float dt)
 
 void CDirectXFramework::Render(float dt)
 {
-	fmodSystem->update();
-	switch(m_gameState){
-	case MENU:
-		RenderMenu();
-		break;
+	
+	/////////////////////////////////
+	//Smyth - moved from Menu.cpp  //
+	/////////////////////////////////
+	if(!m_pD3DDevice)
+		return;
+	if(SUCCEEDED(m_pD3DDevice->Clear(0, 0, D3DCLEAR_TARGET, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), 1.0f, 0))){
+		if(SUCCEEDED(m_pD3DDevice->BeginScene())){
+			
+			switch(m_gameState){
+			case MENU:
+				RenderMenu();
+
+				break;
+			case OVERWORLD:
+				overworld.render( m_pD3DSprite, m_cursorTexture, m_cursorInfo, m_cursor, dt );
+				break;
+
+			}
+
+
+			m_pD3DDevice->EndScene();
+		}
+		m_pD3DDevice->Present(0, 0, 0, 0);
 	}
+
 }
 void CDirectXFramework::Shutdown()
 {
 	// Release COM objects in the opposite order they were created in
 	//SAFE_RELEASE(m_title);
+
+	overworld.shutdown();
 	SAFE_RELEASE(m_backGround);
 	SAFE_RELEASE(m_pD3DFont);
 
