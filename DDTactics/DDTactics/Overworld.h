@@ -72,6 +72,7 @@ struct O_node
 	O_node * right;
 
 	int area_type;
+	D3DCOLOR node_color;
 
 	O_node()
 	{
@@ -108,9 +109,10 @@ private:
 	O_Player			overworld_player;
 	D3DXVECTOR2			screen_pos; //view of the overworld map
 	D3DXVECTOR2			menu_position;
-	int					menu_alpha;
+	D3DCOLOR			font_color;
 
 	RECT			char_sprite_position[3];	//positions on sprite sheet
+	RECT			menu_sprite_position[4];	//positions on menu sprite sheet
 	int	count, count2;
 
 	FMOD::Sound *m_OverworldMusic;
@@ -121,13 +123,15 @@ private:
 						*m_Char_texture, 
 						*m_Area_texture,
 						*m_menu_background,
-						*m_menu_words;
+						*m_menu_words,
+						*m_Node_texture;
 
 	D3DXIMAGE_INFO		m_Overworld_Info,
 						m_O_Char_Info,
 						m_O_Area_Info,
 						m_menu_background_info,
-						m_words_info;
+						m_words_info,
+						m_Node_info;
 	
 
 

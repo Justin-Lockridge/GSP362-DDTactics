@@ -45,6 +45,15 @@ void Overworld::init(IDirect3DDevice9 *device, FMOD::System *fmodSystem)
 
 	};
 
+	RectData temp_menu_pos[] = 
+	{
+		{61, 99,21, 126 },
+		{100, 135, 21, 180},
+		{142, 177, 21, 113},
+		{184, 220, 21, 118 },
+	};
+	
+
 	for(int i = 0; i < MAX_AREAS; i++)
 	{
 		map[i].node_position.x = location[i].x;
@@ -57,6 +66,15 @@ void Overworld::init(IDirect3DDevice9 *device, FMOD::System *fmodSystem)
 		char_sprite_position[i].left = temp[i].l;
 		char_sprite_position[i].right = temp[i].r;
 		char_sprite_position[i].top = temp[i].t;
+	}
+
+	for(int i = 0; i <4; i++)
+	{
+		menu_sprite_position[i].bottom = temp_menu_pos[i].b;
+		menu_sprite_position[i].left = temp_menu_pos[i].l;
+		menu_sprite_position[i].right = temp_menu_pos[i].r;
+		menu_sprite_position[i].top = temp_menu_pos[i].t;
+		
 	}
 
 	//Simple node links for now
@@ -83,7 +101,8 @@ void Overworld::init(IDirect3DDevice9 *device, FMOD::System *fmodSystem)
 
 	menu_position.x = 700.0f;
 	menu_position.y = 100.0f;
-	menu_alpha = 128; 
+	 
+	font_color = D3DCOLOR_ARGB(255,255,255,255);
 
 	D3DXCreateTextureFromFileEx(device, L"TOmap.jpg", 0, 0, 0, 0,
 		D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT,
@@ -101,6 +120,10 @@ void Overworld::init(IDirect3DDevice9 *device, FMOD::System *fmodSystem)
 	D3DXCreateTextureFromFileEx(device, L"O_Menu_words.png", 0,0,0,0,
 		D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT,
 		D3DCOLOR_ARGB(0,255,255,255), &m_words_info, 0, &m_menu_words);
+
+	D3DXCreateTextureFromFileEx(device, L"Node.png", 0,0,0,0,
+		D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT,
+		D3DCOLOR_ARGB(0,255,255,255), &m_Node_info, 0, &m_Node_texture);
 		
 
 
@@ -187,12 +210,12 @@ void Overworld::render( ID3DXSprite *drawSpriteObj,
 			drawSpriteObj->SetTransform(&worldMat);
 			drawSpriteObj->Draw(m_menu_background, 0, &D3DXVECTOR3(m_menu_background_info.Width * 0.5f, 
 																	m_menu_background_info.Height * 0.5f, 0.0f), 
-								0, D3DCOLOR_ARGB(menu_alpha,255,255,255));
+								0, D3DCOLOR_ARGB(128,255,255,255));
 
 			//Draw the font
 			drawSpriteObj->Draw(m_menu_words, 0, &D3DXVECTOR3(m_words_info.Width *0.5f,
 																m_words_info.Height *0.5f, 0.0f),
-								0, D3DCOLOR_ARGB(255,255,255,255));
+								0, font_color);
 
 
 			//Draw the cursor
@@ -283,6 +306,21 @@ void Overworld::update(int GAMESTATEBATTLE, int &game_state, DIMOUSESTATE2 &a_mo
 			}
 		
 		}
+
+	/*	for(int i = 0; i < 4; i++)
+		{
+			
+			int width = (menu_sprite_position[i].right - menu_sprite_position[i].left)/3;
+			int height = (menu_sprite_position[i].bottom - menu_sprite_position[i].top)/3;
+			if( cursor_pos.x < menu_position.x + width && cursor_pos.x > menu_position.x - width &&
+				cursor_pos.y < menu_position.y + height && cursor_pos.x > menu_position.y - height)
+			{
+				font_color = D3DCOLOR_ARGB(255, 255,255,0);
+			}
+			else
+				font_color = D3DCOLOR_ARGB(255,255,255,255);
+		}*/
+		
 		break;
 	case OVERWORLD_TRANSITION:
 		break;
