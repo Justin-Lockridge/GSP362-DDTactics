@@ -209,6 +209,7 @@ void CDirectXFramework::Init(HWND& hWnd, HINSTANCE& hInst, bool bWindowed)
 	fmodSystem->init(10, FMOD_INIT_NORMAL, 0);
 	
 	fmodSystem->createStream("Prelude.mp3", FMOD_LOOP_NORMAL | FMOD_2D | FMOD_HARDWARE, 0, &m_menuMusic);
+	fmodSystem->createStream("Overworld.mp3", FMOD_LOOP_NORMAL | FMOD_2D | FMOD_HARDWARE, 0, &m_overWorldMusic);
 	//fmodSystem->createSound("Thwack.mp3", FMOD_DEFAULT, 0, &thwack);
 
 
@@ -225,7 +226,7 @@ void CDirectXFramework::Init(HWND& hWnd, HINSTANCE& hInst, bool bWindowed)
 	//m_gameState = MENU;
 	InitMenu();
 	overworld.init(m_pD3DDevice, fmodSystem);
-	m_gameState = OVERWORLD;
+	//m_gameState = OVERWORLD;
 
 }
 

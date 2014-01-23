@@ -123,7 +123,13 @@ void CDirectXFramework::UpdateMenu()
 			}
 			switch(selected){
 			case 0:
-				//m_gameState = NEWGAME;
+				///////////////////////////////////////////////////////////////
+				//  INFO:  Player chooses new game.  Menu music stops, sets
+				//			state to overworld, and plays overworld music.
+				///////////////////////////////////////////////////////////////
+				m_musicChannel->stop();
+				m_gameState = OVERWORLD;																
+				fmodSystem->playSound(FMOD_CHANNEL_FREE, m_overWorldMusic, false, &m_musicChannel);	
 				//GameInit();
 				break;
 			case 1:

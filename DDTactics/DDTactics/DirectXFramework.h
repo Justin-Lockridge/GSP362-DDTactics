@@ -143,6 +143,7 @@ class CDirectXFramework{
 	FMOD::Sound*   m_themeMusic;
 	FMOD::Sound*   m_combatMusic;
 	FMOD::Sound*   m_menuMusic;
+	FMOD::Sound*   m_overWorldMusic;
 	FMOD::Channel* m_musicChannel;
 
 
