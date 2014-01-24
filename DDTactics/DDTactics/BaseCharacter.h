@@ -3,40 +3,40 @@
 #include <vector>
 #include "Job.h"
 
-
-
 class CBaseCharacter
 {
 private: 
-	//Private to prevent outside creation
-	struct Attributes
-	{
-		unsigned int level;
-		unsigned int xp;
-		unsigned int max_health;		
-		unsigned int current_health;   
-		unsigned int max_mana;
-		unsigned int current_mana;
-		unsigned int attack;
-		unsigned int magic;
-		unsigned int defense;
-		unsigned int resistance;
-		unsigned int speed;
-		unsigned int evasion;
-		unsigned int hit;
-	};
-	
-	
-	//std::vector<CJob> jobs;
+	std::vector<CJob> jobs;
 	// base stats
-
-	std::string char_name;
-	Attributes stats;
-	std::vector<CJob> char_jobs;
-	
-
-
+	int currentJob, 
+		currentHealth, 
+		maxHealth, 
+		currentMana, 
+		maxMana, 
+		currentExperience,
+		currentGold;
 public:
+	//	getters
+	int   getJobLevel(int j){return jobs[j].getJobLevel();}
+	int   getCurrentJob(){return currentJob;}
+	int   getCurrentHealth(){return currentHealth;}
+	int   getMaxHealth(){return maxHealth;}
+	int   getCurrentMana(){return currentMana;}
+	int   getMaxMana(){return maxMana;}
+	int   getCurrentExperience(){return currentExperience;}
+	int   getCurrentGold(){return currentGold;}
+	//  setters
+	void  setCurrentJob(int j){currentJob = j;}
+	void  setCurrentHealth(int health){currentHealth = health;}
+	void  setMaxHealth(int health){maxHealth = health;}
+	void  setCurrentMana(int mana){currentMana = mana;}
+	void  setMaxMana(int mana){maxMana = mana;}
+	void  setCurrentExperience(int experience){currentExperience = experience;}
+	void  setCurrentGold(int g){currentGold += g;}
+
+	//  INFO:  For testing
+	void  setJobLevel(int job, int level){jobs[job].setJobLevel(level);}
+
 	CBaseCharacter(void);
 	~CBaseCharacter(void);
 

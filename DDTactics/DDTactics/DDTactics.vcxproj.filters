@@ -114,4 +114,9 @@
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="SaveFiles.txt">
+      <Filter>Source Files\Framework</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

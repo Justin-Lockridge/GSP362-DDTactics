@@ -13,6 +13,12 @@
 #include <stdio.h>
 #include <time.h>
 #include <vector>
+//////////////////////////////////////////////////////////////
+//  INFO:  For saving / loading
+//////////////////////////////////////////////////////////////
+#include <fstream>
+#include <string>
+
 #pragma comment(lib, "winmm.lib")
 
 //////////////////////////////////////////////////////////////////////////
@@ -42,11 +48,12 @@
 //  Game Includes
 //////////////////////////////////////////////////////////////////////////
 #include "Button.h"
-
+#include "BaseCharacter.h"
 #include "Overworld.h"
 
 //  For safely releasing objects
 #define SAFE_RELEASE(x) if(x){x->Release(); x = 0;}
+#define MAXSAVES 3
 
 enum GAME_STATE{
 	MENU, LOAD, OPTIONS,
@@ -54,6 +61,22 @@ enum GAME_STATE{
 	MAP, TAVERN,
 	OVERWORLD,
 	QUIT,
+};
+
+enum MENU_STATE{
+	MENU_MAIN,
+	MENU_SAVE,
+	MENU_LOAD
+};
+
+enum PLAYERSAVEDATA{
+	CURRENTJOB,
+	WARRIORLEVEL,
+	ROGUELEVEL,
+	GREYMAGELEVEL,
+	CURRENTEXPERIENCE,
+	CURRENTGOLD, 
+	MAXPLAYERDATA
 };
 
 class CDirectXFramework{
@@ -95,10 +118,14 @@ class CDirectXFramework{
 	IDirect3DTexture9	*m_backGround,
 						*m_cursorTexture, 
 						*m_menuTextures,
-						*m_title;
+						*m_saveMenuTextures,
+						*m_title,
+						*m_saveBackground;
 	D3DXIMAGE_INFO		m_backGroundInfo, 
 						m_cursorInfo,
-						m_titleInfo;	
+						m_saveMenuTexturesInfo,
+						m_titleInfo,
+						m_saveBackgroundInfo;	
 
 
 	//////////////////////////////////////////////////////////////////////////
@@ -112,8 +139,8 @@ class CDirectXFramework{
 	//////////////////////////////////////////////////////////////////////////
 	//Smyth - moved from Menu.cpp
 	//////////////////////////////////////////////////////////////////////////
-	char buffer[255];
-	DIMOUSESTATE2 mouseState;
+	//char buffer[255];
+	//DIMOUSESTATE2 mouseState;
 	
 
 
@@ -152,7 +179,11 @@ class CDirectXFramework{
 	//////////////////////////////////////////////////////////////////////////
 	std::vector<Button> m_buttons;
 	Overworld overworld;
-
+	CBaseCharacter m_player;
+	//////////////////////////////////////////////////////////////////////////
+	//  INFO:  Save game data
+	std::string m_savedGame[MAXSAVES];
+	int m_gameSave[MAXSAVES][MAXPLAYERDATA];
 public:
 	//////////////////////////////////////////////////////////////////////////
 	// Init and Shutdown are preferred to constructors and destructor,
@@ -209,6 +240,10 @@ public:
 	void UpdateBattle();
 	void RenderBattle();
 
+	//////////////////////////////////////////////////////////////////////////
+	//  INFO:  Save / Load game functions - defined in Menu.cpp
+	void saveGame(int saveLocation);
+	void loadGame();
 	//////////////////////////////////////////////////////////////////////////
 	// Name:		Shutdown
 	// Parameters:	void

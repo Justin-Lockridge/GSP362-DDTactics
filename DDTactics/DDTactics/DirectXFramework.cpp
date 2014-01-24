@@ -17,8 +17,8 @@ CDirectXFramework::CDirectXFramework(void)
 	////////////////////////////////////////////////////////
 	//Smyth - zero out buffer and mouseState			  //
 	////////////////////////////////////////////////////////
-	ZeroMemory(buffer, sizeof(buffer));
-	ZeroMemory(&mouseState, sizeof(DIMOUSESTATE2));
+	//ZeroMemory(buffer, sizeof(buffer));
+	//ZeroMemory(&mouseState, sizeof(DIMOUSESTATE2));
 
 }
 
@@ -173,7 +173,13 @@ void CDirectXFramework::Init(HWND& hWnd, HINSTANCE& hInst, bool bWindowed)
 		D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 
 		D3DCOLOR_XRGB(255, 0, 255), 0, 0, &m_menuTextures);
 
+	D3DXCreateTextureFromFileEx(m_pD3DDevice, L"BlackBackground.png", 0, 0, 0, 0, 
+		D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 
+		D3DCOLOR_XRGB(255, 0, 255), &m_saveBackgroundInfo, 0, &m_saveBackground);
 
+	D3DXCreateTextureFromFileEx(m_pD3DDevice, L"SaveMenuText.png", 0, 0, 0, 0, 
+		D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 
+		D3DCOLOR_XRGB(255, 0, 255), &m_saveMenuTexturesInfo, 0, &m_saveMenuTextures);
 
 	//////////////////////////////////////////////////////////////////////////
 	// DirectInput
@@ -225,21 +231,32 @@ void CDirectXFramework::Init(HWND& hWnd, HINSTANCE& hInst, bool bWindowed)
 
 	//m_gameState = MENU;
 	InitMenu();
-	overworld.init(m_pD3DDevice, fmodSystem);
-	//m_gameState = OVERWORLD;
+	//overworld.init(m_pD3DDevice, fmodSystem);
+	////////////////////////////////////////////////////
+	//  INFO:  Initializes array for game saves
+	for(int i = 0; i < MAXSAVES; ++i){
+		for(int j = 0; j < MAXPLAYERDATA; ++j){
+			m_gameSave[i][j] = 0;
+		};
+	};
 
 }
 
 void CDirectXFramework::Update(float dt)
 {
 	fmodSystem->update();
-
-	m_pDIKeyboard->Acquire(); 
-	m_pDIKeyboard->GetDeviceState(sizeof(buffer), (LPVOID)&buffer );
-
-	m_pDIMouse->Acquire();
-	m_pDIMouse->GetDeviceState(sizeof(DIMOUSESTATE2), &mouseState );
-
+	///////////////////////////////////////////////////////////////////
+	////  INFO:  The mouse would work with the menu, but the keyboard
+	////			would not.  I moved these back into the menu update
+	////			function, and now the keyboard works.  (Justin)
+	////  UPDATE:  Something is going wrong with the controls, and it's
+	////			been a nightmare to debug.  Currently, in the updateMenu
+	////			functions, it reacquires the controls and it works.
+	////			I also have to reacquire the controls for the overworld update,
+	////			and pass them in.  We should just reacquire they keyboard wherever
+	////			it is necessary.  Yes we recreate a lot of variables that we may not
+	////			need to, but it actually works, and we're not shuffling around a
+	////			huge buffer and acquired keyboard / mouse
 	switch(m_gameState){
 	case MENU:
 		
@@ -247,7 +264,64 @@ void CDirectXFramework::Update(float dt)
 		
 		break;
 	case OVERWORLD:
-	
+		/////////////////////////////////////////////////////////////
+		//  INFO:  EDIT:  The controls have been very difficult to work with.
+		//					I kept getting an HR error that after a few hours
+		//					of research, I still was unable to find a solution.
+		//					I changed where the controls are acquired, and finally
+		//					they started working again.  Feel free to try to fix 
+		//					the controls, but if you acquire them first, then try
+		//					to use them later(in another function), it will not let 
+		//					you because they have already been acquired(at least I 
+		//					believe that's why it was failing).  
+		char buffer[256];
+	ZeroMemory(buffer, sizeof(buffer));
+	// Get the input device state
+	HRESULT hr;
+	hr = m_pDIKeyboard->GetDeviceState( sizeof(buffer), (LPVOID)&buffer );
+
+	if(FAILED(hr))
+	{
+		hr = m_pDIKeyboard->Acquire();
+
+		// Device has probably been lost if failed, if so keep trying to get it until it’s found.
+		while( hr == DIERR_INPUTLOST)
+		{
+			hr = m_pDIKeyboard->Acquire();
+		}
+
+		// If we failed for some other reason
+		if(FAILED(hr))
+			return;
+
+		// Read the device state again
+		m_pDIKeyboard->GetDeviceState(sizeof(buffer), buffer);
+	}
+	//////////////////////////////////////////////////////////////////////////
+	// Get and Acquire Mouse Input
+	//////////////////////////////////////////////////////////////////////////
+	// Stores our mouse state for an 8 button mouse.
+	DIMOUSESTATE2 mouseState;
+	ZeroMemory(&mouseState, sizeof(mouseState));
+
+	// Get the input device state
+	hr = m_pDIMouse->GetDeviceState( sizeof(DIMOUSESTATE2), &mouseState );
+	if(FAILED(hr))
+	{
+		hr = m_pDIMouse->Acquire();
+
+		// Device has probably been lost if failed, if so keep trying to get it until it’s found.
+		while( hr == DIERR_INPUTLOST)
+		{
+			hr = m_pDIMouse->Acquire();
+		}
+
+		// If we failed for some other reason
+		if(FAILED(hr))
+			return;
+		// Read the device state again
+		m_pDIMouse->GetDeviceState(sizeof(DIMOUSESTATE2), &mouseState);
+	}
 		overworld.update(BATTLE, m_gameState, mouseState, buffer, fmodSystem, m_musicChannel,
 						m_cursor);
 		
@@ -295,7 +369,10 @@ void CDirectXFramework::Shutdown()
 	//SAFE_RELEASE(m_title);
 
 	overworld.shutdown();
+	SAFE_RELEASE(m_cursorTexture);
 	SAFE_RELEASE(m_backGround);
+	SAFE_RELEASE(m_saveMenuTextures);
+	SAFE_RELEASE(m_saveBackground);
 	SAFE_RELEASE(m_pD3DFont);
 
 	SAFE_RELEASE(m_pD3DDevice);
