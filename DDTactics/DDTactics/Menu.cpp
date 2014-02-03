@@ -87,16 +87,16 @@ void CDirectXFramework::InitMenu()
 int iterator = 0;
 void CDirectXFramework::UpdateMenu()
 {
-	if(!m_musicChannel){																	//check if channel im streaming to is in use
+	if(!m_musicChannel)
+	{																	//check if channel im streaming to is in use
 		fmodSystem->playSound(FMOD_CHANNEL_FREE, m_menuMusic, false, &m_musicChannel);		//stream and save the channel im using
 		//m_musicChannel->setVolume(0.3f);
 		
 	}
-	char buffer[256];
 	ZeroMemory(buffer, sizeof(buffer));
 	// Get the input device state
 	HRESULT hr;
-	hr = m_pDIKeyboard->GetDeviceState( sizeof(buffer), (LPVOID)&buffer );
+	hr = m_pDIKeyboard->GetDeviceState( sizeof(buffer), &buffer );
 
 	if(FAILED(hr))
 	{
@@ -119,7 +119,6 @@ void CDirectXFramework::UpdateMenu()
 	// Get and Acquire Mouse Input
 	//////////////////////////////////////////////////////////////////////////
 	// Stores our mouse state for an 8 button mouse.
-	DIMOUSESTATE2 mouseState;
 	ZeroMemory(&mouseState, sizeof(mouseState));
 
 	// Get the input device state
@@ -154,11 +153,14 @@ void CDirectXFramework::UpdateMenu()
 	/////////////////////////////////////////////////////////////
 	//  INFO:  Menu substates
 	/////////////////////////////////////////////////////////////
-	switch(m_menuState){
+	switch(m_menuState)
+	{
 	case MENU_MAIN:
-		if(mouseState.lX || mouseState.lY){
+		if(mouseState.lX || mouseState.lY)
+		{
 			//for each button
-			for(auto &buttons: m_buttons){
+			for(auto &buttons: m_buttons)
+			{
 				RECT buttonRect = buttons.getRect();
 				int width = (buttonRect.right - buttonRect.left)/3;
 				int height = (buttonRect.bottom - buttonRect.top)/3;
@@ -169,15 +171,19 @@ void CDirectXFramework::UpdateMenu()
 					buttons.setHighlight(false);
 			}
 		}
-		if(mouseState.rgbButtons[0] & 0x80){
-			if(!m_keyPressed[DIK_9]){
+		if(mouseState.rgbButtons[0] & 0x80)
+		{
+			if(!m_keyPressed[DIK_9])
+			{
 				m_keyPressed[DIK_9] = true;
 				int selected=94;
-				for(int i = 0;i<4;i++){
+				for(int i = 0;i<4;i++)
+				{
 					if(m_buttons[i].isHighlighted())
 						selected = i;
 				}
-				switch(selected){
+				switch(selected)
+				{
 				case 0:
 					///////////////////////////////////////////////////////////////
 					//  INFO:  Player chooses new game.  Menu music stops, sets
@@ -205,12 +211,15 @@ void CDirectXFramework::UpdateMenu()
 			} 
 		}else m_keyPressed[DIK_9] = false;
 		break;
-	case MENU_LOAD:{
+	case MENU_LOAD:
+		{
 		//////////////////////////////////////////////////////////////
 		//  INFO:  For testing saving and loading
-		if(buffer[DIK_S] & 0x80){
+		if(buffer[DIK_S] & 0x80)
+		{
 			int temporary = 0;
-			if(!m_keyPressed[DIK_S]){
+			if(!m_keyPressed[DIK_S])
+			{
 				m_keyPressed[DIK_S] = true;
 				++iterator;
 				m_player.setJobLevel(GREYMAGE, iterator);
@@ -220,8 +229,11 @@ void CDirectXFramework::UpdateMenu()
 		}
 		else
 			m_keyPressed[DIK_S] = false;
-		if(buffer[DIK_L] & 0x80){
-			if(!m_keyPressed[DIK_L]){
+
+		if(buffer[DIK_L] & 0x80)
+		{
+			if(!m_keyPressed[DIK_L])
+			{
 				m_keyPressed[DIK_L] = true;
 				loadGame();
 			}
@@ -231,9 +243,11 @@ void CDirectXFramework::UpdateMenu()
 			m_keyPressed[DIK_L] = false;
 		///////////////////////////////////////////////////////////////////////////////////////////////
 		//  INFO:  Loads save files from a text file in order to print character info to screen
-		if(mouseState.lX || mouseState.lY){
+		if(mouseState.lX || mouseState.lY)
+		{
 			//for each button
-			for(auto &buttons: m_buttons){
+			for(auto &buttons: m_buttons)
+			{
 				RECT buttonRect = buttons.getRect();
 				int width = (buttonRect.right - buttonRect.left)/3;
 				int height = (buttonRect.bottom - buttonRect.top)/3;
@@ -244,15 +258,19 @@ void CDirectXFramework::UpdateMenu()
 					buttons.setHighlight(false);
 			}
 		}
-		if(mouseState.rgbButtons[0] & 0x80){
-			if(!m_keyPressed[DIK_9]){
+		if(mouseState.rgbButtons[0] & 0x80)
+		{
+			if(!m_keyPressed[DIK_9])
+			{
 				m_keyPressed[DIK_9] = true;
 				int selected=94;
-				for(int i = 4;i<8;i++){
+				for(int i = 4;i<8;i++)
+				{
 					if(m_buttons[i].isHighlighted())
 						selected = i;
 				}
-				switch(selected){
+				switch(selected)
+				{
 				case 4:
 					saveGame(0);
 					break;
@@ -284,6 +302,20 @@ void CDirectXFramework::UpdateMenu()
 	m_gameState = BATTLE;
 	}
 	}else m_keyPressed[DIK_B]=false;*/
+
+	//////////////For shop testing///////////////////////
+	if(buffer[DIK_T] & 0x80)
+	{
+		if(!m_keyPressed[DIK_T])
+		{
+			m_gameState = TAVERN;
+			m_keyPressed[DIK_T] = true;
+		}
+
+	}
+	else
+		m_keyPressed[DIK_T] = false;
+
 }
 void CDirectXFramework::RenderMenu()
 {

@@ -55,7 +55,8 @@
 #define SAFE_RELEASE(x) if(x){x->Release(); x = 0;}
 #define MAXSAVES 3
 
-enum GAME_STATE{
+enum GAME_STATE
+{
 	MENU, LOAD, OPTIONS,
 	CREDITS, BATTLE,
 	MAP, TAVERN,
@@ -63,13 +64,15 @@ enum GAME_STATE{
 	QUIT,
 };
 
-enum MENU_STATE{
+enum MENU_STATE
+{
 	MENU_MAIN,
 	MENU_SAVE,
 	MENU_LOAD
 };
 
-enum PLAYERSAVEDATA{
+enum PLAYERSAVEDATA
+{
 	CURRENTJOB,
 	WARRIORLEVEL,
 	ROGUELEVEL,
@@ -120,12 +123,14 @@ class CDirectXFramework{
 						*m_menuTextures,
 						*m_saveMenuTextures,
 						*m_title,
-						*m_saveBackground;
+						*m_saveBackground,
+						*m_shopTexture;
 	D3DXIMAGE_INFO		m_backGroundInfo, 
 						m_cursorInfo,
 						m_saveMenuTexturesInfo,
 						m_titleInfo,
-						m_saveBackgroundInfo;	
+						m_saveBackgroundInfo,
+						m_shopInfo;	
 
 
 	//////////////////////////////////////////////////////////////////////////
@@ -139,13 +144,9 @@ class CDirectXFramework{
 	//////////////////////////////////////////////////////////////////////////
 	//Smyth - moved from Menu.cpp
 	//////////////////////////////////////////////////////////////////////////
-	//char buffer[255];
-	//DIMOUSESTATE2 mouseState;
+	char buffer[256];
+	DIMOUSESTATE2 mouseState;
 	
-
-
-
-
 	//////////////////////////////////////////////////////////////////////////
 	// View and Projection Matrices
 	//////////////////////////////////////////////////////////////////////////
@@ -184,6 +185,13 @@ class CDirectXFramework{
 	//  INFO:  Save game data
 	std::string m_savedGame[MAXSAVES];
 	int m_gameSave[MAXSAVES][MAXPLAYERDATA];
+
+
+	//////////////////////////////////////////////////////////////////////////
+	//  Shop stuff
+	//////////////////////////////////////////////////////////////////////////
+	bool buyList, sellList;
+
 public:
 	//////////////////////////////////////////////////////////////////////////
 	// Init and Shutdown are preferred to constructors and destructor,
@@ -239,6 +247,12 @@ public:
 	void InitBattle();
 	void UpdateBattle();
 	void RenderBattle();
+
+	//////////////////////////////////////////////////////////////////////////  
+	// Shop functions
+	//////////////////////////////////////////////////////////////////////////
+	void updateShop();
+	void RenderShop();
 
 	//////////////////////////////////////////////////////////////////////////
 	//  INFO:  Save / Load game functions - defined in Menu.cpp
