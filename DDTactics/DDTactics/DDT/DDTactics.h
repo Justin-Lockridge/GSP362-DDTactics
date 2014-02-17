@@ -23,6 +23,7 @@
 #include "Overworld.h"
 #include "Player.h"
 #include "StatusMenu.h"
+#include "GraphicsManager3D.h"
 
 //#define SAFE_RELEASE(x) if(x){x->Release(); x = 0;}
 
@@ -46,12 +47,13 @@ class DDTactics
 	InputManager		*input;
 	SoundManager		*sound;
 	GraphicsManager2D	*graphics;
+	GraphicsManager3D	*graphics3D;
 	Cursor				*cursor;
 	Menu				*menu;
 	Overworld			*overworld;
 	IOManager			*ioManager;
 
-	Player				player;
+	Player				*player;
 	//add menu, overworld, battle, etc objects here
 
 	StatusMenu			*status_menu;

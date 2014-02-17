@@ -9,16 +9,7 @@ GraphicsManager3D::GraphicsManager3D()
 
 	m_pAdjBuffer = 0;
 
-	m_mapMesh = 0;
-	m_mapMaterials = 0;
-	m_mapEffects = 0;
-	mapMeshMaterials = 0;
-	mapMeshTextures = 0;
 
-	m_playerMesh = 0;
-	m_playerMaterials = 0;
-	m_playerEffects = 0;
-	playerMeshMaterials = 0;
 }
 
 GraphicsManager3D::~GraphicsManager3D()
@@ -117,86 +108,20 @@ void GraphicsManager3D::Init(IDirect3DDevice9* device)
 	m_pEffect->SetFloatArray("diffuseLight", (float*)&m_Light.Diffuse, 3);
 	m_pEffect->SetFloatArray("lightAttenuation", (float*)&D3DXVECTOR3(m_Light.Attenuation0, m_Light.Attenuation1, m_Light.Attenuation2), 3);
 
-	//////////////////////////////////////////////////////////////////////////
-	// clueBoard.x Mesh
-	//////////////////////////////////////////////////////////////////////////
-	D3DXLoadMeshFromX(L"ClueBoard.x", D3DXMESH_MANAGED, device, &m_pAdjBuffer, 
-		&m_mapMaterials, &m_mapEffects, &m_numMapMaterials, &m_mapMesh);
+	map.loadMap(L"ClueBoard.x", device, m_pAdjBuffer);
+	maps_mesh.push_back(map);
 
-	// Pull material (including texture) information from loaded .x file
-	D3DXMATERIAL* d3dxMaterials = (D3DXMATERIAL*)m_mapMaterials->GetBufferPointer();
+	default_character.loadCharacterMesh(L"dood.x", device, m_pAdjBuffer);
+	character_mesh.push_back(default_character);
 
-	mapMeshMaterials	= new D3DMATERIAL9[m_numMapMaterials];
-	mapMeshTextures	= new LPDIRECT3DTEXTURE9[m_numMapMaterials];
-
-	for(DWORD i = 0; i < m_numMapMaterials; ++i)
-	{
-		// Copy the material
-		mapMeshMaterials[i] = d3dxMaterials[i].MatD3D;
-
-		// Set the ambient color (if needed) for the material (D3DX does not do this)
-		mapMeshMaterials[i].Ambient  = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f);
-
-		//// Create the texture if it exists - it may not
-		mapMeshTextures[i] = NULL;
-		if (d3dxMaterials[i].pTextureFilename)
-		{
-			// Need to convert the texture filenames to Unicode string
-			int len = 0;
-			len = (int)strlen(d3dxMaterials[i].pTextureFilename) + 1;
-			wchar_t *ucString = new wchar_t[len];
-			//mbstowcs(ucString, d3dxMaterials[i].pTextureFilename, len);
-			LPCWSTR filename = (LPCWSTR)ucString;
-
-			// Load the texture now that we have a valid filename
-			D3DXCreateTextureFromFile(device, filename, &mapMeshTextures[i]);
-		}
-	}
-
-	//////////////////////////////////////////////////////////////////////////
-	// cluePiece.x Mesh
-	//////////////////////////////////////////////////////////////////////////
-	D3DXLoadMeshFromX(L"dood.x", D3DXMESH_MANAGED, device, &m_pAdjBuffer, 
-		&m_playerMaterials, &m_playerEffects, &m_numPlayerMaterials, &m_playerMesh);
-
-	// Pull material (including texture) information from loaded .x file
-	d3dxMaterials = (D3DXMATERIAL*)m_playerMaterials->GetBufferPointer();
-
-	playerMeshMaterials	= new D3DMATERIAL9[m_numPlayerMaterials];
-	//boardMeshTextures	= new LPDIRECT3DTEXTURE9[m_numBoardMaterials];
-
-	for(DWORD i = 0; i < m_numPlayerMaterials; ++i)
-	{
-		// Copy the material
-		playerMeshMaterials[i] = d3dxMaterials[i].MatD3D;
-
-		// Set the ambient color (if needed) for the material (D3DX does not do this)
-		playerMeshMaterials[i].Ambient  = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f);
-	}
-
-	// Load index info, refers into index into verts array to compose triangles
-	// Note: A clockwise winding order of verts will show the front face.
-
-
-	D3DXVECTOR3 position = D3DXVECTOR3(-10.0,0.0,-10.0);
-	for(int i = 0; i<5; i++){
-		position.z+=4.0f;
-		Enemies.push_back(position);
-		position.x = 10.0f;
-		Players.push_back(position);
-		position.x = -10.0f;
-	}
 
 	m_Map.init();
 
 
-
-
 }
 
-void GraphicsManager3D::Draw3DObject(D3DXVECTOR3 &scale, D3DXVECTOR3&translate, D3DXVECTOR3 &rotate,
-									 ID3DXSprite *spriteObj, unsigned int ENUM_VAL, D3DCOLOR color,
-									 GraphicsManager2D *GManager)
+void GraphicsManager3D::DrawMap(D3DXVECTOR3 &scale, D3DXVECTOR3&translate, D3DXVECTOR3 &rotate,
+								unsigned int ENUM_VAL)
 {
 	D3DXMATRIX rotMat, worldMat, transMat, scaleMat, WIT;
 
@@ -226,8 +151,128 @@ void GraphicsManager3D::Draw3DObject(D3DXVECTOR3 &scale, D3DXVECTOR3&translate, 
 		m_pEffect->SetMatrix("worldInverseTransposeMat", &WIT);
 		m_pEffect->SetMatrix("worldMat", &worldMat);
 
-		for(DWORD i = 0; i < m_numMapMaterials; i++)
-		{}
-	
+
+		//D3DMATERIAL9* tempMat = maps_mesh[ENUM_VAL]
+		for(DWORD i = 0; i < maps_mesh[ENUM_VAL].getNumMaterials(); i++)
+		{
+
+			// Set the material and texture for this subset
+			m_pEffect->SetValue("ambientMaterial", &maps_mesh[ENUM_VAL].getMeshMaterial()->Ambient, sizeof(D3DXCOLOR));
+			m_pEffect->SetValue("diffuseMaterial", &maps_mesh[ENUM_VAL].getMeshMaterial()->Diffuse, sizeof(D3DXCOLOR));
+			m_pEffect->SetValue("specularMaterial", &maps_mesh[ENUM_VAL].getMeshMaterial()->Specular, sizeof(D3DXCOLOR));
+			m_pEffect->SetFloat("specularPower", maps_mesh[ENUM_VAL].getMeshMaterial()->Power);
+			m_pEffect->SetTexture("tex", maps_mesh[ENUM_VAL].getMeshTexture()[i]);
+			m_pEffect->SetBool("isTex", true);
+
+			m_pEffect->CommitChanges();
+
+			maps_mesh[ENUM_VAL].getMesh()->DrawSubset(i);
+
+		}
+
+		m_pEffect->EndPass();
+
 	}
+
+	m_pEffect->End();
+}
+
+void GraphicsManager3D::DrawCharacter(D3DXVECTOR3 &scale, D3DXVECTOR3 &translate, D3DXVECTOR3 &rotate,
+						unsigned int ENUM_VAL)
+{
+	D3DXMATRIX rotMat, worldMat, transMat, scaleMat, WIT;
+
+	UINT numPasses = 0;
+	numPasses = 0;
+
+	D3DXMatrixIdentity(&transMat);
+	D3DXMatrixIdentity(&scaleMat);
+	D3DXMatrixIdentity(&rotMat);
+	D3DXMatrixIdentity(&worldMat);
+
+	m_pEffect->Begin(&numPasses, 0);
+
+	for(UINT i = 0; i < numPasses; i++)
+	{
+		m_pEffect->BeginPass(i);
+
+		D3DXMatrixScaling(&scaleMat, scale.x, scale.y, scale.z);
+		D3DXMatrixRotationYawPitchRoll(&rotMat, D3DXToRadian(rotate.y), D3DXToRadian(rotate.x), D3DXToRadian(rotate.z));
+		D3DXMatrixTranslation(&transMat, translate.x, translate.y, translate.z);
+		D3DXMatrixMultiply(&scaleMat, &scaleMat, &rotMat);
+		D3DXMatrixMultiply(&worldMat, &scaleMat, &transMat);
+
+		D3DXMatrixInverse(&WIT, 0, &worldMat);
+		D3DXMatrixTranspose(&WIT, &WIT);
+		m_pEffect->SetMatrix("worldViewProjMat", &(worldMat * m_viewMat * m_projMat));
+		m_pEffect->SetMatrix("worldInverseTransposeMat", &WIT);
+		m_pEffect->SetMatrix("worldMat", &worldMat);
+
+
+		//D3DMATERIAL9* tempMat = maps_mesh[ENUM_VAL]
+		for(DWORD i = 0; i < character_mesh[ENUM_VAL].getNumMaterials(); i++)
+		{
+
+			// Set the material and texture for this subset
+			m_pEffect->SetValue("ambientMaterial", &character_mesh[ENUM_VAL].getMeshMaterial()->Ambient, sizeof(D3DXCOLOR));
+			m_pEffect->SetValue("diffuseMaterial", &character_mesh[ENUM_VAL].getMeshMaterial()->Diffuse, sizeof(D3DXCOLOR));
+			m_pEffect->SetValue("specularMaterial", &character_mesh[ENUM_VAL].getMeshMaterial()->Specular, sizeof(D3DXCOLOR));
+			m_pEffect->SetFloat("specularPower", character_mesh[ENUM_VAL].getMeshMaterial()->Power);
+			//m_pEffect->SetTexture("tex", character_mesh[ENUM_VAL].getMeshTexture()[i]);
+			m_pEffect->SetBool("isTex", false);
+
+			m_pEffect->CommitChanges();
+
+			character_mesh[ENUM_VAL].getMesh()->DrawSubset(i);
+
+		}
+
+		m_pEffect->EndPass();
+
+	}
+
+	m_pEffect->End();
+
+
+}
+
+void GraphicsManager3D::Shutdown()
+{
+	//Clear out vector pointers
+	maps_mesh.clear();
+	character_mesh.clear();
+	non_character_enemies.clear();
+
+	//shutdown Mesh objects
+	map.shutdown();
+	default_character.shutdown();
+
+	//Release adjacency buffer
+	if(m_pAdjBuffer)
+	{
+		m_pAdjBuffer->Release();
+		m_pAdjBuffer = 0;
+	}
+
+	//Release verxtex decl structure
+	if(m_pD3DVertexDecl)
+	{
+		m_pD3DVertexDecl->Release();
+		m_pD3DVertexDecl = 0;
+	}
+
+	//release Effect handle
+	if(m_pEffect)
+	{
+		m_pEffect->Release();
+		m_pEffect = 0;
+	}
+
+	//release effect error buffer
+	if(m_pEffectError)
+	{
+		m_pEffectError->Release();
+		m_pEffectError = 0;
+	}
+
 }

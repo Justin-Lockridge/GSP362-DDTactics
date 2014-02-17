@@ -66,7 +66,7 @@ public:
 	//Return:		none																//
 	//Description:	This function initializes overworld variables.						//
 	//////////////////////////////////////////////////////////////////////////////////////
-	void init(Player &player);
+	void init(Player *player);
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	//Name:			render																//
@@ -90,7 +90,7 @@ public:
 	//Return:		void																//
 	//Description:	draws the overworld map, character, nodes, menu, etc.				//
 	//////////////////////////////////////////////////////////////////////////////////////
-	void update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *SManager, Player &player, int &game_state,  float dt);
+	void update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *SManager, Player *player, int &game_state,  float dt);
 
 	void screenscroll(float position, float edge, float &screenVal , float &playerPos, int adjust, float outer_edge,  float *nodePos, float dt);
 	void screenscroll2(float position, float edge, float &screenVal , float &playerPos, int adjust, float outer_edge,  float *nodePos, float dt);

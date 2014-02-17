@@ -68,14 +68,15 @@ struct job_mods
 struct Character_stats
 {
 	int xp;
+	int level;
+	
+	int health;			
+	int max_health;		//18-25
 
-	int health;
-	int max_health;
-
-	int mana;
+	int mana;			//15-20
 	int max_mana;
 
-	int attack;
+	int attack;			
 	int magic;
 	int defense;
 	int resist;

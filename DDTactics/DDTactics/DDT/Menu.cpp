@@ -140,7 +140,8 @@ void Menu::Render(GraphicsManager2D *GManager, ID3DXSprite *spriteObj, float dt)
 		{
 			GManager->DrawButton(D3DXVECTOR3(0.5f, 0.5f, 0.5f), 
 								D3DXVECTOR3(buttons.getPos().x, buttons.getPos().y, 0.0f),
-								D3DXVECTOR3(0.0f,0.0f,0.0f), buttons.getRect(),
+								D3DXVECTOR3(0.0f,0.0f,0.0f), 
+								buttons.getRect(),
 								spriteObj,
 								GRAPHICS_MENU_BUTTONS, 
 								buttons.width, 

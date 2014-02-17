@@ -95,14 +95,21 @@ void DDTactics::Init(HWND &hWnd, HINSTANCE &hInst, bool bWindowed)
 	menu = Menu::instance();
 	menu->Init();
 
+	player = Player::instance();
+
 	overworld = Overworld::instance();
 	overworld->init(player);
+
+	
 
 	status_menu = StatusMenu::instance();
 	status_menu->init();
 
 	ioManager = IOManager::instance();
 	ioManager->init();
+
+	graphics3D = GraphicsManager3D::instance();
+	graphics3D->Init(D3DDevice);
 	
 }
 
@@ -182,7 +189,7 @@ void DDTactics::Render(float dt)
 					menu->Render(graphics, D3DSprite, dt);
 					break;
 				case OVERWORLD:
-					overworld->render(graphics, D3DSprite, player.overworld_pos, dt);
+					overworld->render(graphics, D3DSprite, player->overworld_pos, dt);
 					break;
 				case LOAD: case SAVE:
 					ioManager->render(graphics, D3DSprite, dt);
@@ -199,14 +206,26 @@ void DDTactics::Render(float dt)
 					
 					break;
 				case BATTLE:
+
+					graphics3D->DrawMap(D3DXVECTOR3(5,5,5),
+										D3DXVECTOR3(0,0,0),
+										D3DXVECTOR3(0,0,0),
+										MAP_DEFAULT);
+					graphics3D->DrawCharacter(D3DXVECTOR3(.7,.7,.7),
+											  D3DXVECTOR3(0,0,0),
+											  D3DXVECTOR3(0,0,0),
+											  MODEL_DEFAULT);
+
+										
+
 					
-					graphics->Draw2DObject(D3DXVECTOR3(1.0f, 1.0f, 1.0f),
+					/*graphics->Draw2DObject(D3DXVECTOR3(1.0f, 1.0f, 1.0f),
 											D3DXVECTOR3(400.0f, 200.0f, 0.0f),
 											D3DXVECTOR3(0.0f, 0.0f, 0.0f),
 											D3DSprite,
 											GRAPHICS_BATTLE_SPLASH,
 											D3DCOLOR_ARGB(255,255,255,255)
-											);
+											);*/
 
 				
 					break;
@@ -227,7 +246,7 @@ void DDTactics::Render(float dt)
 
 void DDTactics::Shutdown()
 {
-
+	graphics3D->Shutdown();
 	input->shutdown();
 	sound->shutdown();
 	graphics->shutdown();

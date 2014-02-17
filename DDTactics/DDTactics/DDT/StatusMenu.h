@@ -24,7 +24,7 @@ public:
 	static StatusMenu* instance();
 
 	void init();
-	void Update(Cursor *cursor, InputManager *IManager, SoundManager *SManager, Player &player, int &game_state, float dt);
+	void Update(Cursor *cursor, InputManager *IManager, SoundManager *SManager, Player *player, int &game_state, float dt);
 	void Render(GraphicsManager2D *GManager, ID3DXSprite *spriteObj, float dt);
 
 };

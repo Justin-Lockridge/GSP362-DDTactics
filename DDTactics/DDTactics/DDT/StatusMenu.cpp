@@ -66,7 +66,7 @@ void StatusMenu::init()
 
 }
 
-void StatusMenu::Update(Cursor *cursor, InputManager *IManager, SoundManager *SManager, Player &player, int &game_state, float dt)
+void StatusMenu::Update(Cursor *cursor, InputManager *IManager, SoundManager *SManager, Player *player, int &game_state, float dt)
 {
 	if(IManager->push_button(DIK_BACKSPACE))
 		game_state = OVERWORLD;
@@ -82,7 +82,7 @@ void StatusMenu::Render(GraphicsManager2D *GManager, ID3DXSprite *spriteObj, flo
 							D3DCOLOR_ARGB(255,255,255,255)
 							);
 
-	for(int i = 0; i < status_menu_buttons.size(); i++)
+	for(unsigned int i = 0; i < status_menu_buttons.size(); i++)
 	{
 		GManager->DrawButton( D3DXVECTOR3(1.0f, 1.0f, 1.0f),
 			D3DXVECTOR3(status_menu_buttons[i].getPos().x, status_menu_buttons[i].getPos().y, 0.0f),

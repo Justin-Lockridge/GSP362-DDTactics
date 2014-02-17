@@ -17,7 +17,7 @@ Overworld* Overworld::instance()
 	return &overworld;
 }
 
-void Overworld::init(Player &player)
+void Overworld::init(Player *player)
 {
 	Area_location temp_node_pos[] =
 	{
@@ -139,10 +139,10 @@ void Overworld::init(Player &player)
 	menu_pos.x = 700.0f;
 	menu_pos.y = 100.0f;
 
-	player.overworld_pos = map[0].node_position;
-	player.current_Node = &map[0];
-	player.previous_Node = &map[0];
-	player.destination = 0;
+	player->overworld_pos = map[0].node_position;
+	player->current_Node = &map[0];
+	player->previous_Node = &map[0];
+	player->destination = 0;
 	
 
 
@@ -236,7 +236,7 @@ void Overworld::render(GraphicsManager2D* GManager, ID3DXSprite *spriteObj, D3DX
 }
 
 
-void Overworld::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *SManager, Player &player, int &game_state, float dt)
+void Overworld::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *SManager, Player *player, int &game_state, float dt)
 {
 	SManager->playStream(SONG_OVERWORLD);
 	switch(overworld_state)
@@ -251,8 +251,8 @@ void Overworld::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundMana
 				temp[i]  = map[i].node_position.x;
 
 			//Scroll the screen in the X direction
-			screenscroll(cursorPos.x, 790, screen_pos.x, player.overworld_pos.x, -2, -600, temp, dt);
-			screenscroll2(cursorPos.x, 10, screen_pos.x, player.overworld_pos.x, 2, 640, temp, dt);
+			screenscroll(cursorPos.x, 790, screen_pos.x, player->overworld_pos.x, -2, -600, temp, dt);
+			screenscroll2(cursorPos.x, 10, screen_pos.x, player->overworld_pos.x, 2, 640, temp, dt);
 
 			//Assign new X positions 
 			for(int i = 0; i < MAX_AREAS; i++)
@@ -263,8 +263,8 @@ void Overworld::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundMana
 				temp[i] = map[i].node_position.y;
 
 			//Scroll the screen in the Y direction
-			screenscroll(cursorPos.y, 590, screen_pos.y, player.overworld_pos.y, -2, -50, temp, dt);
-			screenscroll2(cursorPos.y, 10, screen_pos.y, player.overworld_pos.y, 2, 360, temp, dt);
+			screenscroll(cursorPos.y, 590, screen_pos.y, player->overworld_pos.y, -2, -50, temp, dt);
+			screenscroll2(cursorPos.y, 10, screen_pos.y, player->overworld_pos.y, 2, 360, temp, dt);
 
 			//Assign new Y positions
 			for(int i = 0; i < MAX_AREAS; i++)
@@ -344,7 +344,7 @@ void Overworld::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundMana
 				{
 
 					overworld_state = OVERWORLD_CHECK;
-					player.destination = &map[i];
+					player->destination = &map[i];
 				}
 			}
 
@@ -355,17 +355,17 @@ void Overworld::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundMana
 		}
 
 	case OVERWORLD_CHECK:
-		if( (player.current_Node == player.destination) && (player.current_Node->area_type == TYPE_STORY)
+		if( (player->current_Node == player->destination) && (player->current_Node->area_type == TYPE_STORY)
 			)
 		{
 			overworld_state = OVERWORLD_BATTLE;
-			player.current_Node->area_type == TYPE_RANDOM_BATTLE;
+			player->current_Node->area_type = TYPE_RANDOM_BATTLE;
 			break;
 		}
 
 
 		//Check if current node is the destination, and if it's a town node, switch states
-		if( (player.current_Node == player.destination) && (player.current_Node->area_type == TYPE_TOWN)
+		if( (player->current_Node == player->destination) && (player->current_Node->area_type == TYPE_TOWN)
 			
 			)
 		{
@@ -376,7 +376,7 @@ void Overworld::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundMana
 
 		
 		//Check if current node is the same as destination and the node is not a town
-		else if(player.current_Node == player.destination)
+		else if(player->current_Node == player->destination)
 		{
 			overworld_state = OVERWORLD_SELECTION;
 			break;
@@ -406,26 +406,26 @@ void Overworld::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundMana
 		if(count4 > 0.05f)
 		{
 			count4 = 0.0f;
-			if(player.overworld_pos.x > player.destination->node_position.x)
+			if(player->overworld_pos.x > player->destination->node_position.x)
 			{
-				player.overworld_pos.x -= 1.0f;
+				player->overworld_pos.x -= 1.0f;
 				face = 1.0f;
 			}
-			if(player.overworld_pos.x < player.destination->node_position.x)
+			if(player->overworld_pos.x < player->destination->node_position.x)
 			{
-				player.overworld_pos.x += 1.0f;
+				player->overworld_pos.x += 1.0f;
 				face = -1.0f;
 			}
-			if(player.overworld_pos.y > player.destination->node_position.y)
-				player.overworld_pos.y -= 1.0f;
-			if(player.overworld_pos.y < player.destination->node_position.y)
-				player.overworld_pos.y += 1.0f;
+			if(player->overworld_pos.y > player->destination->node_position.y)
+				player->overworld_pos.y -= 1.0f;
+			if(player->overworld_pos.y < player->destination->node_position.y)
+				player->overworld_pos.y += 1.0f;
 		}
 		//Once player reaches destination
-		if(player.overworld_pos.x == player.destination->node_position.x &&
-			player.overworld_pos.y == player.destination->node_position.y)
+		if(player->overworld_pos.x == player->destination->node_position.x &&
+			player->overworld_pos.y == player->destination->node_position.y)
 		{
-			player.current_Node = player.destination;
+			player->current_Node = player->destination;
 			overworld_state = OVERWORLD_SELECTION;
 		}
 		//Clear out vector and queue
@@ -540,7 +540,7 @@ std::vector<Overworld_node> Overworld::getMapData()
 
 void Overworld::setMapData(int* areaType, bool* storybattle)
 {
-	for(int i = 0; i < map.size(); i++)
+	for(unsigned int i = 0; i < map.size(); i++)
 	{
 		map[i].area_type = areaType[i];
 		map[i].story_battle = storybattle[i];
@@ -609,5 +609,5 @@ bool Overworld::loadPath(Overworld_node *start, Overworld_node *previous, Overwo
 
 		
 
-
+		return false;
 }

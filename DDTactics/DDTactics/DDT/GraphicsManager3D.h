@@ -1,10 +1,6 @@
 #pragma once
 
-#include <d3d9.h>
-#include <d3dx9.h>
-#pragma comment(lib, "d3d9.lib")
-#pragma comment(lib, "d3dx9.lib")
-
+#include "Mesh.h"
 #include <vector>
 
 #define DEBUGGING
@@ -53,29 +49,18 @@ private:
 	// Adjacency Buffer
 	ID3DXBuffer*		m_pAdjBuffer;	
 	
-	// .x File Meshes
+	Mesh	map;
+	Mesh	default_character;
 
-	// Map Mesh
-	ID3DXMesh*			m_mapMesh;
-	ID3DXBuffer*		m_mapMaterials;
-	ID3DXBuffer*		m_mapEffects;
-	DWORD				m_numMapMaterials;
-	D3DMATERIAL9*		mapMeshMaterials;	
-	LPDIRECT3DTEXTURE9*	mapMeshTextures;	
+	std::vector<Mesh> maps_mesh;
+	std::vector<Mesh> character_mesh;
+	std::vector<Mesh> non_character_enemies;
 
-	// Player Mesh
-	ID3DXMesh*			m_playerMesh;
-	ID3DXBuffer*		m_playerMaterials;
-	ID3DXBuffer*		m_playerEffects;
-	DWORD				m_numPlayerMaterials;
-	D3DMATERIAL9*		playerMeshMaterials;	
 
 	int m_frames,
 		m_gameState,
 		m_controling;
 	float m_lastTime;
-	std::vector<D3DXVECTOR3> Players;
-	std::vector<D3DXVECTOR3> Enemies;
 
 	CGraph m_Map;
 public:
@@ -84,9 +69,13 @@ public:
 
 	void Init(IDirect3DDevice9* device);
 
-	void Draw3DObject(D3DXVECTOR3 &scale, D3DXVECTOR3 &translate, D3DXVECTOR3 &rotate,
-						ID3DXSprite *spriteObj, unsigned int ENUM_VAL, D3DCOLOR color,
-						GraphicsManager2D *GManager);
+	void DrawMap(D3DXVECTOR3 &scale, D3DXVECTOR3 &translate, D3DXVECTOR3 &rotate,
+						unsigned int ENUM_VAL
+						);
+
+	void DrawCharacter(D3DXVECTOR3 &scale, D3DXVECTOR3 &translate, D3DXVECTOR3 &rotate,
+						unsigned int ENUM_VAL
+						);
 
 	void Shutdown();
 
