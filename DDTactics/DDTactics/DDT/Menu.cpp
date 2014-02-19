@@ -98,7 +98,8 @@ void Menu::Update(Cursor *cursor, SoundManager *SManager, InputManager *IManager
 				{
 				case 0:
 					SManager->stopStream();
-					game_state = OVERWORLD;
+					//game_state = OVERWORLD;
+					game_state	=	INTRO;
 					break;
 				case 1:
 

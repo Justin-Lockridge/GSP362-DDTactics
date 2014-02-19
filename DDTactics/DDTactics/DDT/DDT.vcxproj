@@ -76,6 +76,7 @@
     <ClCompile Include="DDTactics.cpp" />
     <ClCompile Include="GraphicsManager3D.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Intro.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="IOManager.cpp" />
     <ClCompile Include="Job.cpp" />
@@ -98,6 +99,7 @@
     <ClInclude Include="DDTactics.h" />
     <ClInclude Include="GraphicsManager3D.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="Intro.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="IOManager.h" />
     <ClInclude Include="Job.h" />

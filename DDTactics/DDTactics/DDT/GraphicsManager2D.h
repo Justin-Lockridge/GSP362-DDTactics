@@ -67,7 +67,10 @@ private:
 	IDirect3DTexture9	*save_buttons_text;
 	D3DXIMAGE_INFO		save_button_info;
 
-
+	IDirect3DTexture9	*introTexture,
+						*introButtonTexture;
+	D3DXIMAGE_INFO		introInfo,
+						introButtonInfo;
 	//////////////////////////////////////////////////////////////////
 
 	GraphicsManager2D();

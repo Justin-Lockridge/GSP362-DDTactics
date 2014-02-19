@@ -93,6 +93,8 @@ bool SoundManager::init()
 	createStream("RO Juno.mp3", overworldMusic);
 	createStream("AbSolitude.mp3", townMusic);
 
+
+
 	/*
 		ADD ADDITIONAL STREAMS/SOUNDEFFECTS HERE
 	*/
@@ -100,7 +102,7 @@ bool SoundManager::init()
 
 	createStream("FFXI Battle in the Dungeon.mp3", temp_battle);
 
-
+	createStream("KingdomBaron.mp3", introMusic);
 	///////////////////////////////////////////////////////////////////////
 
 	//resize vector of bools
@@ -187,6 +189,7 @@ void SoundManager::shutdown()
 	/*
 		Release Sound objects
 	*/
+	SAFE_RELEASE2(introMusic);
 	SAFE_RELEASE2(temp_battle);
 	SAFE_RELEASE2(townMusic);
 	SAFE_RELEASE2(overworldMusic);

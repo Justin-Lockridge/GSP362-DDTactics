@@ -33,6 +33,7 @@ void GraphicsManager2D::init(IDirect3DDevice9 *Device)
 	setup(Device, L"book.png", bookTexture, bookInfo);
 	setup(Device, L"swords.png", swordsTexture, swordsInfo);
 	
+	
 
 
 	
@@ -48,6 +49,9 @@ void GraphicsManager2D::init(IDirect3DDevice9 *Device)
 	setup(Device, L"Shop.jpg", FFT_shop_text, FFT_shop_Info);
 	setup(Device, L"BlackBackground.png", save_text, save_info);
 	setup(Device, L"SaveMenuText.png", save_buttons_text, save_button_info);
+
+	setup(Device, L"CastleBaron.png", introTexture, introInfo);
+	setup(Device, L"IntroButton.png", introButtonTexture, introButtonInfo);
 
 	//////////////////////////////////////////////////////////////////////////////
 
@@ -148,6 +152,8 @@ void GraphicsManager2D::shutdown()
 	SAFE_RELEASE(status_buttons_Texture);
 	SAFE_RELEASE(status_border_Texture);
 	SAFE_RELEASE(status_background_Texture);
+	SAFE_RELEASE(introTexture);
+	SAFE_RELEASE(introButtonTexture);
 
 	SAFE_RELEASE(swordsTexture);
 	SAFE_RELEASE(bookTexture);

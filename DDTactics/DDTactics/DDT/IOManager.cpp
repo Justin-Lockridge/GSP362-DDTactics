@@ -79,7 +79,7 @@ void IOManager::update(InputManager *IManager, Cursor* cursor, int &game_state, 
 		if(!IManager->check_button_down(DIK_BACKSPACE))
 		{
 			IManager->set_button(DIK_BACKSPACE, true);
-			game_state = OVERWORLD;
+			game_state = MENU;
 		}
 	}else
 		IManager->set_button(DIK_BACKSPACE, false);
@@ -110,7 +110,6 @@ void IOManager::update(InputManager *IManager, Cursor* cursor, int &game_state, 
 		}
 	
 	}
-
 }
 
 

@@ -96,6 +96,9 @@
     <ClCompile Include="Job.cpp">
       <Filter>Source Files\GameStuff\Player</Filter>
     </ClCompile>
+    <ClCompile Include="Intro.cpp">
+      <Filter>Source Files\GameStuff</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DDTactics.h">
@@ -163,6 +166,9 @@
     </ClInclude>
     <ClInclude Include="Mesh.h">
       <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Intro.h">
+      <Filter>Header Files\GameStuff</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

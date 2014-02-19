@@ -111,6 +111,12 @@ void DDTactics::Init(HWND &hWnd, HINSTANCE &hInst, bool bWindowed)
 	graphics3D = GraphicsManager3D::instance();
 	graphics3D->Init(D3DDevice);
 	
+
+	introMenu = IntroMenu::instance();
+	introMenu->init();
+
+	textManager = TextManager::instance();
+	textManager->init(D3DDevice);
 }
 
 void DDTactics::Update(float dt)
@@ -129,6 +135,10 @@ void DDTactics::Update(float dt)
 		break;
 	case LOAD: case SAVE:
 		ioManager->update(input, cursor, m_gameState, dt);
+		//  INFO:  Quick bug fix.  Music used to continue playing when you went from Save / Load gamestate to Overworld.
+		//	TODO:  Implement a better fix later.
+		if(m_gameState == OVERWORLD)
+			sound->stopStream();
 		break;
 	case OPTIONS:
 		if(input->push_button(DIK_BACKSPACE))
@@ -164,6 +174,11 @@ void DDTactics::Update(float dt)
 		break;
 	case STATUS:
 		status_menu->Update(cursor, input, sound, player, m_gameState, dt);
+		break;
+	case INTRO:
+		sound->playStream(SONG_INTRO);
+		textManager->update(dt);
+		introMenu->Update(cursor, input, sound, player, m_gameState, dt);
 		break;
 	
 	}
@@ -233,10 +248,19 @@ void DDTactics::Render(float dt)
 				case STATUS:
 					status_menu->Render(graphics, D3DSprite, dt);
 					break;
+				case INTRO:
+					introMenu->Render(graphics, D3DSprite, dt);
 
 				}
 				cursor->render(graphics, D3DSprite);
+
 				D3DSprite->End();
+				//  INFO:  Draws text for different game states
+				switch(m_gameState){
+				case INTRO:
+					textManager->render();
+					break;
+				}
 			}
 		}
 		D3DDevice->EndScene();
