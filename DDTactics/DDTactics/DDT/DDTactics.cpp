@@ -76,7 +76,7 @@ void DDTactics::Init(HWND &hWnd, HINSTANCE &hInst, bool bWindowed)
 		&D3Dpp,					// presentation parameters
 		&D3DDevice);			// returned device pointer
 
-		
+
 	input = InputManager::instance();
 	input->init(hInst, m_hWnd);
 
@@ -100,7 +100,7 @@ void DDTactics::Init(HWND &hWnd, HINSTANCE &hInst, bool bWindowed)
 	overworld = Overworld::instance();
 	overworld->init(player);
 
-	
+
 
 	status_menu = StatusMenu::instance();
 	status_menu->init();
@@ -110,13 +110,16 @@ void DDTactics::Init(HWND &hWnd, HINSTANCE &hInst, bool bWindowed)
 
 	graphics3D = GraphicsManager3D::instance();
 	graphics3D->Init(D3DDevice);
-	
+
 
 	introMenu = IntroMenu::instance();
 	introMenu->init();
 
 	textManager = TextManager::instance();
 	textManager->init(D3DDevice);
+
+	town = Town::instance();
+	town->init();
 }
 
 void DDTactics::Update(float dt)
@@ -131,7 +134,7 @@ void DDTactics::Update(float dt)
 	{
 	case MENU:
 		menu->Update(cursor, sound, input, m_gameState, dt);
-		
+
 		break;
 	case LOAD: case SAVE:
 		ioManager->update(input, cursor, m_gameState, dt);
@@ -155,7 +158,6 @@ void DDTactics::Update(float dt)
 	case MAP:
 		break;
 	case TAVERN:
-				
 		if(input->push_button(DIK_BACKSPACE))
 		{
 			m_gameState = OVERWORLD;
@@ -169,8 +171,7 @@ void DDTactics::Update(float dt)
 		DestroyWindow(m_hWnd);
 		break;
 	case TOWN:
-		sound->playStream(SONG_TOWN);
-		m_gameState = TAVERN;
+		town->update(cursor->cursorPos, input, sound, m_gameState, dt);
 		break;
 	case STATUS:
 		status_menu->Update(cursor, input, sound, player, m_gameState, dt);
@@ -180,7 +181,7 @@ void DDTactics::Update(float dt)
 		textManager->update(dt);
 		introMenu->Update(cursor, input, sound, player, m_gameState, dt);
 		break;
-	
+
 	}
 }
 
@@ -195,11 +196,8 @@ void DDTactics::Render(float dt)
 		{
 			if(SUCCEEDED(D3DSprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_DEPTH_FRONTTOBACK)))
 			{
-
-
 				switch(m_gameState)
 				{
-					
 				case MENU:
 					menu->Render(graphics, D3DSprite, dt);
 					break;
@@ -211,40 +209,36 @@ void DDTactics::Render(float dt)
 					break;
 				case OPTIONS:
 					break;
-
-				case TAVERN:
-					graphics->Draw2DObject(D3DXVECTOR3(2.0f, 2.0f, 2.0f),
-						D3DXVECTOR3(150.0f, 150.0f, 0.0f),
-						D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-						D3DSprite, GRAPHICS_SHOP_KEEP, 
-						D3DCOLOR_ARGB(255,255,255,255));
-					
+				case TAVERN:		
+					break;
+				case TOWN:
+					town->render(graphics, D3DSprite, dt);
+					break;
 					break;
 				case BATTLE:
 
 					graphics3D->DrawMap(D3DXVECTOR3(5,5,5),
-										D3DXVECTOR3(0,0,0),
-										D3DXVECTOR3(0,0,0),
-										MAP_DEFAULT);
+						D3DXVECTOR3(0,0,0),
+						D3DXVECTOR3(0,0,0),
+						MAP_DEFAULT);
 					graphics3D->DrawCharacter(D3DXVECTOR3(.7,.7,.7),
-											  D3DXVECTOR3(0,0,0),
-											  D3DXVECTOR3(0,0,0),
-											  MODEL_DEFAULT);
+						D3DXVECTOR3(0,0,0),
+						D3DXVECTOR3(0,0,0),
+						MODEL_DEFAULT);
 
-										
 
-					
+
+
 					/*graphics->Draw2DObject(D3DXVECTOR3(1.0f, 1.0f, 1.0f),
-											D3DXVECTOR3(400.0f, 200.0f, 0.0f),
-											D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-											D3DSprite,
-											GRAPHICS_BATTLE_SPLASH,
-											D3DCOLOR_ARGB(255,255,255,255)
-											);*/
+					D3DXVECTOR3(400.0f, 200.0f, 0.0f),
+					D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+					D3DSprite,
+					GRAPHICS_BATTLE_SPLASH,
+					D3DCOLOR_ARGB(255,255,255,255)
+					);*/
 
-				
+
 					break;
-
 				case STATUS:
 					status_menu->Render(graphics, D3DSprite, dt);
 					break;

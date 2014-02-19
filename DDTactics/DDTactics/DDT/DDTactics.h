@@ -26,6 +26,7 @@
 #include "GraphicsManager3D.h"
 #include "Intro.h"
 #include "TextManager.h"
+#include "Town.h"
 
 //#define SAFE_RELEASE(x) if(x){x->Release(); x = 0;}
 
@@ -54,6 +55,7 @@ class DDTactics
 	Menu				*menu;
 	Overworld			*overworld;
 	IOManager			*ioManager;
+	Town				*town;
 
 
 	Player				*player;

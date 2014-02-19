@@ -88,6 +88,7 @@
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="StatusMenu.cpp" />
     <ClCompile Include="TextManager.cpp" />
+    <ClCompile Include="Town.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CGraph.h" />
@@ -113,6 +114,7 @@
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="StatusMenu.h" />
     <ClInclude Include="TextManager.h" />
+    <ClInclude Include="Town.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

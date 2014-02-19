@@ -33,10 +33,6 @@ void GraphicsManager2D::init(IDirect3DDevice9 *Device)
 	setup(Device, L"book.png", bookTexture, bookInfo);
 	setup(Device, L"swords.png", swordsTexture, swordsInfo);
 	
-	
-
-
-	
 	/*
 		CALL setup function here with the parameters of the texture
 	*/
@@ -46,7 +42,21 @@ void GraphicsManager2D::init(IDirect3DDevice9 *Device)
 	setup(Device, L"Status_buttons.png", status_buttons_Texture, status_button_Info);
 
 	setup(Device, L"FFTBattle.jpg", FFT_texture, FFT_Info);
-	setup(Device, L"Shop.jpg", FFT_shop_text, FFT_shop_Info);
+	//Shop Stuff
+	setup(Device, L"Shop_Menu.png", FFT_shop_text, FFT_shop_Info);
+	setup(Device, L"Shop_Weapons1.png", FFT_weapons_text, FFT_weapons_Info);
+	setup(Device, L"Shop_Helm1.png", FFT_helms_text, FFT_helms_Info);
+	setup(Device, L"Shop_Chest1.png", FFT_chest_text, FFT_chest_Info);
+	setup(Device, L"Shop_Accesory1.png", FFT_accesory_text, FFT_accesory_Info);
+	setup(Device, L"Shop_Potions1.png", FFT_potions_text, FFT_potions_Info);
+	//setup(Device, L"shop_menu.jpg", shop_menu_text, shop_menu_Info);
+	//shop buttons
+	setup(Device, L"sword_button.png", weapon_button_text, weapon_button_Info);
+	setup(Device, L"helm_button.png", helm_button_text, helm_button_Info);
+	setup(Device, L"chest_button.png", chest_button_text, chest_button_Info);
+	setup(Device, L"accesory_button.png", accesory_button_text, accesory_button_Info);
+	setup(Device, L"potions_button.png", potion_button_text, potion_button_Info);
+
 	setup(Device, L"BlackBackground.png", save_text, save_info);
 	setup(Device, L"SaveMenuText.png", save_buttons_text, save_button_info);
 
@@ -111,8 +121,6 @@ void GraphicsManager2D::Draw2DObject(D3DXVECTOR3 &scale, D3DXVECTOR3 &translate,
 	spriteObj->SetTransform(&worldMat);
 	spriteObj->Draw(textures[OBJECT_VALUE], 0, &D3DXVECTOR3(imageInfos[OBJECT_VALUE].Width *0.5f, imageInfos[OBJECT_VALUE].Height *0.5f, 0.0f),
 		0, color);
-
-
 }
 
 

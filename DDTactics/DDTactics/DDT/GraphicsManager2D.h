@@ -58,8 +58,31 @@ private:
 	IDirect3DTexture9	*FFT_texture;
 	D3DXIMAGE_INFO		FFT_Info;
 
+	//Shop
 	IDirect3DTexture9	*FFT_shop_text;
 	D3DXIMAGE_INFO		FFT_shop_Info;
+	IDirect3DTexture9	*FFT_weapons_text;
+	D3DXIMAGE_INFO		FFT_weapons_Info;
+	IDirect3DTexture9	*FFT_helms_text;
+	D3DXIMAGE_INFO		FFT_helms_Info;
+	IDirect3DTexture9	*FFT_chest_text;
+	D3DXIMAGE_INFO		FFT_chest_Info;
+	IDirect3DTexture9	*FFT_accesory_text;
+	D3DXIMAGE_INFO		FFT_accesory_Info;
+	IDirect3DTexture9	*FFT_potions_text;
+	D3DXIMAGE_INFO		FFT_potions_Info;
+	IDirect3DTexture9	*shop_menu_text;
+	D3DXIMAGE_INFO		shop_menu_Info;
+	IDirect3DTexture9	*weapon_button_text;
+	D3DXIMAGE_INFO		weapon_button_Info;
+	IDirect3DTexture9	*potion_button_text;
+	D3DXIMAGE_INFO		potion_button_Info;
+	IDirect3DTexture9	*helm_button_text;
+	D3DXIMAGE_INFO		helm_button_Info;
+	IDirect3DTexture9	*chest_button_text;
+	D3DXIMAGE_INFO		chest_button_Info;
+	IDirect3DTexture9	*accesory_button_text;
+	D3DXIMAGE_INFO		accesory_button_Info;
 
 	IDirect3DTexture9	*save_text;
 	D3DXIMAGE_INFO		save_info;
