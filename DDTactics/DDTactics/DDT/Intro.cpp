@@ -64,11 +64,14 @@ void IntroMenu::Update(Cursor *cursor, InputManager *IManager, SoundManager *SMa
 {
 	//  INFO:  If the player clicks the upper right portion of the screen (Skip option for intro) then change the gamestate to overworld.
 	if(IManager->check_mouse_button(LEFT_MOUSE_BUTTON)){
-		if((cursor->cursorPos.x > 650 && cursor->cursorPos.x < 750) && (cursor->cursorPos.y > 10 && cursor->cursorPos.y < 80)){
-			SManager->stopStream();
-			game_state = OVERWORLD;
+		if(!IManager->check_button_down(DIK_9)){
+			IManager->set_button(DIK_9,true);
+				if((cursor->cursorPos.x > 650 && cursor->cursorPos.x < 750) && (cursor->cursorPos.y > 10 && cursor->cursorPos.y < 80)){
+					SManager->stopStream();
+					game_state = OVERWORLD;
+				}
 		}
-	}
+	} else IManager->set_button(DIK_9,false);
 }
 
 void IntroMenu::Render(GraphicsManager2D *GManager, ID3DXSprite *spriteObj, float dt)
