@@ -19,15 +19,24 @@
 
 #define MAX_SHOP_SPRITE_POSITIONS 4
 #define MAX_SHOP_BUTTONS_POSITIONS 5
+#define MAX_WEAPONS_BUTTONS_POTITIONS 4
+#define MAX_HELM__BUTTONS_POSITIONS 1
+#define MAX_CHEST_BUTTONS_POSITIONS 1
+#define MAX_ACCESORY_BUTTONS_POSITIONS 1
+#define MAX_POTIONS_BUTTONS_POSITION 4
 
 class Town
 {
 public:
 	int shop_state;
 
-	std::vector<Button> shop_buttons;
 	std::vector<Button> shop_sprite_pos;
 	std::vector<Button> shop_mini_buttons_pos;
+	std::vector<Button> weapons_buttons_pos;
+	std::vector<Button> helm_button_pos;
+	std::vector<Button> chest_button_pos;
+	std::vector<Button> accesory_button_pos;
+	std::vector<Button> potion_button_pos;
 
 	bool main;
 	bool weapons;

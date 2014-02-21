@@ -77,6 +77,131 @@ void Town::init()
 
 		shop_mini_buttons_pos.push_back(temp);		
 	}
+
+	RData temp_weapon_pos[] = 
+	{
+		{240, 30, 280, 400, 215, 260, false},
+		{285, 30, 325, 400, 215, 305, false},
+		{330, 30, 370, 400, 215, 350, false},
+		{375, 30, 415, 400, 215, 395, false},
+	};
+	//Positons for weapons to buy
+	for(int i = 0; i < MAX_WEAPONS_BUTTONS_POTITIONS; i++)
+	{
+		Button temp;
+		RECT rect_weapons;
+
+		rect_weapons.top = temp_weapon_pos[i].t;
+		rect_weapons.left = temp_weapon_pos[i].l;
+		rect_weapons.bottom = temp_weapon_pos[i].b;
+		rect_weapons.right = temp_weapon_pos[i].r;
+
+		temp.setPos(temp_weapon_pos[i].x, temp_weapon_pos[i].y);
+		temp.setHighlight(temp_weapon_pos[i].highlight);
+		temp.setRect(rect_weapons);
+
+		weapons_buttons_pos.push_back(temp);		
+	}
+
+	RData temp_helm_pos[] = 
+	{
+		{240, 30, 280, 400, 215, 260, false},
+		//{285, 30, 325, 400, 215, 305, false},
+		//{330, 30, 370, 400, 215, 350, false},
+		//{375, 30, 415, 400, 215, 395, false},
+	};
+	//Positons for weapons to buy
+	for(int i = 0; i < MAX_HELM__BUTTONS_POSITIONS; i++)
+	{
+		Button temp;
+		RECT rect_helm;
+
+		rect_helm.top = temp_helm_pos[i].t;
+		rect_helm.left = temp_helm_pos[i].l;
+		rect_helm.bottom = temp_helm_pos[i].b;
+		rect_helm.right = temp_helm_pos[i].r;
+
+		temp.setPos(temp_helm_pos[i].x, temp_helm_pos[i].y);
+		temp.setHighlight(temp_helm_pos[i].highlight);
+		temp.setRect(rect_helm);
+
+		helm_button_pos.push_back(temp);		
+	}
+
+	RData temp_chest_pos[] = 
+	{
+		{240, 30, 280, 400, 215, 260, false},
+		//{285, 30, 325, 400, 215, 305, false},
+		//{330, 30, 370, 400, 215, 350, false},
+		//{375, 30, 415, 400, 215, 395, false},
+	};
+	//Positons for weapons to buy
+	for(int i = 0; i < MAX_CHEST_BUTTONS_POSITIONS; i++)
+	{
+		Button temp;
+		RECT rect_chest;
+
+		rect_chest.top = temp_chest_pos[i].t;
+		rect_chest.left = temp_chest_pos[i].l;
+		rect_chest.bottom = temp_chest_pos[i].b;
+		rect_chest.right = temp_chest_pos[i].r;
+
+		temp.setPos(temp_chest_pos[i].x, temp_chest_pos[i].y);
+		temp.setHighlight(temp_chest_pos[i].highlight);
+		temp.setRect(rect_chest);
+
+		chest_button_pos.push_back(temp);	
+	}
+	RData temp_accesory_pos[] = 
+	{
+		{240, 30, 280, 400, 215, 260, false},
+		//{285, 30, 325, 400, 215, 305, false},
+		//{330, 30, 370, 400, 215, 350, false},
+		//{375, 30, 415, 400, 215, 395, false},
+	};
+	//Positons for accesories to buy
+	for(int i = 0; i < MAX_ACCESORY_BUTTONS_POSITIONS; i++)
+	{
+		Button temp;
+		RECT rect_accesory;
+
+		rect_accesory.top = temp_accesory_pos[i].t;
+		rect_accesory.left = temp_accesory_pos[i].l;
+		rect_accesory.bottom = temp_accesory_pos[i].b;
+		rect_accesory.right = temp_accesory_pos[i].r;
+
+		temp.setPos(temp_accesory_pos[i].x, temp_accesory_pos[i].y);
+		temp.setHighlight(temp_accesory_pos[i].highlight);
+		temp.setRect(rect_accesory);
+
+		accesory_button_pos.push_back(temp);	
+	}
+
+	RData temp_potion_pos[] = 
+	{
+		{240, 30, 280, 400, 215, 260, false},
+		{285, 30, 325, 400, 215, 305, false},
+		{330, 30, 370, 400, 215, 350, false},
+		{375, 30, 415, 400, 215, 395, false},
+	};
+	//Positons for potions to buy
+	for(int i = 0; i < MAX_POTIONS_BUTTONS_POSITION; i++)
+	{
+		Button temp;
+		RECT rect_potion;
+
+		rect_potion.top = temp_potion_pos[i].t;
+		rect_potion.left = temp_potion_pos[i].l;
+		rect_potion.bottom = temp_potion_pos[i].b;
+		rect_potion.right = temp_potion_pos[i].r;
+
+		temp.setPos(temp_potion_pos[i].x, temp_potion_pos[i].y);
+		temp.setHighlight(temp_potion_pos[i].highlight);
+		temp.setRect(rect_potion);
+
+		potion_button_pos.push_back(temp);	
+	}
+
 }
 
 void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *SManager, int &game_state, float dt)
@@ -102,6 +227,7 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 		break;
 	case SHOP_HEAD:
 		helm = true;
+		buyMenu = true;
 		if(IManager->push_button(DIK_BACKSPACE))
 		{
 			shop_state = SHOP_SELECTION;
@@ -112,6 +238,7 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 		break;
 	case SHOP_CHEST:
 		chest = true;
+		buyMenu = true;
 		if(IManager->push_button(DIK_BACKSPACE))
 		{
 			shop_state = SHOP_SELECTION;
@@ -122,6 +249,7 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 		break;
 	case SHOP_ACCESORY:
 		accesory = true;
+		buyMenu = true;
 		if(IManager->push_button(DIK_BACKSPACE))
 		{
 			shop_state = SHOP_SELECTION;
@@ -132,6 +260,7 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 		break;
 	case SHOP_POTIONS:
 		potions = true;
+		buyMenu = true;
 		if(IManager->push_button(DIK_BACKSPACE))
 		{
 			shop_state = SHOP_SELECTION;
@@ -244,10 +373,235 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 					accesory = false;
 					shop_state = SHOP_POTIONS;
 					break;
+				default:
+					break;
 				}
 			}
 		}
 	}
+	if(weapons)
+	{
+		//Checks to see if mini buttons were pressed to switch from weapons/helms/chests/accesories/potions
+		for(int i = 0; i < MAX_WEAPONS_BUTTONS_POTITIONS; i++)
+		{
+			if(weapons_buttons_pos[i].isOn(cursorPos.x, cursorPos.y, 3))
+			{
+				weapons_buttons_pos[i].setHighlight(true);
+				weapons_buttons_pos[i].setColor(D3DCOLOR_ARGB(255, 255, 255, 50));
+			}else
+			{
+				weapons_buttons_pos[i].setHighlight(false);
+				weapons_buttons_pos[i].setColor(D3DCOLOR_ARGB(255, 255, 255, 255));
+			}
+
+			//Check for cursor over menu option and left mouse button click
+			if(weapons_buttons_pos[i].isHighlighted() && IManager->check_mouse_button(LEFT_MOUSE_BUTTON))
+			{
+				if(!IManager->check_button_down(DIK_9))
+				{
+					IManager->set_button(DIK_9,true);
+					//Switch states accordingly
+					switch(i)
+					{
+					case 0: //dagger
+						shop_state = SHOP_ACCESORY;
+						break;
+					case 1: // broad sword
+						shop_state = SHOP_POTIONS;
+						break;
+					case 2: // rod
+						shop_state = SHOP_CHEST;
+						break;
+					case 3: // oak staff
+						shop_state = SHOP_HEAD;
+						break;
+					case 4:
+						break;
+					default:
+						break;
+					}
+				}
+			}else IManager->set_button(DIK_9,false);
+		}
+	}
+
+	if(helm)
+	{
+		//Checks to see if mini buttons were pressed to switch from weapons/helms/chests/accesories/potions
+		for(int i = 0; i < MAX_HELM__BUTTONS_POSITIONS; i++)
+		{
+			if(helm_button_pos[i].isOn(cursorPos.x, cursorPos.y, 3))
+			{
+				helm_button_pos[i].setHighlight(true);
+				helm_button_pos[i].setColor(D3DCOLOR_ARGB(255, 255, 255, 50));
+			}else
+			{
+				helm_button_pos[i].setHighlight(false);
+				helm_button_pos[i].setColor(D3DCOLOR_ARGB(255, 255, 255, 255));
+			}
+
+			//Check for cursor over menu option and left mouse button click
+			if(helm_button_pos[i].isHighlighted() && IManager->check_mouse_button(LEFT_MOUSE_BUTTON))
+			{
+				////////////////////////////////////////////// DIK FIX //////////////////////////////////////////////////
+				if(!IManager->check_button_down(DIK_9))
+				{
+					IManager->set_button(DIK_9,true);
+					/////////////////////////////////////////////////////////////////////////////////////////////////////
+					//Switch states accordingly
+					switch(i)
+					{
+					case 0: // Leather Hat
+						shop_state = SHOP_ACCESORY;
+						break;
+						//case 1: //
+						//	shop_state = SHOP_POTIONS;
+						//	break;
+						//case 2: //
+						//	shop_state = SHOP_CHEST;
+						//	break;
+						//case 3: //
+						//	shop_state = SHOP_HEAD;
+						//	break;
+						//case 4:
+						//	break;
+					default:
+						break;
+					}
+				}
+			}
+			///////////////////////////////////////////////////////////////////////////////////////////////////
+			else IManager->set_button(DIK_9,false);
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////
+		}
+	}
+
+	if(chest)
+	{
+		//Checks to see if mini buttons were pressed to switch from weapons/helms/chests/accesories/potions
+		for(int i = 0; i < MAX_HELM__BUTTONS_POSITIONS; i++)
+		{
+			if(chest_button_pos[i].isOn(cursorPos.x, cursorPos.y, 3))
+			{
+				chest_button_pos[i].setHighlight(true);
+				chest_button_pos[i].setColor(D3DCOLOR_ARGB(255, 255, 255, 50));
+			}else
+			{
+				chest_button_pos[i].setHighlight(false);
+				chest_button_pos[i].setColor(D3DCOLOR_ARGB(255, 255, 255, 255));
+			}
+
+			//Check for cursor over menu option and left mouse button click
+			if(chest_button_pos[i].isHighlighted() && IManager->check_mouse_button(LEFT_MOUSE_BUTTON))
+			{
+				if(!IManager->check_button_down(DIK_9))
+				{
+					IManager->set_button(DIK_9,true);
+					//Switch states accordingly
+					switch(i)
+					{
+					case 0: // Leather Hat
+						shop_state = SHOP_ACCESORY;
+						break;
+						//case 1: //
+						//	shop_state = SHOP_POTIONS;
+						//	break;
+						//case 2: //
+						//	shop_state = SHOP_CHEST;
+						//	break;
+						//case 3: //
+						//	shop_state = SHOP_HEAD;
+						//	break;
+						//case 4:
+						//	break;
+					default:
+						break;
+					}
+				}
+			}else IManager->set_button(DIK_9,false);
+		}
+	}
+
+	if(accesory)
+	{
+		//Checks to see if mini buttons were pressed to switch from weapons/helms/chests/accesories/potions
+		for(int i = 0; i < MAX_ACCESORY_BUTTONS_POSITIONS; i++)
+		{
+			if(accesory_button_pos[i].isOn(cursorPos.x, cursorPos.y, 3))
+			{
+				accesory_button_pos[i].setHighlight(true);
+				accesory_button_pos[i].setColor(D3DCOLOR_ARGB(255, 255, 255, 50));
+			}else
+			{
+				accesory_button_pos[i].setHighlight(false);
+				accesory_button_pos[i].setColor(D3DCOLOR_ARGB(255, 255, 255, 255));
+			}
+
+			//Check for cursor over menu option and left mouse button click
+			if(accesory_button_pos[i].isHighlighted() && IManager->check_mouse_button(LEFT_MOUSE_BUTTON))
+			{
+				if(!IManager->check_button_down(DIK_9))
+				{
+					IManager->set_button(DIK_9,true);
+					//Switch states accordingly
+					switch(i)
+					{
+					case 0: //
+						break;
+					case 1: //
+						break;
+					case 2: //
+						break;
+					case 3: //
+						break;
+					case 4:
+						break;
+					}
+				}
+			}else IManager->set_button(DIK_9,false);
+		}
+	}
+
+	if(potions)
+	{
+		//Checks to see if mini buttons were pressed to switch from weapons/helms/chests/accesories/potions
+		for(int i = 0; i < MAX_POTIONS_BUTTONS_POSITION; i++)
+		{
+			if(potion_button_pos[i].isOn(cursorPos.x, cursorPos.y, 3))
+			{
+				potion_button_pos[i].setHighlight(true);
+				potion_button_pos[i].setColor(D3DCOLOR_ARGB(255, 255, 255, 50));
+			}else
+			{
+				potion_button_pos[i].setHighlight(false);
+				potion_button_pos[i].setColor(D3DCOLOR_ARGB(255, 255, 255, 255));
+			}
+
+			//Check for cursor over menu option and left mouse button click
+			if(potion_button_pos[i].isHighlighted() && IManager->check_mouse_button(LEFT_MOUSE_BUTTON))
+			{
+				if(!IManager->check_button_down(DIK_9))
+				{
+					IManager->set_button(DIK_9,true);
+					//Switch states accordingly
+					switch(i)
+					{
+					case 0: //Phoenix Down
+						break;
+					case 1: // Eye Drop
+						break;
+					case 2: // Antidote
+						break;
+					case 3: // Potion
+						break;
+					case 4:
+						break;
+					}
+				}
+			}else IManager->set_button(DIK_9,false);
+		}
+	}
+
 }
 
 void Town::render(GraphicsManager2D *GManager, ID3DXSprite *spriteObj, float dt)
@@ -255,6 +609,21 @@ void Town::render(GraphicsManager2D *GManager, ID3DXSprite *spriteObj, float dt)
 	//Shop Selection
 	if(main)
 	{
+
+		/*	for(auto &button: shop_sprite_pos)
+		{
+		if(button.isHighlighted())
+		{
+		GManager->Draw2DObject(D3DXVECTOR3(0.5f, 0.5f, 0.5f), 
+		button.getPos(), 
+		D3DXVECTOR3(0.0f, 0.0f, 0.0f), 
+		spriteObject, object_value, 
+		D3DCOLOR_ARGB(255, 255, 255, 255));
+		}
+
+		}*/
+
+
 		GManager->Draw2DObject(D3DXVECTOR3(0.4f, 0.55f, 0.4f),
 			D3DXVECTOR3(240.0f, 250.0f, 0.0f),
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
