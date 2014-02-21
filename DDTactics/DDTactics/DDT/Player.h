@@ -11,7 +11,7 @@ class Player
 {
 private:
 	std::vector<Character> army;
-	Inventory inventory;
+	std::vector<Items> inventory;
 	int money;
 		
 	Player();
@@ -30,7 +30,13 @@ public:
 	static Player* instance();
 	
 	std::vector<Character>* returnArmy();
+	Character getCharacter(int iter){return army[iter];}
+	void setCharacterLevel(int iter, int job, int level);
+	void addToInventory(int itemType){inventory[itemType].itemCount += 1;}
+	void removeFromInventory(int itemType){if(inventory[itemType].itemCount > 1)inventory[itemType].itemCount -= 1;}
+	bool checkInventoryForItem(int itemType){if(inventory[itemType].itemCount > 1) return true;}
 	int getMoney();
+	void adjustMoney(int amount){money += amount;}
 	Inventory getInventory();
 	
 

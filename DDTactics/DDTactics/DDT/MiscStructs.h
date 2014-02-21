@@ -50,9 +50,6 @@ struct simpleRData
 
 struct job_mods
 {
-	unsigned int job_level;
-	unsigned int job_xp;
-
 	float mod_health;
 	float mod_mana;
 	float mod_attack;
@@ -63,6 +60,19 @@ struct job_mods
 	float mod_evasion;
 	float mod_hit;
 	
+};
+
+struct Items
+{
+	int itemCount;
+	int buyPrice;
+	int sellPrice;
+	int type;
+	int armor;
+	int damage;
+	int addHealth;
+	int addMana;
+
 };
 
 struct Character_stats

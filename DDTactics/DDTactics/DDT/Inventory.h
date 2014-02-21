@@ -3,30 +3,30 @@
 
 #include <vector>
 
-#define MAX_ITEMS 100
+#define MAX_ITEMS 10
 
 class Inventory
 {
 public:
-	struct Items
-	{
-		int buyPrice;
-		int sellPrice;
-		int type;
-		int armor;
-		int damage;
-		int addHealth;
-		int addMana;
-	
-	};
+	//struct Items
+	//{
+	//	int buyPrice;
+	//	int sellPrice;
+	//	int type;
+	//	int armor;
+	//	int damage;
+	//	int addHealth;
+	//	int addMana;
+	//
+	//};
 
-	std::vector<Items> myItems[MAX_ITEMS]; 
+	//std::vector<Items> myItems[MAX_ITEMS]; 
 
-	Inventory(void);
-	~Inventory(void);
+	//Inventory(void);
+	//~Inventory(void);
 
-	Inventory openInventory();
+	//Inventory openInventory();
 
-	void add(Items);
-	void use(Items);
+	//void add(Items);
+	//void use(Items);
 };

@@ -1,7 +1,18 @@
 #include "Player.h"
 
 Player::Player()
-{}
+{
+	Character temp;
+	army.push_back(temp);
+	army.push_back(temp);
+	army.push_back(temp);
+
+	Items temporary;
+	for(int i = 0; i < MAX_ITEMS; ++i){
+		inventory.push_back(temporary);
+	}
+	money = 0;
+}
 
 Player::~Player()
 {}
@@ -25,7 +36,9 @@ int Player::getMoney()
 
 Inventory Player::getInventory()
 {
-	return inventory;
+	Inventory temp;
+	return temp;
+	//return inventory;
 }
 
 

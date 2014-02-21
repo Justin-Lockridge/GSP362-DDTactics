@@ -64,6 +64,7 @@ class DDTactics
 	StatusMenu			*status_menu;
 	IntroMenu			*introMenu;
 	TextManager			*textManager;
+	std::vector<job_mods> jobMods;
 public:
 	DDTactics(void);
 	~DDTactics(void);

@@ -8,6 +8,43 @@ DDTactics::DDTactics(void)
 	m_FPS = 0;
 	m_gameOver = 0;
 	m_gameState = MENU;
+	
+	//////////////////////////////////
+	//  INFO:  Warrior Job mod 
+	job_mods temp;
+	temp.mod_health = 3;
+	temp.mod_mana	= 1;
+	temp.mod_magic = 1;
+	temp.mod_defense = 3;
+	temp.mod_resistance = 2;
+	temp.mod_speed = 2;
+	temp.mod_evasion = 1;
+	temp.mod_hit = 2;
+	jobMods.push_back(temp);
+
+	//////////////////////////////////
+	//  INFO:  Archer Job mod 
+	temp.mod_health = 2;
+	temp.mod_mana	= 1;
+	temp.mod_magic = 1;
+	temp.mod_defense = 2;
+	temp.mod_resistance = 2;
+	temp.mod_speed = 3;
+	temp.mod_evasion = 3;
+	temp.mod_hit = 2;
+	jobMods.push_back(temp);
+
+	//////////////////////////////////
+	//  INFO:  GreyMage Job mod 
+	temp.mod_health = 1;
+	temp.mod_mana	= 3;
+	temp.mod_magic = 3;
+	temp.mod_defense = 2;
+	temp.mod_resistance = 2;
+	temp.mod_speed = 2;
+	temp.mod_evasion = 1;
+	temp.mod_hit = 2;
+	jobMods.push_back(temp);
 }
 
 DDTactics::~DDTactics(void)
