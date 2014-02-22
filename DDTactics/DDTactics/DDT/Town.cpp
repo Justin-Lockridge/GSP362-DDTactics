@@ -30,7 +30,7 @@ void Town::init()
 		{230, 20, 310, 270, 40, 225, false},
 		{270, 20, 350, 270, 40, 265, false},
 		{305, 20, 385, 270, 40, 300, false},
-		{345, 20, 425, 270, 40, 340, false},
+		//{345, 20, 425, 270, 40, 340, false},
 	};
 
 	//Positons for the shop buttons
@@ -183,6 +183,7 @@ void Town::init()
 		{285, 30, 325, 400, 215, 305, false},
 		{330, 30, 370, 400, 215, 350, false},
 		{375, 30, 415, 400, 215, 395, false},
+		{418, 30, 458, 400, 215, 438, false},
 	};
 	//Positons for potions to buy
 	for(int i = 0; i < MAX_POTIONS_BUTTONS_POSITION; i++)
@@ -201,10 +202,9 @@ void Town::init()
 
 		potion_button_pos.push_back(temp);	
 	}
-
 }
 
-void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *SManager, int &game_state, float dt)
+void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *SManager, int &game_state, float dt, Player *player)
 {
 	SManager->playStream(SONG_TOWN);
 
@@ -272,7 +272,6 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 	default:
 		break;
 	}
-
 	if(!buyMenu)
 	{
 		//Check for cursor over buy/sell/fitting/exit menu
@@ -299,24 +298,21 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 					shop_state = SHOP_WEAPONS;
 					break;
 				case 1: // sell
-					//Needs to open up players inventory
+					player->getInventory();
 					main = false;
 					break;
-				case 2: // Fitting
-					//Not sure if we are using
-					main = false;
-					break;
-				case 3: // Exit
+				case 2: // Exit
 					main = false;
 					buyMenu = false;
 					shop_state = SHOP_SELECTION;
 					game_state = OVERWORLD;
 					break;
+				default:
+					break;
 				}
 			}
 		}
 	}
-
 	if(buyMenu)
 	{
 		//Checks to see if mini buttons were pressed to switch from weapons/helms/chests/accesories/potions
@@ -331,7 +327,6 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 				shop_mini_buttons_pos[i].setHighlight(false);
 				shop_mini_buttons_pos[i].setColor(D3DCOLOR_ARGB(255, 255, 255, 255));
 			}
-
 			//Check for cursor over menu option and left mouse button click
 			if(shop_mini_buttons_pos[i].isHighlighted() && IManager->check_mouse_button(LEFT_MOUSE_BUTTON))
 			{
@@ -393,7 +388,6 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 				weapons_buttons_pos[i].setHighlight(false);
 				weapons_buttons_pos[i].setColor(D3DCOLOR_ARGB(255, 255, 255, 255));
 			}
-
 			//Check for cursor over menu option and left mouse button click
 			if(weapons_buttons_pos[i].isHighlighted() && IManager->check_mouse_button(LEFT_MOUSE_BUTTON))
 			{
@@ -404,16 +398,20 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 					switch(i)
 					{
 					case 0: //dagger
-						shop_state = SHOP_ACCESORY;
+						player->addToInventory(2);
+						player->adjustMoney(-100);
 						break;
 					case 1: // broad sword
-						shop_state = SHOP_POTIONS;
+						player->addToInventory(2);
+						player->adjustMoney(-200);
 						break;
 					case 2: // rod
-						shop_state = SHOP_CHEST;
+						player->addToInventory(2);
+						player->adjustMoney(-200);
 						break;
 					case 3: // oak staff
-						shop_state = SHOP_HEAD;
+						player->addToInventory(2);
+						player->adjustMoney(-120);
 						break;
 					case 4:
 						break;
@@ -424,7 +422,6 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 			}else IManager->set_button(DIK_9,false);
 		}
 	}
-
 	if(helm)
 	{
 		//Checks to see if mini buttons were pressed to switch from weapons/helms/chests/accesories/potions
@@ -439,7 +436,6 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 				helm_button_pos[i].setHighlight(false);
 				helm_button_pos[i].setColor(D3DCOLOR_ARGB(255, 255, 255, 255));
 			}
-
 			//Check for cursor over menu option and left mouse button click
 			if(helm_button_pos[i].isHighlighted() && IManager->check_mouse_button(LEFT_MOUSE_BUTTON))
 			{
@@ -452,30 +448,24 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 					switch(i)
 					{
 					case 0: // Leather Hat
-						shop_state = SHOP_ACCESORY;
+						player->addToInventory(0);
+						player->adjustMoney(-150);
 						break;
-						//case 1: //
-						//	shop_state = SHOP_POTIONS;
-						//	break;
-						//case 2: //
-						//	shop_state = SHOP_CHEST;
-						//	break;
-						//case 3: //
-						//	shop_state = SHOP_HEAD;
-						//	break;
-						//case 4:
-						//	break;
+					case 1: //
+						break;
+					case 2: //
+						break;
+					case 3: //
+						break;
+					case 4:
+						break;
 					default:
 						break;
 					}
 				}
-			}
-			///////////////////////////////////////////////////////////////////////////////////////////////////
-			else IManager->set_button(DIK_9,false);
-			/////////////////////////////////////////////////////////////////////////////////////////////////////////
+			}else IManager->set_button(DIK_9,false);
 		}
 	}
-
 	if(chest)
 	{
 		//Checks to see if mini buttons were pressed to switch from weapons/helms/chests/accesories/potions
@@ -490,7 +480,6 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 				chest_button_pos[i].setHighlight(false);
 				chest_button_pos[i].setColor(D3DCOLOR_ARGB(255, 255, 255, 255));
 			}
-
 			//Check for cursor over menu option and left mouse button click
 			if(chest_button_pos[i].isHighlighted() && IManager->check_mouse_button(LEFT_MOUSE_BUTTON))
 			{
@@ -500,20 +489,18 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 					//Switch states accordingly
 					switch(i)
 					{
-					case 0: // Leather Hat
-						shop_state = SHOP_ACCESORY;
+					case 0: // Cloth armor
+						player->addToInventory(1);
+						player->adjustMoney(-150);
 						break;
-						//case 1: //
-						//	shop_state = SHOP_POTIONS;
-						//	break;
-						//case 2: //
-						//	shop_state = SHOP_CHEST;
-						//	break;
-						//case 3: //
-						//	shop_state = SHOP_HEAD;
-						//	break;
-						//case 4:
-						//	break;
+					case 1: //
+						break;
+					case 2: //
+						break;
+					case 3: //
+						break;
+					case 4:
+						break;
 					default:
 						break;
 					}
@@ -521,7 +508,6 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 			}else IManager->set_button(DIK_9,false);
 		}
 	}
-
 	if(accesory)
 	{
 		//Checks to see if mini buttons were pressed to switch from weapons/helms/chests/accesories/potions
@@ -536,7 +522,6 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 				accesory_button_pos[i].setHighlight(false);
 				accesory_button_pos[i].setColor(D3DCOLOR_ARGB(255, 255, 255, 255));
 			}
-
 			//Check for cursor over menu option and left mouse button click
 			if(accesory_button_pos[i].isHighlighted() && IManager->check_mouse_button(LEFT_MOUSE_BUTTON))
 			{
@@ -556,12 +541,13 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 						break;
 					case 4:
 						break;
+					default:
+						break;
 					}
 				}
 			}else IManager->set_button(DIK_9,false);
 		}
 	}
-
 	if(potions)
 	{
 		//Checks to see if mini buttons were pressed to switch from weapons/helms/chests/accesories/potions
@@ -587,29 +573,39 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 					switch(i)
 					{
 					case 0: //Phoenix Down
+						player->addToInventory(7);
+						player->adjustMoney(-300);
 						break;
-					case 1: // Eye Drop
+					case 1: // Ether
+						player->addToInventory(5);
+						player->adjustMoney(-50);
 						break;
-					case 2: // Antidote
+					case 2: // Hi Ether
+						player->addToInventory(6);
+						player->adjustMoney(-100);
 						break;
 					case 3: // Potion
+						player->addToInventory(3);
+						player->adjustMoney(-50);
 						break;
 					case 4:
+						player->addToInventory(4);
+						player->adjustMoney(-100);
+						break;
+					default:
 						break;
 					}
 				}
 			}else IManager->set_button(DIK_9,false);
 		}
 	}
-
 }
 
-void Town::render(GraphicsManager2D *GManager, ID3DXSprite *spriteObj, float dt)
+void Town::render(GraphicsManager2D *GManager, ID3DXSprite *spriteObj, float dt, Player *player, HWND *m_hWnd, ID3DXFont *D3DFont)
 {
 	//Shop Selection
 	if(main)
 	{
-
 		/*	for(auto &button: shop_sprite_pos)
 		{
 		if(button.isHighlighted())
@@ -623,35 +619,10 @@ void Town::render(GraphicsManager2D *GManager, ID3DXSprite *spriteObj, float dt)
 
 		}*/
 
-
 		GManager->Draw2DObject(D3DXVECTOR3(0.4f, 0.55f, 0.4f),
 			D3DXVECTOR3(240.0f, 250.0f, 0.0f),
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
 			spriteObj, GRAPHICS_SHOP_KEEP, 
-			D3DCOLOR_ARGB(255,255,255,255));
-
-		GManager->Draw2DObject(D3DXVECTOR3(0.5f, 0.55f, 0.4f),
-			D3DXVECTOR3(40.0f, 225.0f, 0.0f),
-			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-			spriteObj, GRAPHICS_SHOP_WEAPON_BUTTON, 
-			D3DCOLOR_ARGB(255,255,255,255));
-
-		GManager->Draw2DObject(D3DXVECTOR3(0.5f, 0.55f, 0.4f),
-			D3DXVECTOR3(40.0f, 260.0f, 0.0f),
-			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-			spriteObj, GRAPHICS_SHOP_HELM_BUTTON, 
-			D3DCOLOR_ARGB(255,255,255,255));
-
-		GManager->Draw2DObject(D3DXVECTOR3(0.5f, 0.55f, 0.4f),
-			D3DXVECTOR3(40.0f, 300.0f, 0.0f),
-			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-			spriteObj, GRAPHICS_SHOP_CHEST_BUTTON, 
-			D3DCOLOR_ARGB(255,255,255,255));
-
-		GManager->Draw2DObject(D3DXVECTOR3(0.5f, 0.55f, 0.4f),
-			D3DXVECTOR3(40.0f, 340.0f, 0.0f),
-			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-			spriteObj, GRAPHICS_SHOP_ACCESORY_BUTTON, 
 			D3DCOLOR_ARGB(255,255,255,255));
 	}
 	//Buying Menus

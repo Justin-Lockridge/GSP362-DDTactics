@@ -23,7 +23,7 @@
 #define MAX_HELM__BUTTONS_POSITIONS 1
 #define MAX_CHEST_BUTTONS_POSITIONS 1
 #define MAX_ACCESORY_BUTTONS_POSITIONS 1
-#define MAX_POTIONS_BUTTONS_POSITION 4
+#define MAX_POTIONS_BUTTONS_POSITION 5
 
 class Town
 {
@@ -53,7 +53,7 @@ public:
 	static Town* instance();
 	void init();
 
-	void render(GraphicsManager2D *GManager, ID3DXSprite *spriteObj, float dt);
+	void render(GraphicsManager2D *GManager, ID3DXSprite *spriteObj, float dt, Player *player, HWND *m_hWnd, ID3DXFont *D3DFont);
 
-	void update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *SManager,  int &game_state,  float dt);
+	void update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *SManager,  int &game_state,  float dt, Player *player);
 };

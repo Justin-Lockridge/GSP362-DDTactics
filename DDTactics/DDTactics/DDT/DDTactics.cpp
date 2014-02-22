@@ -8,7 +8,7 @@ DDTactics::DDTactics(void)
 	m_FPS = 0;
 	m_gameOver = 0;
 	m_gameState = MENU;
-	
+
 	//////////////////////////////////
 	//  INFO:  Warrior Job mod 
 	job_mods temp;
@@ -113,6 +113,8 @@ void DDTactics::Init(HWND &hWnd, HINSTANCE &hInst, bool bWindowed)
 		&D3Dpp,					// presentation parameters
 		&D3DDevice);			// returned device pointer
 
+	D3DXCreateFont(D3DDevice, 30, 0, FW_BOLD, 0, false, DEFAULT_CHARSET, 
+		OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, TEXT("Ariel"), &D3DFont);
 
 	input = InputManager::instance();
 	input->init(hInst, m_hWnd);
@@ -125,7 +127,6 @@ void DDTactics::Init(HWND &hWnd, HINSTANCE &hInst, bool bWindowed)
 
 	D3DXCreateSprite(D3DDevice, &D3DSprite);
 
-
 	cursor = Cursor::instance();
 	cursor->init();
 
@@ -136,8 +137,6 @@ void DDTactics::Init(HWND &hWnd, HINSTANCE &hInst, bool bWindowed)
 
 	overworld = Overworld::instance();
 	overworld->init(player);
-
-
 
 	status_menu = StatusMenu::instance();
 	status_menu->init();
@@ -164,8 +163,6 @@ void DDTactics::Update(float dt)
 	input->update();
 	sound->update();
 	cursor->update(input->get_mouseX(), input->get_mouseY());
-
-
 
 	switch(m_gameState)
 	{
@@ -208,7 +205,7 @@ void DDTactics::Update(float dt)
 		DestroyWindow(m_hWnd);
 		break;
 	case TOWN:
-		town->update(cursor->cursorPos, input, sound, m_gameState, dt);
+		town->update(cursor->cursorPos, input, sound, m_gameState, dt, player);
 		break;
 	case STATUS:
 		status_menu->Update(cursor, input, sound, player, m_gameState, dt);
@@ -221,7 +218,6 @@ void DDTactics::Update(float dt)
 
 	}
 }
-
 
 void DDTactics::Render(float dt)
 {
@@ -249,11 +245,10 @@ void DDTactics::Render(float dt)
 				case TAVERN:		
 					break;
 				case TOWN:
-					town->render(graphics, D3DSprite, dt);
+					town->render(graphics, D3DSprite, dt, player, &m_hWnd, D3DFont);
 					break;
 					break;
 				case BATTLE:
-
 					graphics3D->DrawMap(D3DXVECTOR3(5,5,5),
 						D3DXVECTOR3(0,0,0),
 						D3DXVECTOR3(0,0,0),
@@ -263,9 +258,6 @@ void DDTactics::Render(float dt)
 						D3DXVECTOR3(0,0,0),
 						MODEL_DEFAULT);
 
-
-
-
 					/*graphics->Draw2DObject(D3DXVECTOR3(1.0f, 1.0f, 1.0f),
 					D3DXVECTOR3(400.0f, 200.0f, 0.0f),
 					D3DXVECTOR3(0.0f, 0.0f, 0.0f),
@@ -273,7 +265,6 @@ void DDTactics::Render(float dt)
 					GRAPHICS_BATTLE_SPLASH,
 					D3DCOLOR_ARGB(255,255,255,255)
 					);*/
-
 
 					break;
 				case STATUS:
@@ -286,8 +277,18 @@ void DDTactics::Render(float dt)
 				cursor->render(graphics, D3DSprite);
 
 				D3DSprite->End();
+				if(m_gameState == TOWN)
+				{
+					RECT money;
+					money.left = -100;
+					GetClientRect(m_hWnd, &money);
+					wchar_t bufferFont[64];
+					swprintf_s(bufferFont, 64, L"%d", player->getMoney());
+					D3DFont->DrawText(0, bufferFont, -1, &money, DT_BOTTOM | DT_RIGHT | DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 255, 255));
+				}
 				//  INFO:  Draws text for different game states
-				switch(m_gameState){
+				switch(m_gameState)
+				{
 				case INTRO:
 					textManager->render();
 					break;

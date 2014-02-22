@@ -148,7 +148,6 @@ void Overworld::init(Player *player)
 
 }
 
-
 void Overworld::render(GraphicsManager2D* GManager, ID3DXSprite *spriteObj, D3DXVECTOR2 &playerOverworldPos, float dt)
 {
 
@@ -234,7 +233,6 @@ void Overworld::render(GraphicsManager2D* GManager, ID3DXSprite *spriteObj, D3DX
 
 
 }
-
 
 void Overworld::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *SManager, Player *player, int &game_state, float dt)
 {

@@ -33,7 +33,7 @@
 
 class DDTactics
 {
-	HWND		m_hWnd;
+	//HWND		m_hWnd;
 	bool		m_bVsync;
 
 	int			m_FPS,
@@ -46,6 +46,7 @@ class DDTactics
 	D3DCAPS9			D3DCaps;
 
 	ID3DXSprite			*D3DSprite;
+	ID3DXFont			*D3DFont;
 
 	InputManager		*input;
 	SoundManager		*sound;
@@ -66,6 +67,7 @@ class DDTactics
 	TextManager			*textManager;
 	std::vector<job_mods> jobMods;
 public:
+	HWND		m_hWnd;
 	DDTactics(void);
 	~DDTactics(void);
 

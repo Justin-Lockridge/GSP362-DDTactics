@@ -8,15 +8,15 @@ Player::Player()
 	army.push_back(temp);
 
 	Items temporary;
-	for(int i = 0; i < MAX_ITEMS; ++i){
+	for(int i = 0; i < MAX_ITEMS; ++i)
+	{
 		inventory.push_back(temporary);
 	}
-	money = 0;
+	money = 1000;
 }
 
 Player::~Player()
 {}
-
 
 Player* Player::instance()
 {
@@ -40,5 +40,3 @@ Inventory Player::getInventory()
 	return temp;
 	//return inventory;
 }
-
-
