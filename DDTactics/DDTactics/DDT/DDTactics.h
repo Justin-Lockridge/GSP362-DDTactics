@@ -27,7 +27,7 @@
 #include "Intro.h"
 #include "TextManager.h"
 #include "Town.h"
-
+#include "Battle.h"
 //#define SAFE_RELEASE(x) if(x){x->Release(); x = 0;}
 
 
@@ -57,7 +57,7 @@ class DDTactics
 	Overworld			*overworld;
 	IOManager			*ioManager;
 	Town				*town;
-
+	Battle				*battle;
 
 	Player				*player;
 	//add menu, overworld, battle, etc objects here

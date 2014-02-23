@@ -217,7 +217,7 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 	case SHOP_WEAPONS:
 		weapons = true;
 		buyMenu = true;
-		if(IManager->push_button(DIK_BACKSPACE))
+		if(IManager->check_mouse_button(1))
 		{
 			shop_state = SHOP_SELECTION;
 			main = true;
@@ -228,7 +228,7 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 	case SHOP_HEAD:
 		helm = true;
 		buyMenu = true;
-		if(IManager->push_button(DIK_BACKSPACE))
+		if(IManager->check_mouse_button(1))
 		{
 			shop_state = SHOP_SELECTION;
 			main = true;
@@ -239,7 +239,7 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 	case SHOP_CHEST:
 		chest = true;
 		buyMenu = true;
-		if(IManager->push_button(DIK_BACKSPACE))
+		if(IManager->check_mouse_button(1))
 		{
 			shop_state = SHOP_SELECTION;
 			main = true;
@@ -250,7 +250,7 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 	case SHOP_ACCESORY:
 		accesory = true;
 		buyMenu = true;
-		if(IManager->push_button(DIK_BACKSPACE))
+		if(IManager->check_mouse_button(1))
 		{
 			shop_state = SHOP_SELECTION;
 			main = true;
@@ -261,7 +261,7 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 	case SHOP_POTIONS:
 		potions = true;
 		buyMenu = true;
-		if(IManager->push_button(DIK_BACKSPACE))
+		if(IManager->check_mouse_button(1))
 		{
 			shop_state = SHOP_SELECTION;
 			main = true;
@@ -390,34 +390,36 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 				weapons_buttons_pos[i].setColor(D3DCOLOR_ARGB(255, 255, 255, 255));
 			}
 			//Check for cursor over menu option and left mouse button click
-			if(weapons_buttons_pos[i].isHighlighted() && IManager->check_mouse_button(LEFT_MOUSE_BUTTON))
-			{
-				if(!IManager->check_button_down(DIK_9))
+			if(IManager->check_mouse_button(LEFT_MOUSE_BUTTON)){
+				if(weapons_buttons_pos[i].isHighlighted())
 				{
-					IManager->set_button(DIK_9,true);
-					//Switch states accordingly
-					switch(i)
+					if(!IManager->check_button_down(DIK_9))
 					{
-					case 0: //dagger
-						player->addToInventory(2);
-						player->adjustMoney(-100);
-						break;
-					case 1: // broad sword
-						player->addToInventory(2);
-						player->adjustMoney(-200);
-						break;
-					case 2: // rod
-						player->addToInventory(2);
-						player->adjustMoney(-200);
-						break;
-					case 3: // oak staff
-						player->addToInventory(2);
-						player->adjustMoney(-120);
-						break;
-					case 4:
-						break;
-					default:
-						break;
+						IManager->set_button(DIK_9,true);
+						//Switch states accordingly
+						switch(i)
+						{
+						case 0: //dagger
+							player->addToInventory(2);
+							player->adjustMoney(-100);
+							break;
+						case 1: // broad sword
+							player->addToInventory(2);
+							player->adjustMoney(-200);
+							break;
+						case 2: // rod
+							player->addToInventory(2);
+							player->adjustMoney(-200);
+							break;
+						case 3: // oak staff
+							player->addToInventory(2);
+							player->adjustMoney(-120);
+							break;
+						case 4:
+							break;
+						default:
+							break;
+						}
 					}
 				}
 			}else IManager->set_button(DIK_9,false);
@@ -438,30 +440,31 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 				helm_button_pos[i].setColor(D3DCOLOR_ARGB(255, 255, 255, 255));
 			}
 			//Check for cursor over menu option and left mouse button click
-			if(helm_button_pos[i].isHighlighted() && IManager->check_mouse_button(LEFT_MOUSE_BUTTON))
-			{
-				////////////////////////////////////////////// DIK FIX //////////////////////////////////////////////////
-				if(!IManager->check_button_down(DIK_9))
+			if(IManager->check_mouse_button(LEFT_MOUSE_BUTTON)){
+				if(helm_button_pos[i].isHighlighted())
 				{
-					IManager->set_button(DIK_9,true);
-					/////////////////////////////////////////////////////////////////////////////////////////////////////
-					//Switch states accordingly
-					switch(i)
+					if(!IManager->check_button_down(DIK_9))
 					{
-					case 0: // Leather Hat
-						player->addToInventory(0);
-						player->adjustMoney(-150);
-						break;
-					case 1: //
-						break;
-					case 2: //
-						break;
-					case 3: //
-						break;
-					case 4:
-						break;
-					default:
-						break;
+						IManager->set_button(DIK_9,true);
+
+						//Switch states accordingly
+						switch(i)
+						{
+						case 0: // Leather Hat
+							player->addToInventory(0);
+							player->adjustMoney(-150);
+							break;
+						case 1: //
+							break;
+						case 2: //
+							break;
+						case 3: //
+							break;
+						case 4:
+							break;
+						default:
+							break;
+						}
 					}
 				}
 			}else IManager->set_button(DIK_9,false);
@@ -482,28 +485,30 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 				chest_button_pos[i].setColor(D3DCOLOR_ARGB(255, 255, 255, 255));
 			}
 			//Check for cursor over menu option and left mouse button click
-			if(chest_button_pos[i].isHighlighted() && IManager->check_mouse_button(LEFT_MOUSE_BUTTON))
-			{
-				if(!IManager->check_button_down(DIK_9))
+			if(IManager->check_mouse_button(LEFT_MOUSE_BUTTON)){
+				if(chest_button_pos[i].isHighlighted())
 				{
-					IManager->set_button(DIK_9,true);
-					//Switch states accordingly
-					switch(i)
+					if(!IManager->check_button_down(DIK_9))
 					{
-					case 0: // Cloth armor
-						player->addToInventory(1);
-						player->adjustMoney(-150);
-						break;
-					case 1: //
-						break;
-					case 2: //
-						break;
-					case 3: //
-						break;
-					case 4:
-						break;
-					default:
-						break;
+						IManager->set_button(DIK_9,true);
+						//Switch states accordingly
+						switch(i)
+						{
+						case 0: // Cloth armor
+							player->addToInventory(1);
+							player->adjustMoney(-150);
+							break;
+						case 1: //
+							break;
+						case 2: //
+							break;
+						case 3: //
+							break;
+						case 4:
+							break;
+						default:
+							break;
+						}
 					}
 				}
 			}else IManager->set_button(DIK_9,false);
@@ -524,26 +529,28 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 				accesory_button_pos[i].setColor(D3DCOLOR_ARGB(255, 255, 255, 255));
 			}
 			//Check for cursor over menu option and left mouse button click
-			if(accesory_button_pos[i].isHighlighted() && IManager->check_mouse_button(LEFT_MOUSE_BUTTON))
-			{
-				if(!IManager->check_button_down(DIK_9))
+			if(IManager->check_mouse_button(LEFT_MOUSE_BUTTON)){
+				if(accesory_button_pos[i].isHighlighted())
 				{
-					IManager->set_button(DIK_9,true);
-					//Switch states accordingly
-					switch(i)
+					if(!IManager->check_button_down(DIK_9))
 					{
-					case 0: //
-						break;
-					case 1: //
-						break;
-					case 2: //
-						break;
-					case 3: //
-						break;
-					case 4:
-						break;
-					default:
-						break;
+						IManager->set_button(DIK_9,true);
+						//Switch states accordingly
+						switch(i)
+						{
+						case 0: //
+							break;
+						case 1: //
+							break;
+						case 2: //
+							break;
+						case 3: //
+							break;
+						case 4:
+							break;
+						default:
+							break;
+						}
 					}
 				}
 			}else IManager->set_button(DIK_9,false);
@@ -565,36 +572,38 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 			}
 
 			//Check for cursor over menu option and left mouse button click
-			if(potion_button_pos[i].isHighlighted() && IManager->check_mouse_button(LEFT_MOUSE_BUTTON))
-			{
-				if(!IManager->check_button_down(DIK_9))
+			if(IManager->check_mouse_button(LEFT_MOUSE_BUTTON)){
+				if(potion_button_pos[i].isHighlighted())
 				{
-					IManager->set_button(DIK_9,true);
-					//Switch states accordingly
-					switch(i)
+					if(!IManager->check_button_down(DIK_9))
 					{
-					case 0: //Phoenix Down
-						player->addToInventory(7);
-						player->adjustMoney(-300);
-						break;
-					case 1: // Ether
-						player->addToInventory(5);
-						player->adjustMoney(-50);
-						break;
-					case 2: // Hi Ether
-						player->addToInventory(6);
-						player->adjustMoney(-100);
-						break;
-					case 3: // Potion
-						player->addToInventory(3);
-						player->adjustMoney(-50);
-						break;
-					case 4:
-						player->addToInventory(4);
-						player->adjustMoney(-100);
-						break;
-					default:
-						break;
+						IManager->set_button(DIK_9,true);
+						//Switch states accordingly
+						switch(i)
+						{
+						case 0: //Phoenix Down
+							player->addToInventory(7);
+							player->adjustMoney(-300);
+							break;
+						case 1: // Ether
+							player->addToInventory(5);
+							player->adjustMoney(-50);
+							break;
+						case 2: // Hi Ether
+							player->addToInventory(6);
+							player->adjustMoney(-100);
+							break;
+						case 3: // Potion
+							player->addToInventory(3);
+							player->adjustMoney(-50);
+							break;
+						case 4:
+							player->addToInventory(4);
+							player->adjustMoney(-100);
+							break;
+						default:
+							break;
+						}
 					}
 				}
 			}else IManager->set_button(DIK_9,false);
@@ -671,7 +680,7 @@ void Town::render(GraphicsManager2D *GManager, ID3DXSprite *spriteObj, float dt,
 		}
 
 		//Draw the five buttons
-		GManager->Draw2DObject(D3DXVECTOR3(0.5f, 0.55f, 0.4f),
+		/*GManager->Draw2DObject(D3DXVECTOR3(0.5f, 0.55f, 0.4f),
 			D3DXVECTOR3(50.0f, 180.0f, 0.0f),
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
 			spriteObj, GRAPHICS_SHOP_WEAPON_BUTTON, 
@@ -699,6 +708,6 @@ void Town::render(GraphicsManager2D *GManager, ID3DXSprite *spriteObj, float dt,
 			D3DXVECTOR3(250.0f, 180.0f, 0.0f),
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
 			spriteObj, GRAPHICS_SHOP_POTION_BUTTON, 
-			D3DCOLOR_ARGB(255,255,255,255));
+			D3DCOLOR_ARGB(255,255,255,255));*/
 	}
 }

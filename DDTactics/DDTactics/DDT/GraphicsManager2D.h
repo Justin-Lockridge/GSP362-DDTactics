@@ -95,6 +95,17 @@ private:
 	D3DXIMAGE_INFO		introInfo,
 						introButtonInfo;
 
+	// battle
+	IDirect3DTexture9	* bStatusWindow,
+						* bWindow,
+						* bMenu,
+						* bPointer;
+
+	D3DXIMAGE_INFO		bStatusWindowInfo,
+						bWindowInfo,
+						bMenuInfo,
+						bPointerInfo;
+	
 	
 	//////////////////////////////////////////////////////////////////
 

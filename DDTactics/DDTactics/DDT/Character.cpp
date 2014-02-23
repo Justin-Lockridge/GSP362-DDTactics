@@ -93,3 +93,9 @@ void Character::setPosition(Battle_Node &a_node)
 
 Battle_Node* Character::getPosition()
 {return position;}
+
+void Character::setRotation(D3DXVECTOR3 a_vector)
+{rotation = a_vector;}
+
+D3DXVECTOR3 Character::getRotation()
+{return rotation;}

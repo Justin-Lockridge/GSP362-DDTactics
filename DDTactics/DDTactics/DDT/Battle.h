@@ -50,9 +50,11 @@ public:
 	void Init(Player *player);
 	void Shutdown();
 
-	void Update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *SManager, 
-				Player *player, int &game_state,  float dt);
-	void Render(GraphicsManager2D *GManager2, ID3DXSprite *spriteObj, GraphicsManager3D * GManager3, float dt);
+	void Update(Cursor * cursor, InputManager *IManager, SoundManager *SManager, 
+				Player *player, int &game_state,  float dt,GraphicsManager3D * GManager3,
+				IDirect3DDevice9 *device);
+	void Render(GraphicsManager2D *GManager2, ID3DXSprite *spriteObj, GraphicsManager3D * GManager3, 
+				float dt,IDirect3DDevice9 *device);
 
 };
 

@@ -30,7 +30,7 @@ public:
 	static Player* instance();
 	
 	std::vector<Character>* returnArmy();
-	Character getCharacter(int iter){return army[iter];}
+	Character* getCharacter(int iter){return &army[iter];}
 	void setCharacterLevel(int iter, int job, int level);
 	void addToInventory(int itemType){inventory[itemType].itemCount += 1;}
 	void removeFromInventory(int itemType){if(inventory[itemType].itemCount > 1)inventory[itemType].itemCount -= 1;}

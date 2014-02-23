@@ -39,6 +39,6 @@ void TextManager::render(){
 
 
 	swprintf_s(buffer, 1024, L"The people of Baron once lived quiet, peaceful lives.  That all changed\none fateful day.  Over twenty years ago, a vicious dragon attacked the\nvillage and killed many of it's people;  including the parents of a young\nboy named Cecil.  Then, as fast as the Dragon had come, it was gone,\nleaving a trail of devastation in it's wake.  Filled with rage, Cecil\nmvowed to one day slay the dragon and avenge his parents.  As the years\nwent by, Cecil trained to exhaustion every day in order to prepare to\nface the dragon.  ");
-	m_pD3DFont->DrawText(0, buffer, -1, &rect, DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 125, 0));
+	m_pD3DFont->DrawText(0, buffer, -1, &rect, DT_NOCLIP, D3DCOLOR_ARGB(255, 0, 0, 0));
 
 };

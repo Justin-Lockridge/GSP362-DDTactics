@@ -15,19 +15,7 @@ class GraphicsManager3D
 private:
 	GraphicsManager3D();
 
-	//////////////////////////////////////////////////////////////////////////
-	// View and Projection Matrices
-	//////////////////////////////////////////////////////////////////////////
-	// Set these 3 component to initialize the view matrix (camera)
-	D3DXVECTOR3 m_eyePos;
-	D3DXVECTOR3 m_lookAt;
-	D3DXVECTOR3 m_upVec;
-
-	// View matrix
-	D3DXMATRIX m_viewMat;
-
-	// Projection matrix
-	D3DXMATRIX m_projMat;
+	
 
 	//////////////////////////////////////////////////////////////////////////
 	// Lighting, Material, Textures
@@ -67,20 +55,28 @@ private:
 	Mesh	map;
 	Mesh	cursor3D,
 			default_character;
-
+	//D3DXCOLOR color;
 
 	std::vector<Mesh> maps_mesh;
 	std::vector<Mesh> character_mesh;
 	std::vector<Mesh> non_character_enemies;
 	
 
-	/*int m_frames,
-		m_gameState,
-		m_controling;
-	float m_lastTime;
-
-	CGraph m_Map;*/
 public:
+	//////////////////////////////////////////////////////////////////////////
+	// View and Projection Matrices
+	//////////////////////////////////////////////////////////////////////////
+	// Set these 3 component to initialize the view matrix (camera)
+	D3DXVECTOR3 m_eyePos;
+	D3DXVECTOR3 m_lookAt;
+	D3DXVECTOR3 m_upVec;
+
+	// View matrix
+	D3DXMATRIX m_viewMat;
+
+	// Projection matrix
+	D3DXMATRIX m_projMat;
+
 	~GraphicsManager3D();
 	static GraphicsManager3D *instance();
 
@@ -91,9 +87,9 @@ public:
 						);
 
 	void DrawCharacter(D3DXVECTOR3 &scale, D3DXVECTOR3 &translate, D3DXVECTOR3 &rotate,
-						unsigned int ENUM_VAL
+						unsigned int ENUM_VAL,D3DXCOLOR color
 						);
-	void DrawPlane();
+	void DrawPlane(IDirect3DDevice9 *device, D3DXVECTOR3 position);
 	void Shutdown();
 
 

@@ -245,7 +245,7 @@ void GraphicsManager3D::DrawMap(D3DXVECTOR3 &scale, D3DXVECTOR3&translate, D3DXV
 }
 
 void GraphicsManager3D::DrawCharacter(D3DXVECTOR3 &scale, D3DXVECTOR3 &translate, D3DXVECTOR3 &rotate,
-						unsigned int ENUM_VAL)
+									  unsigned int ENUM_VAL,D3DXCOLOR color)
 {
 	D3DXMATRIX rotMat, worldMat, transMat, scaleMat, WIT;
 
@@ -279,8 +279,8 @@ void GraphicsManager3D::DrawCharacter(D3DXVECTOR3 &scale, D3DXVECTOR3 &translate
 		//D3DMATERIAL9* tempMat = maps_mesh[ENUM_VAL]
 		for(DWORD i = 0; i < character_mesh[ENUM_VAL].getNumMaterials(); i++)
 		{
-
 			// Set the material and texture for this subset
+			character_mesh[ENUM_VAL].getMeshMaterial()->Diffuse = color;
 			m_pEffect->SetValue("ambientMaterial", &character_mesh[ENUM_VAL].getMeshMaterial()->Ambient, sizeof(D3DXCOLOR));
 			m_pEffect->SetValue("diffuseMaterial", &character_mesh[ENUM_VAL].getMeshMaterial()->Diffuse, sizeof(D3DXCOLOR));
 			m_pEffect->SetValue("specularMaterial", &character_mesh[ENUM_VAL].getMeshMaterial()->Specular, sizeof(D3DXCOLOR));
@@ -302,7 +302,58 @@ void GraphicsManager3D::DrawCharacter(D3DXVECTOR3 &scale, D3DXVECTOR3 &translate
 
 
 }
+void GraphicsManager3D::DrawPlane(IDirect3DDevice9 *device, D3DXVECTOR3 position)
+{
+	D3DXMATRIX rotMat, worldMat, transMat, scaleMat, WIT;
 
+	UINT numPasses = 0;
+	numPasses = 0;
+
+	D3DXMatrixIdentity(&transMat);
+	D3DXMatrixIdentity(&scaleMat);
+	D3DXMatrixIdentity(&rotMat);
+	D3DXMatrixIdentity(&worldMat);
+
+	m_pEffect->Begin(&numPasses, 0);
+
+	for(UINT i = 0; i < numPasses; i++)
+	{
+		m_pEffect->BeginPass(i);
+		device->SetStreamSource(0, m_pD3DVertexBuffer, 0, sizeof(Vertex));
+		device->SetIndices(m_pD3DIndexBuffer);
+		device->SetVertexDeclaration(m_pD3DVertexDecl);
+
+		// Calculate Matrix Transform
+		D3DXMatrixScaling(&scaleMat, 1.2f, 1.2f, 1.2f);			// Scaling
+		D3DXMatrixRotationYawPitchRoll(&rotMat, 0.0f, D3DXToRadian(90.0f), 0.0f); // Rotation on Yaw, Pitch, and Roll
+		D3DXMatrixTranslation(&transMat, position.x, -0.9f, position.z);		// Translation
+		D3DXMatrixMultiply(&scaleMat, &scaleMat, &rotMat);		// Multiply scale and rotation, store in scale
+		D3DXMatrixMultiply(&worldMat, &scaleMat, &transMat);	// Multiply scale and translation, store in world
+
+
+		// Set object specific parameters
+		D3DXMATRIX WIT;
+		D3DXMatrixInverse(&WIT, 0, &worldMat);
+		D3DXMatrixTranspose(&WIT, &WIT);
+		m_pEffect->SetMatrix("worldViewProjMat", &(worldMat * m_viewMat * m_projMat));
+		m_pEffect->SetMatrix("worldInverseTransposeMat", &WIT);
+		m_pEffect->SetMatrix("worldMat", &worldMat);
+
+		m_pEffect->SetValue("ambientMaterial", &blue.Ambient, sizeof(D3DXCOLOR));
+		m_pEffect->SetValue("diffuseMaterial", &blue.Diffuse, sizeof(D3DXCOLOR));
+		m_pEffect->SetValue("specularMaterial", &blue.Specular, sizeof(D3DXCOLOR));
+		m_pEffect->SetFloat("specularPower", blue.Power);
+		m_pEffect->SetBool("isTex", false);
+
+
+		// After setting object specific parameters, commit changes
+		m_pEffect->CommitChanges();
+
+		// Draw cube
+		device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 4 * 6, 0, 12);
+	}
+	m_pEffect->EndPass();
+}
 void GraphicsManager3D::Shutdown()
 {
 	//Clear out vector pointers

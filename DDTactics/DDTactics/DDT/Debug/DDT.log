@@ -1,2 +1,12 @@
-﻿  Menu.cpp
+﻿  DDTactics.cpp
+c:\users\cameren\documents\github\gsp362-ddtactics\ddtactics\ddtactics\ddt\ddtactics.cpp(167): warning C4244: 'argument' : conversion from 'long' to 'float', possible loss of data
+  Battle.cpp
+c:\users\cameren\documents\github\gsp362-ddtactics\ddtactics\ddtactics\ddt\battle.cpp(48): warning C4018: '<' : signed/unsigned mismatch
+c:\users\cameren\documents\github\gsp362-ddtactics\ddtactics\ddtactics\ddt\battle.cpp(54): warning C4018: '<' : signed/unsigned mismatch
+  Generating Code...
+  Compiling...
+  GraphicsManager3D.cpp
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  Main.cpp
   DDT.vcxproj -> C:\Users\Cameren\Documents\GitHub\GSP362-DDTactics\DDTactics\DDTactics\Debug\DDT.exe

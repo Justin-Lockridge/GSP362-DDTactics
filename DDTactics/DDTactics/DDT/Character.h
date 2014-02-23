@@ -40,6 +40,9 @@ public:
 	void setPosition(Battle_Node &a_node);
 	Battle_Node* getPosition();
 
+	void setRotation(D3DXVECTOR3 a_vector);
+	D3DXVECTOR3 getRotation();
+
 	//set stats/jobs
 	void init();
 	void levelup();

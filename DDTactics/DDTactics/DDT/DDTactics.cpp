@@ -138,6 +138,8 @@ void DDTactics::Init(HWND &hWnd, HINSTANCE &hInst, bool bWindowed)
 	overworld = Overworld::instance();
 	overworld->init(player);
 
+	battle = Battle::instance();
+
 	status_menu = StatusMenu::instance();
 	status_menu->init();
 
@@ -182,12 +184,12 @@ void DDTactics::Update(float dt)
 			m_gameState = MENU;
 		break;
 	case BATTLE:
+		battle->Init(player);
+		m_gameState = ACTUAL_BATTLE;
+		break;
+	case ACTUAL_BATTLE:
 		sound->playStream(SONG_BATTLE);
-		if(input->push_button(DIK_BACKSPACE))
-		{
-			sound->stopStream();
-			m_gameState = OVERWORLD;
-		}
+		battle->Update(cursor,input,sound,player,m_gameState,dt,graphics3D,D3DDevice);
 		break;
 	case MAP:
 		break;
@@ -247,25 +249,10 @@ void DDTactics::Render(float dt)
 				case TOWN:
 					town->render(graphics, D3DSprite, dt, player, &m_hWnd, D3DFont);
 					break;
-					break;
 				case BATTLE:
-					graphics3D->DrawMap(D3DXVECTOR3(5,5,5),
-						D3DXVECTOR3(0,0,0),
-						D3DXVECTOR3(0,0,0),
-						MAP_DEFAULT);
-					graphics3D->DrawCharacter(D3DXVECTOR3(.7,.7,.7),
-						D3DXVECTOR3(0,0,0),
-						D3DXVECTOR3(0,0,0),
-						MODEL_DEFAULT);
-
-					/*graphics->Draw2DObject(D3DXVECTOR3(1.0f, 1.0f, 1.0f),
-					D3DXVECTOR3(400.0f, 200.0f, 0.0f),
-					D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-					D3DSprite,
-					GRAPHICS_BATTLE_SPLASH,
-					D3DCOLOR_ARGB(255,255,255,255)
-					);*/
-
+					break;
+				case ACTUAL_BATTLE:
+					battle->Render(graphics,D3DSprite,graphics3D,dt,D3DDevice);
 					break;
 				case STATUS:
 					status_menu->Render(graphics, D3DSprite, dt);
