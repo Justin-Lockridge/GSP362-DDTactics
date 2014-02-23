@@ -306,6 +306,7 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 					buyMenu = false;
 					shop_state = SHOP_SELECTION;
 					game_state = OVERWORLD;
+					SManager->stopStream();
 					break;
 				default:
 					break;

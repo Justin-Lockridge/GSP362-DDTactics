@@ -46,23 +46,40 @@ private:
 	//////////////////////////////////////////////////////////////////////////
 	IDirect3DVertexDeclaration9*	m_pD3DVertexDecl;
 
+	struct Vertex
+	{
+		D3DXVECTOR3 position;
+		D3DXVECTOR3 normal;
+		D3DXVECTOR2 uv;
+	};
+
+	D3DMATERIAL9 blue;
+
+	// Plane blue highlight
+	Vertex m_planeVerts[4];
+	WORD m_planeIndices[6];
+	IDirect3DVertexBuffer9*			m_pD3DVertexBuffer;
+	IDirect3DIndexBuffer9*			m_pD3DIndexBuffer;
+
 	// Adjacency Buffer
 	ID3DXBuffer*		m_pAdjBuffer;	
 	
 	Mesh	map;
-	Mesh	default_character;
+	Mesh	cursor3D,
+			default_character;
+
 
 	std::vector<Mesh> maps_mesh;
 	std::vector<Mesh> character_mesh;
 	std::vector<Mesh> non_character_enemies;
+	
 
-
-	int m_frames,
+	/*int m_frames,
 		m_gameState,
 		m_controling;
 	float m_lastTime;
 
-	CGraph m_Map;
+	CGraph m_Map;*/
 public:
 	~GraphicsManager3D();
 	static GraphicsManager3D *instance();
@@ -76,7 +93,7 @@ public:
 	void DrawCharacter(D3DXVECTOR3 &scale, D3DXVECTOR3 &translate, D3DXVECTOR3 &rotate,
 						unsigned int ENUM_VAL
 						);
-
+	void DrawPlane();
 	void Shutdown();
 
 

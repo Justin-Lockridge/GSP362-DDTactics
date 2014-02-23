@@ -86,10 +86,9 @@ void Menu::Update(Cursor *cursor, SoundManager *SManager, InputManager *IManager
 			if(!IManager->push_button(DIK_9))
 			{
 				IManager->set_button(DIK_9, true);
-				int selected = 0;
+				int selected = 99;
 
-				for(int i = 0; i < 4; i++)
-				{
+				for(int i = 0; i < 4; i++){
 					if(m_buttons[i].isHighlighted())
 						selected = i;
 				}
@@ -113,9 +112,7 @@ void Menu::Update(Cursor *cursor, SoundManager *SManager, InputManager *IManager
 					break;
 				}
 			}
-			else
-				IManager->set_button(DIK_9, false);
-		}
+		}else IManager->set_button(DIK_9, false);
 		break;
 
 	/*case MENU_LOAD:

@@ -61,3 +61,35 @@ void Character::init()
 
 
 }
+
+Character_stats Character::getCharacterStats()
+{return stats;}
+
+int Character::getCurrentJob()
+{return currentJobType;}
+
+void Character::setCurrentJob(int job)
+{ currentJobType = job;}
+
+int Character::getJobLevel(int iter)
+{return jobLevels[iter];}
+
+void Character::setJobLevel(int iter, int level)
+{jobLevels[iter] = level;}
+
+void Character::gainALevel(job_mods mod)
+{
+
+}
+
+void Character::setIfEnemy(bool is)
+{enemy = is;}
+
+bool Character::isAnEnemy()
+{return enemy;}
+
+void Character::setPosition(Battle_Node &a_node)
+{position = &a_node;}
+
+Battle_Node* Character::getPosition()
+{return position;}

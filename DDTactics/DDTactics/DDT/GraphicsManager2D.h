@@ -94,6 +94,8 @@ private:
 						*introButtonTexture;
 	D3DXIMAGE_INFO		introInfo,
 						introButtonInfo;
+
+	
 	//////////////////////////////////////////////////////////////////
 
 	GraphicsManager2D();

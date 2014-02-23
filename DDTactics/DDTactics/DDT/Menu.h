@@ -35,7 +35,7 @@ enum PLAYERSAVEDATA
 class Menu
 {
 private:
-
+	//bool logo;
 	int		menuState;
 	int		menuSelection;	
 

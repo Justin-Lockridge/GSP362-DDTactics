@@ -114,10 +114,77 @@ void GraphicsManager3D::Init(IDirect3DDevice9* device)
 	default_character.loadCharacterMesh(L"dood.x", device, m_pAdjBuffer);
 	character_mesh.push_back(default_character);
 
+	default_character.loadCharacterMesh(L"3DCursor.x", device, m_pAdjBuffer);
+	character_mesh.push_back(default_character);
+	////////////////////////////////////////////////////////////////////////////////
+	// Plane (blue highlight)
+	////////////////////////////////////////////////////////////////////////////////
 
-	m_Map.init();
+	blue = default_character.getMeshMaterial()[0];
+	blue.Diffuse = D3DXCOLOR(0,0,1,1);
+
+	m_planeVerts[0].position = D3DXVECTOR3(-1.0f, -1.0f, -1.0f);
+	m_planeVerts[1].position = D3DXVECTOR3(-1.0f, 1.0f, -1.0f);
+	m_planeVerts[2].position = D3DXVECTOR3(1.0f, 1.0f, -1.0f);
+	m_planeVerts[3].position = D3DXVECTOR3(1.0f, -1.0f, -1.0f);
+	D3DXVec3Normalize(&m_planeVerts[0].normal, &D3DXVECTOR3(0.0f, 0.0f, -1.0f));
+	D3DXVec3Normalize(&m_planeVerts[1].normal, &D3DXVECTOR3(0.0f, 0.0f, -1.0f));
+	D3DXVec3Normalize(&m_planeVerts[2].normal, &D3DXVECTOR3(0.0f, 0.0f, -1.0f));
+	D3DXVec3Normalize(&m_planeVerts[3].normal, &D3DXVECTOR3(0.0f, 0.0f, -1.0f));
+	m_planeVerts[0].uv = D3DXVECTOR2(0.0f, 1.0f);
+	m_planeVerts[1].uv = D3DXVECTOR2(0.0f, 0.0f);
+	m_planeVerts[2].uv = D3DXVECTOR2(1.0f, 0.0f);
+	m_planeVerts[3].uv = D3DXVECTOR2(1.0f, 1.0f);
+
+	m_planeIndices[0] = 0;  m_planeIndices[1] = 1;  m_planeIndices[2] = 2;		// Triangle 0
+	m_planeIndices[3] = 0;  m_planeIndices[4] = 2;  m_planeIndices[5] = 3;		// Triangle 1
 
 
+	// Create Vertex Buffer
+	device->CreateVertexBuffer(
+		4 * 6 * sizeof(Vertex),		// Length in bytes to allocate buffer (num quads * num sides * sizeof(Vertex))
+		D3DUSAGE_WRITEONLY,		// Usage
+		0,						// Used only with FVF, we are not using
+		D3DPOOL_MANAGED,		// Memory Pool
+		&m_pD3DVertexBuffer,	// Vertex Buffer
+		0);						// No longer used, set to 0
+
+	// Create Index Buffer
+	device->CreateIndexBuffer(
+		3 * 12 * sizeof(WORD),	// Length in bytes to allocate buffer (3 verts * num triangles * sizeof(WORD))
+		D3DUSAGE_WRITEONLY,		// Usage
+		D3DFMT_INDEX16,			// Index Format
+		D3DPOOL_MANAGED,		// Memory Pool
+		&m_pD3DIndexBuffer,		// Index Buffer
+		0);						// No longer used
+
+	void* pVerts;
+	// Lock vertex buffer
+	m_pD3DVertexBuffer->Lock(
+		0,			// Offset to Lock (0 locks entire buffer)
+		0,			// Size to Lock (0 locks entire buffer)
+		&pVerts,	// Double pointer to data
+		0);			// Flags
+
+	// Modify data
+	memcpy(pVerts, m_planeVerts, 4 * 6 * sizeof(Vertex));
+
+	// Unlock vertex buffer
+	m_pD3DVertexBuffer->Unlock();
+
+	void* pIndices;
+	// Lock index buffer
+	m_pD3DIndexBuffer->Lock(
+		0,			// Offset to Lock (0 locks entire buffer)
+		0,			// Size to Lock (0 locks entire buffer)
+		&pIndices,	// Double pointer to data
+		0);			// Flags
+
+	// Modify data
+	memcpy(pIndices, m_planeIndices, 3 * 12 * sizeof(WORD));
+
+	// Unlock index buffer
+	m_pD3DIndexBuffer->Unlock();
 }
 
 void GraphicsManager3D::DrawMap(D3DXVECTOR3 &scale, D3DXVECTOR3&translate, D3DXVECTOR3 &rotate,

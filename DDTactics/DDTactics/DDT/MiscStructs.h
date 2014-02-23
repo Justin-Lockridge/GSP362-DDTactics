@@ -99,4 +99,5 @@ struct Battle_Node
 {
 	D3DXVECTOR3 position;
 	std::vector<Battle_Node*> edges;
+	bool visited;
 };

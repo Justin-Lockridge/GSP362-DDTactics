@@ -24,14 +24,25 @@ public:
 	Character();
 	~Character();
 
-	Character_stats getCharacterStats(){return stats;}
-	int getCurrentJob(){return currentJobType;}
-	void setCurrentJob(int job){ currentJobType = job;}
-	int getJobLevel(int iter){return jobLevels[iter];}
-	void setJobLevel(int iter, int level){jobLevels[iter] = level;}
+	Character_stats getCharacterStats();
+
+	int getCurrentJob();
+	void setCurrentJob(int job);
+
+	int getJobLevel(int iter);
+	void setJobLevel(int iter, int level);
+
 	void gainALevel(job_mods mod);
+
+	void setIfEnemy(bool is);
+	bool isAnEnemy();
+
+	void setPosition(Battle_Node &a_node);
+	Battle_Node* getPosition();
+
 	//set stats/jobs
 	void init();
 	void levelup();
 
+	bool operator()(Character l, Character r){ return l.getCharacterStats().speed > r.getCharacterStats().speed;}
 };

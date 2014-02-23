@@ -4,7 +4,7 @@
 
 class CGraph
 {
-private:
+public:
 	std::vector<Battle_Node> m_graph;
 
 public:
