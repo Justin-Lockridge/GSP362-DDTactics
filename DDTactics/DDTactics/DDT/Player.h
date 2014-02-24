@@ -39,5 +39,6 @@ public:
 	void adjustMoney(int amount){money += amount;}
 	Inventory getInventory();
 	
-
+	void setActiveJob(int iter, int job){army[iter].setCurrentJob(job);}
+	void resetStats(int iter, job_mods jobMod);
 };

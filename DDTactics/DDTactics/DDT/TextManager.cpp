@@ -42,3 +42,52 @@ void TextManager::render(){
 	m_pD3DFont->DrawText(0, buffer, -1, &rect, DT_NOCLIP, D3DCOLOR_ARGB(255, 0, 0, 0));
 
 };
+
+void TextManager::renderSavedGameText(IOManager* file, int gameState){
+	RECT rectangle;
+	rectangle.top = 190;
+	rectangle.bottom = 290;
+	rectangle.left = 200;
+	rectangle.right = 400;
+	wchar_t buffer[128];
+	for(int i = 0; i < 3; ++i){
+		for(int j = 0; j < 3; j++){
+			switch(file->m_gameSave[i][j*4]){
+			case WARRIOR:
+				swprintf_s(buffer, 128, L"Warrior:  %d", file->m_gameSave[i][1+j*4]);
+				m_pD3DFont->DrawText(0, buffer, -1, &rectangle, DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 125,0));
+				rectangle.top		+=	30;
+				rectangle.bottom	+=	30;
+				break;
+			case ARCHER:
+				swprintf_s(buffer, 128, L"Archer:  %d", file->m_gameSave[i][2+j*4]);
+				m_pD3DFont->DrawText(0, buffer, -1, &rectangle, DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 125,0));
+				rectangle.top		+=	30;
+				rectangle.bottom	+=	30;
+				break;
+			case GREYMAGE:
+				swprintf_s(buffer, 128, L"GreyMage:  %d", file->m_gameSave[i][3+j*4]);
+				m_pD3DFont->DrawText(0, buffer, -1, &rectangle, DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 125,0));
+				rectangle.top		+=	30;
+				rectangle.bottom	+=	30;
+				break;
+			}
+		}
+		rectangle.top += 70;
+		rectangle.bottom += 70;
+	}
+
+	wchar_t currentState[16];
+	RECT rect2;
+	rect2.top = 70;
+	rect2.left = 350;
+	rect2.right = 450;
+	rect2.bottom = 170;
+	ZeroMemory(currentState, sizeof(currentState));
+	if(gameState == SAVE){
+		swprintf_s(currentState, 16, L"Save Game");
+	}
+	else if(gameState == LOAD)
+		swprintf_s(currentState, 16, L"Load Game");
+	m_pD3DFont->DrawText(0, currentState, -1, &rect2, DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 255,255));
+};

@@ -6,6 +6,8 @@
 #pragma comment(lib, "d3d9.lib")
 #pragma comment(lib, "d3dx9.lib")
 
+#include "IOManager.h"
+
 class TextManager
 {
 private:
@@ -22,7 +24,7 @@ public:
 	void update(float dt);
 
 	void render();
-
+	void renderSavedGameText(IOManager* file, int gameState);
 
 
 };

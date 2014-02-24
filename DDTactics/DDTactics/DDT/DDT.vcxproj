@@ -118,6 +118,9 @@
     <ClInclude Include="TextManager.h" />
     <ClInclude Include="Town.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="SavedGames.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -1,11 +1,9 @@
-﻿  Battle.cpp
-c:\users\cameren\documents\github\gsp362-ddtactics\ddtactics\ddtactics\ddt\battle.cpp(66): warning C4018: '<' : signed/unsigned mismatch
-c:\users\cameren\documents\github\gsp362-ddtactics\ddtactics\ddtactics\ddt\battle.cpp(72): warning C4018: '<' : signed/unsigned mismatch
-c:\users\cameren\documents\github\gsp362-ddtactics\ddtactics\ddtactics\ddt\battle.cpp(167): warning C4018: '>=' : signed/unsigned mismatch
-c:\users\cameren\documents\github\gsp362-ddtactics\ddtactics\ddtactics\ddt\battle.cpp(201): warning C4018: '<' : signed/unsigned mismatch
-c:\users\cameren\documents\github\gsp362-ddtactics\ddtactics\ddtactics\ddt\battle.cpp(253): warning C4018: '>=' : signed/unsigned mismatch
-c:\users\cameren\documents\github\gsp362-ddtactics\ddtactics\ddtactics\ddt\battle.cpp(477): warning C4018: '<' : signed/unsigned mismatch
-c:\users\cameren\documents\github\gsp362-ddtactics\ddtactics\ddtactics\ddt\battle.cpp(530): warning C4018: '<' : signed/unsigned mismatch
-c:\users\cameren\documents\github\gsp362-ddtactics\ddtactics\ddtactics\ddt\battle.cpp(575): warning C4018: '<' : signed/unsigned mismatch
-c:\users\cameren\documents\github\gsp362-ddtactics\ddtactics\ddtactics\ddt\battle.cpp(867): warning C4018: '>=' : signed/unsigned mismatch
-  DDT.vcxproj -> C:\Users\Cameren\Documents\GitHub\GSP362-DDTactics\DDTactics\DDTactics\Debug\DDT.exe
+﻿Build started 2/23/2014 11:56:40 PM.
+     1>Project "C:\Users\Kamahl\Documents\GitHub\GSP362-DDTactics\DDTactics\DDTactics\DDT\DDT.vcxproj" on node 2 (Build target(s)).
+     1>Link:
+         DDT.vcxproj -> C:\Users\Kamahl\Documents\GitHub\GSP362-DDTactics\DDTactics\DDTactics\Debug\DDT.exe
+     1>Done Building Project "C:\Users\Kamahl\Documents\GitHub\GSP362-DDTactics\DDTactics\DDTactics\DDT\DDT.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.08

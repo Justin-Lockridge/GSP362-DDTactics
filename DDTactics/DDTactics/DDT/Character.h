@@ -51,4 +51,6 @@ public:
 	void levelup();
 
 	bool operator()(Character l, Character r){ return l.getCharacterStats().speed > r.getCharacterStats().speed;}
+
+	void resetStats(job_mods jobMod);
 };

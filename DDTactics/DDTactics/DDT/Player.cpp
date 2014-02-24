@@ -46,3 +46,11 @@ Inventory Player::getInventory()
 	return temp;
 	//return inventory;
 }
+
+void Player::setCharacterLevel(int iter, int job, int level){
+	army[iter].setJobLevel(job, level);
+}
+
+void Player::resetStats(int iter, job_mods jobMod){
+	army[iter].resetStats(jobMod);
+};

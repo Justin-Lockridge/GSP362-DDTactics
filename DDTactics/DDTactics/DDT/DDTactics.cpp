@@ -12,6 +12,7 @@ DDTactics::DDTactics(void)
 	//////////////////////////////////
 	//  INFO:  Warrior Job mod 
 	job_mods temp;
+	temp.mod_attack = 3;
 	temp.mod_health = 3;
 	temp.mod_mana	= 1;
 	temp.mod_magic = 1;
@@ -24,6 +25,7 @@ DDTactics::DDTactics(void)
 
 	//////////////////////////////////
 	//  INFO:  Archer Job mod 
+	temp.mod_attack = 2;
 	temp.mod_health = 2;
 	temp.mod_mana	= 1;
 	temp.mod_magic = 1;
@@ -36,6 +38,7 @@ DDTactics::DDTactics(void)
 
 	//////////////////////////////////
 	//  INFO:  GreyMage Job mod 
+	temp.mod_attack = 1;
 	temp.mod_health = 1;
 	temp.mod_mana	= 3;
 	temp.mod_magic = 3;
@@ -145,6 +148,7 @@ void DDTactics::Init(HWND &hWnd, HINSTANCE &hInst, bool bWindowed)
 
 	ioManager = IOManager::instance();
 	ioManager->init();
+	ioManager->loadSaves();
 
 	graphics3D = GraphicsManager3D::instance();
 	graphics3D->Init(D3DDevice);
@@ -173,9 +177,15 @@ void DDTactics::Update(float dt)
 
 		break;
 	case LOAD: case SAVE:
-		ioManager->update(input, cursor, m_gameState, dt);
+		ioManager->update(input, cursor, player, m_gameState, dt);
 		//  INFO:  Quick bug fix.  Music used to continue playing when you went from Save / Load gamestate to Overworld.
 		//	TODO:  Implement a better fix later.
+		//  INFO:  If the player loads a game, then this function will reset all of the character stats in the player's army
+		if(m_gameState != SAVE && m_gameState != LOAD){
+			for(int i = 0; i < 3; i++){
+				player->resetStats(i, jobMods[player->getCharacter(i)->getCurrentJob()]);
+			}
+		}
 		if(m_gameState == OVERWORLD)
 			sound->stopStream();
 		break;
@@ -283,6 +293,11 @@ void DDTactics::Render(float dt)
 					break;
 				case ACTUAL_BATTLE:
 					battle->RenderText(D3DFont);
+					break;
+				case SAVE:
+				case LOAD:
+					textManager->renderSavedGameText(ioManager, m_gameState);
+					break;
 				}
 			}
 		}

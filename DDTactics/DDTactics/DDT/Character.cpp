@@ -116,3 +116,17 @@ void Character::adjustMana(int a_amt)
 	if(stats.mana > stats.max_mana)
 		stats.mana = stats.max_mana;
 }
+
+void Character::resetStats(job_mods jobMod){
+	stats.attack += this->getJobLevel(this->getCurrentJob()) * jobMod.mod_attack;
+	stats.defense += this->getJobLevel(this->getCurrentJob()) * jobMod.mod_defense;
+	stats.evasion += this->getJobLevel(this->getCurrentJob()) * jobMod.mod_evasion;
+	stats.health += this->getJobLevel(this->getCurrentJob()) * jobMod.mod_health;
+	stats.hit += this->getJobLevel(this->getCurrentJob()) * jobMod.mod_hit;
+	stats.magic += this->getJobLevel(this->getCurrentJob()) * jobMod.mod_magic;
+	stats.mana += this->getJobLevel(this->getCurrentJob()) * jobMod.mod_mana;
+	stats.max_health += this->getJobLevel(this->getCurrentJob()) * jobMod.mod_health;
+	stats.max_mana += this->getJobLevel(this->getCurrentJob()) * jobMod.mod_mana;
+	stats.resist += this->getJobLevel(this->getCurrentJob()) * jobMod.mod_resistance;
+	stats.speed += this->getJobLevel(this->getCurrentJob()) * jobMod.mod_speed;
+};

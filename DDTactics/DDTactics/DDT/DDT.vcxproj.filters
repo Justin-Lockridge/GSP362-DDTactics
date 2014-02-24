@@ -183,4 +183,9 @@
       <Filter>Header Files\GameStuff</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="SavedGames.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
 </Project>
