@@ -33,7 +33,6 @@
 
 class DDTactics
 {
-	//HWND		m_hWnd;
 	bool		m_bVsync;
 
 	int			m_FPS,

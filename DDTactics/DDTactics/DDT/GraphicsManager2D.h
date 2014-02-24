@@ -73,16 +73,6 @@ private:
 	D3DXIMAGE_INFO		FFT_potions_Info;
 	IDirect3DTexture9	*shop_menu_text;
 	D3DXIMAGE_INFO		shop_menu_Info;
-	IDirect3DTexture9	*weapon_button_text;
-	D3DXIMAGE_INFO		weapon_button_Info;
-	IDirect3DTexture9	*potion_button_text;
-	D3DXIMAGE_INFO		potion_button_Info;
-	IDirect3DTexture9	*helm_button_text;
-	D3DXIMAGE_INFO		helm_button_Info;
-	IDirect3DTexture9	*chest_button_text;
-	D3DXIMAGE_INFO		chest_button_Info;
-	IDirect3DTexture9	*accesory_button_text;
-	D3DXIMAGE_INFO		accesory_button_Info;
 
 	IDirect3DTexture9	*save_text;
 	D3DXIMAGE_INFO		save_info;

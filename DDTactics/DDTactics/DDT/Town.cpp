@@ -408,7 +408,6 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 								player->adjustMoney(-100);
 							}else
 								noMoney = true;
-
 							break;
 						case 1: // broad sword
 							if(player->getMoney() >= 200)
@@ -466,7 +465,6 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 					if(!IManager->check_button_down(DIK_9))
 					{
 						IManager->set_button(DIK_9,true);
-
 						//Switch states accordingly
 						switch(i)
 						{

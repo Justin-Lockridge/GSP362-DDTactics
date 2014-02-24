@@ -17,6 +17,7 @@ Player::Player()
 	for(int i = 0; i < MAX_ITEMS; ++i)
 	{
 		inventory.push_back(temporary);
+		inventory[i].itemCount = 0;
 	}
 	money = 1000;
 }
@@ -44,13 +45,14 @@ Inventory Player::getInventory()
 {
 	Inventory temp;
 	return temp;
-	//return inventory;
 }
 
-void Player::setCharacterLevel(int iter, int job, int level){
+void Player::setCharacterLevel(int iter, int job, int level)
+{
 	army[iter].setJobLevel(job, level);
 }
 
-void Player::resetStats(int iter, job_mods jobMod){
+void Player::resetStats(int iter, job_mods jobMod)
+{
 	army[iter].resetStats(jobMod);
 };

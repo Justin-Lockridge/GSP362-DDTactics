@@ -49,20 +49,7 @@ void GraphicsManager2D::init(IDirect3DDevice9 *Device)
 	setup(Device, L"Shop_Chest1.png", FFT_chest_text, FFT_chest_Info);
 	setup(Device, L"Shop_Accesory1.png", FFT_accesory_text, FFT_accesory_Info);
 	setup(Device, L"Shop_Potions1.png", FFT_potions_text, FFT_potions_Info);
-	//setup(Device, L"shop_menu.jpg", shop_menu_text, shop_menu_Info);
-
-	//shop buttons
-
-	// thinkin we wont need these looks better without - Cameren
-
-
-	/*setup(Device, L"sword_button.png", weapon_button_text, weapon_button_Info);
-	setup(Device, L"helm_button.png", helm_button_text, helm_button_Info);
-	setup(Device, L"chest_button.png", chest_button_text, chest_button_Info);
-	setup(Device, L"accesory_button.png", accesory_button_text, accesory_button_Info);
-	setup(Device, L"potions_button.png", potion_button_text, potion_button_Info);
-	*/
-
+	
 	setup(Device, L"BlackBackground.png", save_text, save_info);
 	setup(Device, L"SaveMenuText.png", save_buttons_text, save_button_info);
 
