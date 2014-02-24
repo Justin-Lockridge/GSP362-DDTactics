@@ -1,12 +1,37 @@
-﻿  DDTactics.cpp
+﻿  Town.cpp
+  TextManager.cpp
+  StatusMenu.cpp
+  SoundManager.cpp
+  Player.cpp
+  Overworld.cpp
+  Mesh.cpp
+  Menu.cpp
+  Main.cpp
+c:\users\cameren\documents\github\gsp362-ddtactics\ddtactics\ddtactics\ddt\main.cpp(89): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+  Job.cpp
+  IOManager.cpp
+c:\users\cameren\documents\github\gsp362-ddtactics\ddtactics\ddtactics\ddt\iomanager.cpp(129): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+  Inventory.cpp
+  Intro.cpp
+  InputManager.cpp
+  GraphicsManager3D.cpp
+  DDTactics.cpp
 c:\users\cameren\documents\github\gsp362-ddtactics\ddtactics\ddtactics\ddt\ddtactics.cpp(167): warning C4244: 'argument' : conversion from 'long' to 'float', possible loss of data
-  Battle.cpp
-c:\users\cameren\documents\github\gsp362-ddtactics\ddtactics\ddtactics\ddt\battle.cpp(48): warning C4018: '<' : signed/unsigned mismatch
-c:\users\cameren\documents\github\gsp362-ddtactics\ddtactics\ddtactics\ddt\battle.cpp(54): warning C4018: '<' : signed/unsigned mismatch
+  Cursor.cpp
+  Button.cpp
+  GraphicsManager2D.cpp
+  Character.cpp
   Generating Code...
   Compiling...
-  GraphicsManager3D.cpp
+  CGraph.cpp
+  Battle.cpp
+c:\users\cameren\documents\github\gsp362-ddtactics\ddtactics\ddtactics\ddt\battle.cpp(58): warning C4018: '<' : signed/unsigned mismatch
+c:\users\cameren\documents\github\gsp362-ddtactics\ddtactics\ddtactics\ddt\battle.cpp(64): warning C4018: '<' : signed/unsigned mismatch
+c:\users\cameren\documents\github\gsp362-ddtactics\ddtactics\ddtactics\ddt\battle.cpp(185): warning C4018: '<' : signed/unsigned mismatch
+c:\users\cameren\documents\github\gsp362-ddtactics\ddtactics\ddtactics\ddt\battle.cpp(237): warning C4018: '>=' : signed/unsigned mismatch
+c:\users\cameren\documents\github\gsp362-ddtactics\ddtactics\ddtactics\ddt\battle.cpp(380): warning C4018: '<' : signed/unsigned mismatch
+c:\users\cameren\documents\github\gsp362-ddtactics\ddtactics\ddtactics\ddt\battle.cpp(422): warning C4018: '<' : signed/unsigned mismatch
+c:\users\cameren\documents\github\gsp362-ddtactics\ddtactics\ddtactics\ddt\battle.cpp(461): warning C4018: '<' : signed/unsigned mismatch
+c:\users\cameren\documents\github\gsp362-ddtactics\ddtactics\ddtactics\ddt\battle.cpp(603): warning C4018: '>=' : signed/unsigned mismatch
   Generating Code...
-  Skipping... (no relevant changes detected)
-  Main.cpp
   DDT.vcxproj -> C:\Users\Cameren\Documents\GitHub\GSP362-DDTactics\DDTactics\DDTactics\Debug\DDT.exe

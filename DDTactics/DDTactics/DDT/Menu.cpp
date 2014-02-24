@@ -83,7 +83,7 @@ void Menu::Update(Cursor *cursor, SoundManager *SManager, InputManager *IManager
 
 		if(IManager->check_mouse_button(LEFT_MOUSE_BUTTON))
 		{
-			if(!IManager->push_button(DIK_9))
+			if(!IManager->check_button_down(DIK_9))
 			{
 				IManager->set_button(DIK_9, true);
 				int selected = 99;
@@ -113,6 +113,10 @@ void Menu::Update(Cursor *cursor, SoundManager *SManager, InputManager *IManager
 				}
 			}
 		}else IManager->set_button(DIK_9, false);
+
+		if(IManager->push_button(DIK_B)){
+			game_state = BATTLE;
+		}
 		break;
 
 	/*case MENU_LOAD:

@@ -116,6 +116,17 @@ void GraphicsManager3D::Init(IDirect3DDevice9* device)
 
 	default_character.loadCharacterMesh(L"3DCursor.x", device, m_pAdjBuffer);
 	character_mesh.push_back(default_character);
+
+	sword.loadCharacterMesh(L"sword.x", device, m_pAdjBuffer);
+	character_mesh.push_back(sword);
+
+	/*bow.loadCharacterMesh(L"Bow.x", device, m_pAdjBuffer);  cant figure out why the fuck this shit fucking breaks
+	character_mesh.push_back(bow);*/
+
+	staff.loadCharacterMesh(L"staff.x", device, m_pAdjBuffer);
+	character_mesh.push_back(staff);
+
+	
 	////////////////////////////////////////////////////////////////////////////////
 	// Plane (blue highlight)
 	////////////////////////////////////////////////////////////////////////////////
@@ -280,7 +291,9 @@ void GraphicsManager3D::DrawCharacter(D3DXVECTOR3 &scale, D3DXVECTOR3 &translate
 		for(DWORD i = 0; i < character_mesh[ENUM_VAL].getNumMaterials(); i++)
 		{
 			// Set the material and texture for this subset
-			character_mesh[ENUM_VAL].getMeshMaterial()->Diffuse = color;
+			if(ENUM_VAL < 2)
+				character_mesh[ENUM_VAL].getMeshMaterial()->Diffuse = color;
+			
 			m_pEffect->SetValue("ambientMaterial", &character_mesh[ENUM_VAL].getMeshMaterial()->Ambient, sizeof(D3DXCOLOR));
 			m_pEffect->SetValue("diffuseMaterial", &character_mesh[ENUM_VAL].getMeshMaterial()->Diffuse, sizeof(D3DXCOLOR));
 			m_pEffect->SetValue("specularMaterial", &character_mesh[ENUM_VAL].getMeshMaterial()->Specular, sizeof(D3DXCOLOR));

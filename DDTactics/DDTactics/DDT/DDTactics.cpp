@@ -229,6 +229,8 @@ void DDTactics::Render(float dt)
 	{
 		if(SUCCEEDED(D3DDevice->BeginScene()))
 		{
+			if(m_gameState == ACTUAL_BATTLE)
+				battle->Render3D(graphics,D3DSprite,graphics3D,dt,D3DDevice);
 			if(SUCCEEDED(D3DSprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_DEPTH_FRONTTOBACK)))
 			{
 				switch(m_gameState)
@@ -252,7 +254,7 @@ void DDTactics::Render(float dt)
 				case BATTLE:
 					break;
 				case ACTUAL_BATTLE:
-					battle->Render(graphics,D3DSprite,graphics3D,dt,D3DDevice);
+					battle->Render2D(graphics,D3DSprite,graphics3D,dt,D3DDevice);
 					break;
 				case STATUS:
 					status_menu->Render(graphics, D3DSprite, dt);

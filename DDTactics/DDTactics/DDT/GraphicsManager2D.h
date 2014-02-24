@@ -99,12 +99,18 @@ private:
 	IDirect3DTexture9	* bStatusWindow,
 						* bWindow,
 						* bMenu,
-						* bPointer;
+						* bPointer,
+						* bActWin,
+						* bMageSkills,
+						* bActItemWin;
 
 	D3DXIMAGE_INFO		bStatusWindowInfo,
 						bWindowInfo,
 						bMenuInfo,
-						bPointerInfo;
+						bPointerInfo,
+						bActWinInfo,
+						bMageSkillsInfo,
+						bActItemWinInfo;
 	
 	
 	//////////////////////////////////////////////////////////////////

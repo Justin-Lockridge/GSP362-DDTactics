@@ -53,8 +53,10 @@ private:
 	ID3DXBuffer*		m_pAdjBuffer;	
 	
 	Mesh	map;
-	Mesh	cursor3D,
-			default_character;
+	Mesh	default_character;
+	Mesh	sword;
+	Mesh	bow;
+	Mesh	staff;
 	//D3DXCOLOR color;
 
 	std::vector<Mesh> maps_mesh;

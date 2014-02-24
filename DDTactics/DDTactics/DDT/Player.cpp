@@ -3,8 +3,14 @@
 Player::Player()
 {
 	Character temp;
+	temp.init();
+	temp.setCurrentJob(JOB::WARRIOR);
 	army.push_back(temp);
+	temp.init();
+	temp.setCurrentJob(JOB::GREYMAGE);
 	army.push_back(temp);
+	temp.init();
+	temp.setCurrentJob(JOB::ARCHER);
 	army.push_back(temp);
 
 	Items temporary;
