@@ -115,6 +115,7 @@ void Menu::Update(Cursor *cursor, SoundManager *SManager, InputManager *IManager
 		}else IManager->set_button(DIK_9, false);
 
 		if(IManager->push_button(DIK_B)){
+			SManager->stopStream();
 			game_state = BATTLE;
 		}
 		break;

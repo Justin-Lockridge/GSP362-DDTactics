@@ -24,9 +24,22 @@ enum ACT_STATE
 	INITIAL,
 	SKILL,
 	ITEMS,
+	SELECTION,
 	END,
 };
 
+enum ACTION
+{
+	BASIC = 1,
+	ARROW,
+	THUNDER,
+	CURE,
+	ACTION_POTION,
+	ACTION_HI_POTION,
+	ACTION_ETHER,
+	ACTION_HI_ETHER,
+	ACTION_PHEONIX_DOWN,
+};
 class Battle
 {
 private:
@@ -39,11 +52,14 @@ private:
 
 	CGraph m_Map;
 	Battle_Node * m_3Dcursor;
-	Character * m_activeChar;
+	Character	* m_activeChar,
+				* m_charSelected;
 
 	int m_charState,
 		m_actState,
-		m_turnIndex;
+		m_action,
+		m_turnIndex,
+		m_dmg;
 	float m_count;
 	bool moved, acted;
 	Battle(void);
@@ -59,6 +75,7 @@ public:
 				IDirect3DDevice9 *device);
 	void Render3D(GraphicsManager2D *GManager2, ID3DXSprite *spriteObj, GraphicsManager3D * GManager3, 
 				float dt,IDirect3DDevice9 *device);
+	void RenderText(ID3DXFont *font);
 	void Render2D(GraphicsManager2D *GManager2, ID3DXSprite *spriteObj, GraphicsManager3D * GManager3, 
 				float dt,IDirect3DDevice9 *device);
 

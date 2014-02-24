@@ -6,13 +6,18 @@ Battle::Battle(void)
 	m_Units.clear();
 	m_areaHighlight.clear();
 	m_buttons.clear();
+	m_actButtons1.clear();
+	m_actButtonsItems.clear();
+	m_actButtonsSkills.clear();
 
 	m_3Dcursor = NULL;
 	m_activeChar = NULL;
+	m_charSelected = NULL;
 
 	m_charState = 0;
 	m_actState = 0;
 	m_turnIndex = 0;
+	m_action = 0;
 	m_count = 0;
 	moved = false;
 	acted = false;
@@ -33,10 +38,13 @@ void Battle::Init(Player* player)
 {
 	m_charState = 0;
 	m_actState = 0;
+	m_action = 0;
 	m_turnIndex = 0;
 	m_count = 0;
 	moved = false;
 	acted = false;
+	
+	m_charSelected = NULL;
 
 	// generate map
 	m_Map.init();
@@ -115,7 +123,7 @@ void Battle::Init(Player* player)
 		tempB.setHighlight(false);
 		m_buttons.push_back(tempB);
 	}
-	
+
 	for(int i = 0; i < 3 ;i++){
 		rect.left =actMenu[i].l; rect.right = actMenu[i].r;
 		rect.top =actMenu[i].t; rect.bottom = actMenu[i].b;
@@ -133,7 +141,7 @@ void Battle::Init(Player* player)
 		tempB.setHighlight(false);
 		m_actButtonsItems.push_back(tempB);
 	}
-	
+
 	for(int i = 0; i < 2 ;i++){
 		rect.left =skillMenu[i].l; rect.right = skillMenu[i].r;
 		rect.top =skillMenu[i].t; rect.bottom = skillMenu[i].b;
@@ -152,7 +160,14 @@ void Battle::Update(Cursor * cursor, InputManager *IManager, SoundManager *SMana
 					IDirect3DDevice9 *device)
 {
 	m_activeChar = &m_Units[m_turnIndex];
-
+	if(m_activeChar->getCharacterStats().health <= 0){
+		m_activeChar->setRotation(D3DXVECTOR3(90,90,90));
+		m_turnIndex++;
+	}
+	if(m_turnIndex >= m_Units.size()){
+		m_turnIndex = 0;
+		m_activeChar = &m_Units[m_turnIndex];
+	}
 	GManager3->m_lookAt	= m_3Dcursor->position;	
 
 	D3DXMatrixLookAtLH(
@@ -169,6 +184,7 @@ void Battle::Update(Cursor * cursor, InputManager *IManager, SoundManager *SMana
 		switch(m_charState)
 		{
 		case CHAR_STATE::START:
+			m_charSelected = NULL;
 			if( IManager->get_mouseX() || IManager->get_mouseY() ){
 				for(auto &buttons: m_buttons){
 					if(buttons.isOn(cursor->cursorPos.x, cursor->cursorPos.y, 2))
@@ -239,6 +255,7 @@ void Battle::Update(Cursor * cursor, InputManager *IManager, SoundManager *SMana
 			m_3Dcursor = m_Units[m_turnIndex].getPosition();
 		}
 	}
+
 }
 void Battle::Render3D(GraphicsManager2D *GManager2, ID3DXSprite *spriteObj, GraphicsManager3D * GManager3, 
 					  float dt,IDirect3DDevice9 *device)
@@ -265,7 +282,7 @@ void Battle::Render3D(GraphicsManager2D *GManager2, ID3DXSprite *spriteObj, Grap
 			break;
 		case JOB::GREYMAGE:
 			GManager3->DrawCharacter(D3DXVECTOR3(3.7f,3.7f,3.7f),
-				unit.getPosition()->position + D3DXVECTOR3(1,2,0),unit.getRotation()+D3DXVECTOR3(70,0,0),
+				unit.getPosition()->position + D3DXVECTOR3(1,2,0),unit.getRotation()+D3DXVECTOR3(0,0,70),
 				MODEL_STAFF, D3DXCOLOR(0.0f,0.0f,0.0f,0.0f));
 			break;
 		case JOB::ARCHER:
@@ -284,7 +301,23 @@ void Battle::Render2D(GraphicsManager2D *GManager2, ID3DXSprite *spriteObj, Grap
 {
 	GManager2->Draw2DObject(D3DXVECTOR3(0.50f, 0.70f, 1.0f),D3DXVECTOR3(200.0f, 500.0f, 0.0f),D3DXVECTOR3(0.0f,0.0f,0.0f),
 		spriteObj,GRAPHICS_BSTATS_WINDOW,D3DCOLOR_ARGB(255,255,255,255));
+
 	if(m_activeChar){
+		switch(m_activeChar->getCurrentJob())
+		{
+		case JOB::ARCHER:
+			GManager2->Draw2DObject(D3DXVECTOR3(0.16f, 0.16f, 1.0f),D3DXVECTOR3(80.0f, 494.0f, 0.0f),D3DXVECTOR3(0.0f,0.0f,0.0f),
+				spriteObj,GRAPHICS_ARCHER_ICON,D3DCOLOR_ARGB(255,255,255,255));
+			break;
+		case JOB::GREYMAGE:
+			GManager2->Draw2DObject(D3DXVECTOR3(0.16f, 0.16f, 1.0f),D3DXVECTOR3(80.0f, 494.0f, 0.0f),D3DXVECTOR3(0.0f,0.0f,0.0f),
+				spriteObj,GRAPHICS_MAGE_ICON,D3DCOLOR_ARGB(255,255,255,255));
+			break;
+		case JOB::WARRIOR:
+			GManager2->Draw2DObject(D3DXVECTOR3(0.16f, 0.16f, 1.0f),D3DXVECTOR3(80.0f, 494.0f, 0.0f),D3DXVECTOR3(0.0f,0.0f,0.0f),
+				spriteObj,GRAPHICS_WAR_ICON,D3DCOLOR_ARGB(255,255,255,255));
+			break;
+		}
 		if(!m_activeChar->isAnEnemy() && m_charState != CHAR_STATE::WAIT){
 			GManager2->Draw2DObject(D3DXVECTOR3(0.70f, 0.90f, 1.0f),D3DXVECTOR3(650.0f, 200.0f, 0.0f),D3DXVECTOR3(0.0f,0.0f,0.0f),
 				spriteObj,GRAPHICS_BMENU,D3DCOLOR_ARGB(255,255,255,255));
@@ -295,6 +328,9 @@ void Battle::Render2D(GraphicsManager2D *GManager2, ID3DXSprite *spriteObj, Grap
 				}
 			}
 		}
+		if(m_charState == CHAR_STATE::WAIT)
+			GManager2->Draw2DObject(D3DXVECTOR3(0.5f, 0.90f, 1.0f),D3DXVECTOR3(550.0f, 100.0f, 0.0f),D3DXVECTOR3(0.0f,0.0f,0.0f),
+			spriteObj,GRAPHICS_WAIT_WINDOW,D3DCOLOR_ARGB(255,255,255,255));
 	}
 	if(m_charState == CHAR_STATE::ACT){
 		switch(m_actState)
@@ -350,14 +386,75 @@ void Battle::Render2D(GraphicsManager2D *GManager2, ID3DXSprite *spriteObj, Grap
 		}
 	}
 }
+
+void Battle::RenderText(ID3DXFont *font)
+{
+	RECT rect;
+	rect.left = 200;
+	rect.top = 200;
+	wchar_t tbuffer[64];
+	if (m_charState == CHAR_STATE::ACT){
+		if(m_dmg){
+			swprintf_s(tbuffer, 64,L"%d",m_dmg);
+			font->DrawText(0, tbuffer, -1, &rect, 
+				DT_TOP | DT_LEFT | DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 255, 0));
+		}
+	}
+	if(m_activeChar){
+
+		rect.left = 140;
+		rect.top = 470;
+		swprintf_s(tbuffer, 64,L"HP %d",m_activeChar->getCharacterStats().health);
+		font->DrawText(0, tbuffer, -1, &rect, 
+			DT_TOP | DT_LEFT | DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 255, 255));
+		rect.left = 240;
+		swprintf_s(tbuffer, 64,L"/ %d",m_activeChar->getCharacterStats().max_health);
+		font->DrawText(0, tbuffer, -1, &rect, 
+			DT_TOP | DT_LEFT | DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 255, 255));
+
+		rect.left = 140;
+		rect.top = 500;
+
+		swprintf_s(tbuffer, 64,L"MP %d",m_activeChar->getCharacterStats().mana);
+		font->DrawText(0, tbuffer, -1, &rect, 
+			DT_TOP | DT_LEFT | DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 255, 255));
+		rect.left = 240;
+		swprintf_s(tbuffer, 64,L"/ %d",m_activeChar->getCharacterStats().max_mana);
+		font->DrawText(0, tbuffer, -1, &rect, 
+			DT_TOP | DT_LEFT | DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 255, 255));
+
+		rect.left = 360;
+		rect.top = 470;
+
+		swprintf_s(tbuffer, 64,L"(Name Here)");
+		font->DrawText(0, tbuffer, -1, &rect, 
+			DT_TOP | DT_LEFT | DT_NOCLIP, D3DCOLOR_ARGB(255, 0, 0, 0));
+		rect.top = 500;
+		switch(m_activeChar->getCurrentJob())
+		{
+		case JOB::ARCHER:
+			swprintf_s(tbuffer, 64,L"Archer");
+			break;
+		case JOB::GREYMAGE:
+			swprintf_s(tbuffer, 64,L"Mage");
+			break;
+		case JOB::WARRIOR:
+			swprintf_s(tbuffer, 64,L"Warrior");
+			break;
+		}
+		font->DrawText(0, tbuffer, -1, &rect, 
+			DT_TOP | DT_LEFT | DT_NOCLIP, D3DCOLOR_ARGB(255, 0, 0, 0));
+	}
+}
+
 void Battle::Act(Cursor * cursor, InputManager *IManager, SoundManager *SManager, 
 				 Player *player, int &game_state,  float dt,GraphicsManager3D * GManager3,
 				 IDirect3DDevice9 *device)
 {
 	switch(m_actState)
-		{
+	{
 	case ACT_STATE::INITIAL:
-
+		m_count = 0;
 		if(IManager->check_mouse_button(RIGHT_MOUSE_BUTTON)){
 			if(!IManager->check_button_down(DIK_0)){
 				IManager->set_button(DIK_0, true);
@@ -384,10 +481,21 @@ void Battle::Act(Cursor * cursor, InputManager *IManager, SoundManager *SManager
 				switch(selected)
 				{
 				case 0:	// Attack
-					m_actState = ACT_STATE::END;
+					if(m_activeChar->getCurrentJob() == JOB::ARCHER){
+						m_action = ACTION::ARROW;
+						highlightMap(4);
+						m_actState = ACT_STATE::SELECTION;
+					}
+					else{
+						m_action = ACTION::BASIC;
+						highlightMap(1);
+						m_actState = ACT_STATE::SELECTION;
+					}
+					//m_action = 
 					break;
 				case 1:	// Skill
-					m_actState = ACT_STATE::SKILL;
+					if(m_activeChar->getCurrentJob() == JOB::GREYMAGE)
+						m_actState = ACT_STATE::SKILL;
 					break;
 				case 2:	// Items
 					m_actState = ACT_STATE::ITEMS;
@@ -426,10 +534,16 @@ void Battle::Act(Cursor * cursor, InputManager *IManager, SoundManager *SManager
 				switch(selected)
 				{
 				case 0:	// Thunder
-					m_actState = ACT_STATE::END;
+					//m_actState = ACT_STATE::END;
+					m_action = ACTION::THUNDER;
+					highlightMap(4);
+					m_actState = ACT_STATE::SELECTION;
 					break;
 				case 1:	// Cure
-					m_actState = ACT_STATE::END;
+					//m_actState = ACT_STATE::END;
+					m_action = ACTION::CURE;
+					highlightMap(4);
+					m_actState = ACT_STATE::SELECTION;
 					break;
 				default:
 					break;
@@ -464,24 +578,173 @@ void Battle::Act(Cursor * cursor, InputManager *IManager, SoundManager *SManager
 				}
 				switch(selected)
 				{
-				case 99:
+				case 0://POTION
+					m_actState = ACT_STATE::SELECTION;
+					m_action = ACTION::ACTION_POTION;
+					highlightMap(1);
+					break;
+				case 1://HI-POTION
+					m_actState = ACT_STATE::SELECTION;
+					m_action = ACTION::ACTION_HI_POTION;
+					highlightMap(1);
+					break;
+				case 2://ETHER
+					m_actState = ACT_STATE::SELECTION;
+					m_action = ACTION::ACTION_ETHER;
+					highlightMap(1);
+					break;
+				case 3://HI-ETHER
+					m_actState = ACT_STATE::SELECTION;
+					m_action = ACTION::ACTION_HI_ETHER;
+					highlightMap(1);
+					break;
+				case 4://PHONIX DOWN
+					m_actState = ACT_STATE::SELECTION;
+					m_action = ACTION::ACTION_PHEONIX_DOWN;
+					highlightMap(1);
 					break;
 				default:
-					m_actState = ACT_STATE::END;
 					break;
 				}
 			}
 		}else IManager->set_button(DIK_9, false);
 		break;
-	case ACT_STATE::END:
+	case ACT_STATE::SELECTION:
 		// use attack/skill/item 
+		if(IManager->check_mouse_button(RIGHT_MOUSE_BUTTON)){
+			if(!IManager->check_button_down(DIK_0)){
+				IManager->set_button(DIK_0, true);
+				m_areaHighlight.clear();
+				m_action = 0;
+				m_actState = ACT_STATE::INITIAL;
+			}
+		}else IManager->set_button(DIK_0,false);
+		if(IManager->push_button(DIK_W)){
+			if(!IManager->check_button_down(DIK_W)){
+				IManager->set_button(DIK_W,true); 
+				//index++;
+				//if edge is north +z
+				for(auto &edge:m_3Dcursor->edges)
+				{
+					if(edge->position.z > m_3Dcursor->position.z)
+						m_3Dcursor = edge;
+				}
+			}
+		}else IManager->set_button(DIK_W,false); 
 
-		// for now
+		if(IManager->push_button(DIK_A)){
+			if(!IManager->check_button_down(DIK_A)){
+				IManager->set_button(DIK_A,true); 
+				//if edge is west -x
+				for(auto &edge:m_3Dcursor->edges)
+				{
+					if(edge->position.x < m_3Dcursor->position.x)
+						m_3Dcursor = edge;
+				}
+			}
+		}else IManager->set_button(DIK_A,false); 
+
+		if(IManager->push_button(DIK_S)){
+			if(!IManager->check_button_down(DIK_S)){
+				IManager->set_button(DIK_S,true); 
+				//if edge is south -z
+				for(auto &edge:m_3Dcursor->edges)
+				{
+					if(edge->position.z < m_3Dcursor->position.z)
+						m_3Dcursor = edge;
+				}
+			}
+		}else IManager->set_button(DIK_S,false); 
+
+		if(IManager->push_button(DIK_D)){
+			if(!IManager->check_button_down(DIK_D)){
+				IManager->set_button(DIK_D,true); 
+				//if edge is east +x
+				for(auto &edge:m_3Dcursor->edges)
+				{
+					if(edge->position.x > m_3Dcursor->position.x)
+						m_3Dcursor = edge;
+				}
+			}
+		}else IManager->set_button(DIK_D,false); 
+
+		if(IManager->push_button(DIK_F)){
+			if(!IManager->check_button_down(DIK_F)){
+				IManager->set_button(DIK_F,true); 
+
+				if(checkHighlight(m_3Dcursor) || m_3Dcursor == m_activeChar->getPosition()){
+					// TODO select unit to deal dmg or heal;
+					for(auto &unit: m_Units){
+						if(m_3Dcursor == unit.getPosition()){
+							m_charSelected = &unit;
+							m_actState = ACT_STATE::END;
+						}
+					}
+				}
+			}
+		}else IManager->set_button(DIK_F,false); 
+
+		break;
+	case ACT_STATE::END:
+
+		if(m_charSelected){
+			switch(m_action)
+			{
+			case ACTION::BASIC:
+			case ACTION::ARROW:
+				m_dmg = (m_charSelected->getCharacterStats().max_health/3)+1;
+				m_charSelected->adjustHealth(-m_dmg);
+				m_charSelected = NULL;
+				break;
+
+			case ACTION::THUNDER:
+				m_dmg = (m_charSelected->getCharacterStats().max_health/2)+1;
+				m_charSelected->adjustHealth(-m_dmg);
+				m_charSelected = NULL;
+				break;
+
+			case ACTION::CURE:
+			case ACTION::ACTION_POTION:
+				m_dmg = (m_charSelected->getCharacterStats().max_health/3);
+				m_charSelected->adjustHealth(m_dmg);
+				m_charSelected = NULL;
+				break;
+
+			case ACTION::ACTION_HI_POTION:
+				m_dmg = (m_charSelected->getCharacterStats().max_health/2);
+				m_charSelected->adjustHealth(m_dmg);
+				m_charSelected = NULL;
+				break;
+
+			case ACTION::ACTION_ETHER:
+				m_dmg = (m_charSelected->getCharacterStats().max_mana/3);
+				m_charSelected->adjustMana(m_dmg);
+				m_charSelected = NULL;
+				break;
+			case ACTION::ACTION_HI_ETHER:
+				m_dmg = (m_charSelected->getCharacterStats().max_mana/2);
+				m_charSelected->adjustMana(m_dmg);
+				m_charSelected = NULL;
+				break;
+
+			case ACTION::ACTION_PHEONIX_DOWN:
+				m_dmg = (m_charSelected->getCharacterStats().max_health/2);
+				m_charSelected->adjustHealth(m_dmg);
+				m_charSelected = NULL;
+				break;
+			}
+		}
+		m_count += dt;
+		if(m_count >= 2.0f){
 		acted = true;
+		m_dmg = 0;
 		m_actState = ACT_STATE::INITIAL;
 		m_charState = CHAR_STATE::START;
-		break;
+		m_areaHighlight.clear();
 		}
+
+		break;
+	}
 }
 
 void Battle::Move(Cursor * cursor, InputManager *IManager, SoundManager *SManager, 
@@ -550,9 +813,10 @@ void Battle::Move(Cursor * cursor, InputManager *IManager, SoundManager *SManage
 	}else IManager->set_button(DIK_F,false); 
 }
 void Battle::Wait(Cursor * cursor, InputManager *IManager, SoundManager *SManager, 
-				Player *player, int &game_state,  float dt,GraphicsManager3D * GManager3,
-				IDirect3DDevice9 *device)
+				  Player *player, int &game_state,  float dt,GraphicsManager3D * GManager3,
+				  IDirect3DDevice9 *device)
 {
+	m_3Dcursor = m_activeChar->getPosition();
 	if(IManager->check_mouse_button(RIGHT_MOUSE_BUTTON)){
 		if(!IManager->check_button_down(DIK_0)){
 			IManager->set_button(DIK_0, true);
@@ -629,7 +893,7 @@ void Battle::highlightMap(int dist)
 				for(auto & unit : m_Units )
 					if(edge == unit.getPosition())
 						clear = false;
-				if(clear)
+				if(clear || m_charState == CHAR_STATE::ACT)
 					m_areaHighlight.push_back(edge);
 				else
 					clear = true;

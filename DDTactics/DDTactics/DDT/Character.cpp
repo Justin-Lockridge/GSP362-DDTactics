@@ -99,3 +99,20 @@ void Character::setRotation(D3DXVECTOR3 a_vector)
 
 D3DXVECTOR3 Character::getRotation()
 {return rotation;}
+
+void Character::adjustHealth(int a_amt)
+{
+	stats.health += a_amt;
+	if(stats.health < 0)
+		stats.health = 0;
+	if(stats.health > stats.max_health)
+		stats.health = stats.max_health;
+}
+void Character::adjustMana(int a_amt)
+{
+	stats.mana += a_amt;
+	if(stats.mana < 0)
+		stats.mana = 0;
+	if(stats.mana > stats.max_mana)
+		stats.mana = stats.max_mana;
+}

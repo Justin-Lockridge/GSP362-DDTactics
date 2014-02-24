@@ -43,6 +43,9 @@ public:
 	void setRotation(D3DXVECTOR3 a_vector);
 	D3DXVECTOR3 getRotation();
 
+	void adjustHealth(int a_amt);
+	void adjustMana(int a_amt);
+
 	//set stats/jobs
 	void init();
 	void levelup();

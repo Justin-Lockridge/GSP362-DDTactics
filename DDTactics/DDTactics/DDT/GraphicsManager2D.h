@@ -102,7 +102,11 @@ private:
 						* bPointer,
 						* bActWin,
 						* bMageSkills,
-						* bActItemWin;
+						* bActItemWin,
+						* bWaitWindow,
+						* bArcherIcon,
+						* bMageIcon,
+						* bWarIcon;
 
 	D3DXIMAGE_INFO		bStatusWindowInfo,
 						bWindowInfo,
@@ -110,7 +114,11 @@ private:
 						bPointerInfo,
 						bActWinInfo,
 						bMageSkillsInfo,
-						bActItemWinInfo;
+						bActItemWinInfo,
+						bWaitWindowInfo,
+						bArcherIconInfo,
+						bMageIconInfo,
+						bWarIconInfo;
 	
 	
 	//////////////////////////////////////////////////////////////////

@@ -78,7 +78,11 @@ void GraphicsManager2D::init(IDirect3DDevice9 *Device)
 	setup(Device, L"act_mage_skills.png", bMageSkills, bMageSkillsInfo);
 	setup(Device, L"act_items.png", bActItemWin, bActItemWinInfo);
 
+	setup(Device, L"waitWindow.jpg", bWaitWindow, bWaitWindowInfo);
 
+	setup(Device, L"archerIcon.jpg", bArcherIcon, bArcherIconInfo);
+	setup(Device, L"MageIcon.jpg", bMageIcon, bMageIconInfo);
+	setup(Device, L"WarIcon.jpg", bWarIcon, bWarIconInfo);
 	//////////////////////////////////////////////////////////////////////////////
 
 }

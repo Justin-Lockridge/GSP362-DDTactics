@@ -225,7 +225,7 @@ void DDTactics::Render(float dt)
 {
 	if(!D3DDevice)
 		return;
-	if(SUCCEEDED(D3DDevice->Clear(0,0, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), 1.0f, 0)))
+	if(SUCCEEDED(D3DDevice->Clear(0,0, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f), 1.0f, 0)))
 	{
 		if(SUCCEEDED(D3DDevice->BeginScene()))
 		{
@@ -281,6 +281,8 @@ void DDTactics::Render(float dt)
 				case INTRO:
 					textManager->render();
 					break;
+				case ACTUAL_BATTLE:
+					battle->RenderText(D3DFont);
 				}
 			}
 		}

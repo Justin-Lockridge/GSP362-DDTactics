@@ -27,7 +27,7 @@ void GraphicsManager3D::Init(IDirect3DDevice9* device)
 	// View and Projection Matrices
 	//////////////////////////////////////////////////////////////////////////
 	// Initialize View Matrix
-	m_eyePos	= D3DXVECTOR3(10.0f, 10.0f, -17.0f);
+	m_eyePos	= D3DXVECTOR3(10.0f, 7.0f, -15.0f);
 	m_lookAt	= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_upVec		= D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 
