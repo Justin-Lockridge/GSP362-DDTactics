@@ -40,6 +40,7 @@ enum ACTION
 	ACTION_HI_ETHER,
 	ACTION_PHEONIX_DOWN,
 };
+
 class Battle
 {
 private:
@@ -91,6 +92,5 @@ public:
 	void Wait(Cursor * cursor, InputManager *IManager, SoundManager *SManager, 
 				Player *player, int &game_state,  float dt,GraphicsManager3D * GManager3,
 				IDirect3DDevice9 *device);
-	//void wait();
 };
 

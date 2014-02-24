@@ -24,6 +24,7 @@ void Town::init()
 	accesory = false;
 	potions = false;
 	buyMenu = false;
+	noMoney = false;
 	// T, L, B, R, X, Y, Highlighted
 	RData temp_menu_pos[] = 
 	{
@@ -390,7 +391,8 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 				weapons_buttons_pos[i].setColor(D3DCOLOR_ARGB(255, 255, 255, 255));
 			}
 			//Check for cursor over menu option and left mouse button click
-			if(IManager->check_mouse_button(LEFT_MOUSE_BUTTON)){
+			if(IManager->check_mouse_button(LEFT_MOUSE_BUTTON))
+			{
 				if(weapons_buttons_pos[i].isHighlighted())
 				{
 					if(!IManager->check_button_down(DIK_9))
@@ -400,20 +402,37 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 						switch(i)
 						{
 						case 0: //dagger
-							player->addToInventory(2);
-							player->adjustMoney(-100);
+							if(player->getMoney() >= 100)
+							{
+								player->addToInventory(2);
+								player->adjustMoney(-100);
+							}else
+								noMoney = true;
+
 							break;
 						case 1: // broad sword
-							player->addToInventory(2);
-							player->adjustMoney(-200);
+							if(player->getMoney() >= 200)
+							{
+								player->addToInventory(2);
+								player->adjustMoney(-200);
+							}else
+								noMoney = true;
 							break;
 						case 2: // rod
-							player->addToInventory(2);
-							player->adjustMoney(-200);
+							if(player->getMoney() >= 200)
+							{
+								player->addToInventory(2);
+								player->adjustMoney(-200);
+							}else
+								noMoney = true;
 							break;
 						case 3: // oak staff
-							player->addToInventory(2);
-							player->adjustMoney(-120);
+							if(player->getMoney() >= 120)
+							{
+								player->addToInventory(2);
+								player->adjustMoney(-120);
+							}else
+								noMoney = true;
 							break;
 						case 4:
 							break;
@@ -440,7 +459,8 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 				helm_button_pos[i].setColor(D3DCOLOR_ARGB(255, 255, 255, 255));
 			}
 			//Check for cursor over menu option and left mouse button click
-			if(IManager->check_mouse_button(LEFT_MOUSE_BUTTON)){
+			if(IManager->check_mouse_button(LEFT_MOUSE_BUTTON))
+			{
 				if(helm_button_pos[i].isHighlighted())
 				{
 					if(!IManager->check_button_down(DIK_9))
@@ -451,8 +471,12 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 						switch(i)
 						{
 						case 0: // Leather Hat
-							player->addToInventory(0);
-							player->adjustMoney(-150);
+							if(player->getMoney() >= 150)
+							{
+								player->addToInventory(0);
+								player->adjustMoney(-150);
+							}else
+								noMoney = true;
 							break;
 						case 1: //
 							break;
@@ -485,7 +509,8 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 				chest_button_pos[i].setColor(D3DCOLOR_ARGB(255, 255, 255, 255));
 			}
 			//Check for cursor over menu option and left mouse button click
-			if(IManager->check_mouse_button(LEFT_MOUSE_BUTTON)){
+			if(IManager->check_mouse_button(LEFT_MOUSE_BUTTON))
+			{
 				if(chest_button_pos[i].isHighlighted())
 				{
 					if(!IManager->check_button_down(DIK_9))
@@ -495,8 +520,12 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 						switch(i)
 						{
 						case 0: // Cloth armor
-							player->addToInventory(1);
-							player->adjustMoney(-150);
+							if(player->getMoney() >= 200)
+							{
+								player->addToInventory(1);
+								player->adjustMoney(-150);
+							}else
+								noMoney = true;
 							break;
 						case 1: //
 							break;
@@ -529,7 +558,8 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 				accesory_button_pos[i].setColor(D3DCOLOR_ARGB(255, 255, 255, 255));
 			}
 			//Check for cursor over menu option and left mouse button click
-			if(IManager->check_mouse_button(LEFT_MOUSE_BUTTON)){
+			if(IManager->check_mouse_button(LEFT_MOUSE_BUTTON))
+			{
 				if(accesory_button_pos[i].isHighlighted())
 				{
 					if(!IManager->check_button_down(DIK_9))
@@ -570,9 +600,9 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 				potion_button_pos[i].setHighlight(false);
 				potion_button_pos[i].setColor(D3DCOLOR_ARGB(255, 255, 255, 255));
 			}
-
 			//Check for cursor over menu option and left mouse button click
-			if(IManager->check_mouse_button(LEFT_MOUSE_BUTTON)){
+			if(IManager->check_mouse_button(LEFT_MOUSE_BUTTON))
+			{
 				if(potion_button_pos[i].isHighlighted())
 				{
 					if(!IManager->check_button_down(DIK_9))
@@ -582,24 +612,44 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 						switch(i)
 						{
 						case 0: //Phoenix Down
-							player->addToInventory(7);
-							player->adjustMoney(-300);
+							if(player->getMoney() >= 300)
+							{
+								player->addToInventory(7);
+								player->adjustMoney(-300);
+							}else
+								noMoney = true;
 							break;
 						case 1: // Ether
-							player->addToInventory(5);
-							player->adjustMoney(-50);
+							if(player->getMoney() >= 50)
+							{
+								player->addToInventory(5);
+								player->adjustMoney(-50);
+							}else
+								noMoney = true;
 							break;
 						case 2: // Hi Ether
-							player->addToInventory(6);
-							player->adjustMoney(-100);
+							if(player->getMoney() >= 100)
+							{
+								player->addToInventory(6);
+								player->adjustMoney(-100);
+							}else
+								noMoney = true;
 							break;
 						case 3: // Potion
-							player->addToInventory(3);
-							player->adjustMoney(-50);
+							if(player->getMoney() >= 50)
+							{
+								player->addToInventory(3);
+								player->adjustMoney(-50);
+							}else
+								noMoney = true;
 							break;
-						case 4:
-							player->addToInventory(4);
-							player->adjustMoney(-100);
+						case 4: // Hi Potion
+							if(player->getMoney() >= 300)
+							{
+								player->addToInventory(4);
+								player->adjustMoney(-100);
+							}else
+								noMoney = true;
 							break;
 						default:
 							break;
@@ -616,19 +666,6 @@ void Town::render(GraphicsManager2D *GManager, ID3DXSprite *spriteObj, float dt,
 	//Shop Selection
 	if(main)
 	{
-		/*	for(auto &button: shop_sprite_pos)
-		{
-		if(button.isHighlighted())
-		{
-		GManager->Draw2DObject(D3DXVECTOR3(0.5f, 0.5f, 0.5f), 
-		button.getPos(), 
-		D3DXVECTOR3(0.0f, 0.0f, 0.0f), 
-		spriteObject, object_value, 
-		D3DCOLOR_ARGB(255, 255, 255, 255));
-		}
-
-		}*/
-
 		GManager->Draw2DObject(D3DXVECTOR3(0.4f, 0.55f, 0.4f),
 			D3DXVECTOR3(240.0f, 250.0f, 0.0f),
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
@@ -678,36 +715,29 @@ void Town::render(GraphicsManager2D *GManager, ID3DXSprite *spriteObj, float dt,
 				spriteObj, GRAPHICS_SHOP_POTIONS, 
 				D3DCOLOR_ARGB(255,255,255,255));
 		}
-
-		//Draw the five buttons
-		/*GManager->Draw2DObject(D3DXVECTOR3(0.5f, 0.55f, 0.4f),
-			D3DXVECTOR3(50.0f, 180.0f, 0.0f),
-			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-			spriteObj, GRAPHICS_SHOP_WEAPON_BUTTON, 
-			D3DCOLOR_ARGB(255,255,255,255));
-
-		GManager->Draw2DObject(D3DXVECTOR3(0.5f, 0.55f, 0.4f),
-			D3DXVECTOR3(100.0f, 180.0f, 0.0f),
-			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-			spriteObj, GRAPHICS_SHOP_HELM_BUTTON, 
-			D3DCOLOR_ARGB(255,255,255,255));
-
-		GManager->Draw2DObject(D3DXVECTOR3(0.5f, 0.55f, 0.4f),
-			D3DXVECTOR3(150.0f, 180.0f, 0.0f),
-			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-			spriteObj, GRAPHICS_SHOP_CHEST_BUTTON, 
-			D3DCOLOR_ARGB(255,255,255,255));
-
-		GManager->Draw2DObject(D3DXVECTOR3(0.5f, 0.55f, 0.4f),
-			D3DXVECTOR3(200.0f, 180.0f, 0.0f),
-			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-			spriteObj, GRAPHICS_SHOP_ACCESORY_BUTTON, 
-			D3DCOLOR_ARGB(255,255,255,255));
-
-		GManager->Draw2DObject(D3DXVECTOR3(0.5f, 0.55f, 0.4f),
-			D3DXVECTOR3(250.0f, 180.0f, 0.0f),
-			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-			spriteObj, GRAPHICS_SHOP_POTION_BUTTON, 
-			D3DCOLOR_ARGB(255,255,255,255));*/
 	}
+}
+
+void Town::renderText(ID3DXFont *D3DFont, Player *player, HWND *m_hWnd, float dt)
+{
+	RECT money;
+	money.top = 500;
+	money.left = 580;
+	wchar_t bufferFont[64];
+	swprintf_s(bufferFont, 64, L"%d", player->getMoney());
+	D3DFont->DrawText(0, bufferFont, -1, &money, DT_TOP | DT_LEFT | DT_NOCLIP, D3DCOLOR_ARGB(200, 255, 255, 255));
+
+	if(noMoney)
+	{
+		RECT noMonBox;
+		wchar_t noMonbuffer[64];
+		noMonBox.left = 350;
+		noMonBox.top = 550;
+		swprintf_s(noMonbuffer, 64,L"You do not have enough gil!");
+		D3DFont->DrawText(0, noMonbuffer, -1, &noMonBox, DT_TOP| DT_LEFT | DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 0, 0));
+		count += dt;
+		if(count >= 2.0f)
+			noMoney = false;
+	}else
+		count = 0;
 }

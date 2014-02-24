@@ -235,7 +235,7 @@ void DDTactics::Render(float dt)
 {
 	if(!D3DDevice)
 		return;
-	if(SUCCEEDED(D3DDevice->Clear(0,0, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f), 1.0f, 0)))
+	if(SUCCEEDED(D3DDevice->Clear(0,0, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), 1.0f, 0)))
 	{
 		if(SUCCEEDED(D3DDevice->BeginScene()))
 		{
@@ -271,20 +271,11 @@ void DDTactics::Render(float dt)
 					break;
 				case INTRO:
 					introMenu->Render(graphics, D3DSprite, dt);
-
 				}
 				cursor->render(graphics, D3DSprite);
 
 				D3DSprite->End();
-				if(m_gameState == TOWN)
-				{
-					RECT money;
-					money.left = -100;
-					GetClientRect(m_hWnd, &money);
-					wchar_t bufferFont[64];
-					swprintf_s(bufferFont, 64, L"%d", player->getMoney());
-					D3DFont->DrawText(0, bufferFont, -1, &money, DT_BOTTOM | DT_RIGHT | DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 255, 255));
-				}
+
 				//  INFO:  Draws text for different game states
 				switch(m_gameState)
 				{
@@ -293,6 +284,9 @@ void DDTactics::Render(float dt)
 					break;
 				case ACTUAL_BATTLE:
 					battle->RenderText(D3DFont);
+					break;
+				case TOWN:
+					town->renderText(D3DFont, player, &m_hWnd, dt);
 					break;
 				case SAVE:
 				case LOAD:

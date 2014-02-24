@@ -393,14 +393,16 @@ void Battle::RenderText(ID3DXFont *font)
 	rect.left = 200;
 	rect.top = 200;
 	wchar_t tbuffer[64];
-	if (m_charState == CHAR_STATE::ACT){
+	if (m_charState == CHAR_STATE::ACT)
+	{
 		if(m_dmg){
 			swprintf_s(tbuffer, 64,L"%d",m_dmg);
 			font->DrawText(0, tbuffer, -1, &rect, 
 				DT_TOP | DT_LEFT | DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 255, 0));
 		}
 	}
-	if(m_activeChar){
+	if(m_activeChar)
+	{
 
 		rect.left = 140;
 		rect.top = 470;
@@ -918,4 +920,3 @@ bool Battle::checkHighlight(Battle_Node* a_node){
 			return true;
 	return false;
 };
-

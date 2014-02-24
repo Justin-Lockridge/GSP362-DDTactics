@@ -45,6 +45,9 @@ public:
 	bool accesory; 
 	bool potions;
 	bool buyMenu;
+	bool noMoney;
+
+	float count;
 
 private:
 	Town();
@@ -54,6 +57,7 @@ public:
 	void init();
 
 	void render(GraphicsManager2D *GManager, ID3DXSprite *spriteObj, float dt, Player *player, HWND *m_hWnd, ID3DXFont *D3DFont);
+	void renderText(ID3DXFont *D3DFont, Player *player, HWND *m_hWnd, float dt);
 
 	void update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *SManager,  int &game_state,  float dt, Player *player);
 };
