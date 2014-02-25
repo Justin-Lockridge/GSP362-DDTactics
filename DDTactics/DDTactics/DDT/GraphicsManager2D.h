@@ -50,10 +50,14 @@ private:
 	IDirect3DTexture9	*status_background_Texture;
 	IDirect3DTexture9	*status_border_Texture;
 	IDirect3DTexture9	*status_buttons_Texture;
+	IDirect3DTexture9	*status_item_background_Texture;
+	IDirect3DTexture9	*status_item_button_Texture;
 
 	D3DXIMAGE_INFO		status_background_Info;
 	D3DXIMAGE_INFO		status_border_Info;
 	D3DXIMAGE_INFO		status_button_Info;
+	D3DXIMAGE_INFO		status_item_background_Info;
+	D3DXIMAGE_INFO		status_item_button_Info;
 
 	IDirect3DTexture9	*FFT_texture;
 	D3DXIMAGE_INFO		FFT_Info;

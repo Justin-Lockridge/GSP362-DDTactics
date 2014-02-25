@@ -30,4 +30,5 @@ public:
 	D3DCOLOR getColor();
 
 	bool isOn(float x, float y, int scale);
+	void checkOn(float x, float y, int scale);
 };

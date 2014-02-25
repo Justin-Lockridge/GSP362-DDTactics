@@ -143,7 +143,7 @@ void Overworld::init(Player *player)
 	player->current_Node = &map[0];
 	player->previous_Node = &map[0];
 	player->destination = 0;
-	
+
 
 
 }
@@ -281,27 +281,36 @@ void Overworld::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundMana
 					menu_sprite_pos[i].setColor(D3DCOLOR_ARGB(255, 255, 255, 255));
 				}
 
-				//Check for cursor over menu option and left mouse button click
-				if(menu_sprite_pos[i].isHighlighted() && IManager->check_mouse_button(LEFT_MOUSE_BUTTON))
+				if(IManager->check_mouse_button(LEFT_MOUSE_BUTTON))
 				{
-					//Switch states accordingly
-					switch(i)
+					//Check for cursor over menu option and left mouse button click
+					if(menu_sprite_pos[i].isHighlighted() )
 					{
-					case 0:
-						overworld_state = OVERWORLD_MENU;
-						break;
-					case 1:
-						overworld_state = OVERWORLD_OPTION;
-						break;
-					case 2:
-						overworld_state = OVERWORLD_SAVE;
-						break;
-					case 3:
-						overworld_state = OVERWORLD_LOAD;
-						break;
+						if(!IManager->check_button_down(DIK_9))
+						{
+							IManager->set_button(DIK_9, true);
+							//Switch states accordingly
+							switch(i)
+							{
+							case 0:
+								overworld_state = OVERWORLD_MENU;
+								break;
+							case 1:
+								overworld_state = OVERWORLD_OPTION;
+								break;
+							case 2:
+								overworld_state = OVERWORLD_SAVE;
+								break;
+							case 3:
+								overworld_state = OVERWORLD_LOAD;
+								break;
+							}
+						}
 					}
-				}
+				}else
+					IManager->set_button(DIK_9,false);
 			}
+
 
 
 			//Check for cursor over Node areas
@@ -338,17 +347,35 @@ void Overworld::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundMana
 					}
 				}
 
-				if(isOn_Node(map[i], cursorPos) && IManager->check_mouse_button(LEFT_MOUSE_BUTTON))
+				if(IManager->check_mouse_button(LEFT_MOUSE_BUTTON))
 				{
+					if(isOn_Node(map[i], cursorPos))
+					{
+						if(!IManager->check_button_down(DIK_9))
+						{
+						IManager->set_button(DIK_9, true);
 
-					overworld_state = OVERWORLD_CHECK;
-					player->destination = &map[i];
-				}
+						
+							player->destination = &map[i];
+
+							if(player->destination == player->current_Node)
+							{
+								if(player->destination->area_type == TYPE_TOWN)
+									overworld_state = OVERWORLD_TOWN;
+							
+							}else
+								overworld_state = OVERWORLD_TRANSITION;
+
+						}
+					}
+				}else
+					IManager->set_button(DIK_9, false);
+
+
+
+
+				
 			}
-
-
-
-
 			break;
 		}
 
@@ -361,18 +388,27 @@ void Overworld::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundMana
 			break;
 		}
 
+		if( (player->current_Node == player->destination) && (player->current_Node->area_type == TYPE_RANDOM_BATTLE))
+		{
+			int temp = rand() % 5;
+			if(temp == 0)
+				overworld_state = OVERWORLD_BATTLE;
+			else
+				overworld_state = OVERWORLD_SELECTION;
+			break;
+		}
 
 		//Check if current node is the destination, and if it's a town node, switch states
 		if( (player->current_Node == player->destination) && (player->current_Node->area_type == TYPE_TOWN)
-			
+
 			)
 		{
-			overworld_state = OVERWORLD_TOWN;
+			overworld_state = OVERWORLD_SELECTION;
 			break;
 		}
 
 
-		
+
 		//Check if current node is the same as destination and the node is not a town
 		else if(player->current_Node == player->destination)
 		{
@@ -387,7 +423,7 @@ void Overworld::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundMana
 			//ensure the previous node and current node are the same
 			//player.previous_Node = player.current_Node;
 			//loadPath(player.current_Node, player.previous_Node, player.destination);
-			
+
 			overworld_state = OVERWORLD_TRANSITION;
 
 			break;
@@ -395,13 +431,13 @@ void Overworld::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundMana
 		break;
 	case OVERWORLD_TRANSITION:
 		//Move player
-		
+
 		//player.previous_Node = player.current_Node;
 		//player.current_Node = player.destination;		
 		//player.overworld_pos = player.current_Node->node_position;
 
 		count4 += dt;
-		if(count4 > 0.05f)
+		if(count4 > 0.01f)
 		{
 			count4 = 0.0f;
 			if(player->overworld_pos.x > player->destination->node_position.x)
@@ -424,14 +460,14 @@ void Overworld::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundMana
 			player->overworld_pos.y == player->destination->node_position.y)
 		{
 			player->current_Node = player->destination;
-			overworld_state = OVERWORLD_SELECTION;
+			overworld_state = OVERWORLD_CHECK;
 		}
 		//Clear out vector and queue
 		//potential_path.clear();
 		//path = std::queue<Overworld_node*>();
 
 		//If random battle occurs
-	//	overworld_state = OVERWORLD_BATTLE;
+		//	overworld_state = OVERWORLD_BATTLE;
 
 		break;
 	case OVERWORLD_TOWN:
@@ -563,49 +599,49 @@ bool Overworld::isOn_Node(Overworld_node &node, D3DXVECTOR2 &cursorPos)
 
 bool Overworld::loadPath(Overworld_node *start, Overworld_node *previous, Overworld_node *destination)
 {
-	
-		if(start == destination)
-		{
-			path.push(start);
-			return true;
-		}
-		if(start != previous)
-			potential_path.push_back(start);
-		
 
-		loadPath(start->up, start, destination);
-		loadPath(start->down, start, destination);
-		loadPath(start->left, start, destination);
-		loadPath(start->right, start, destination);
+	if(start == destination)
+	{
+		path.push(start);
+		return true;
+	}
+	if(start != previous)
+		potential_path.push_back(start);
 
-		//Check if any of start's directions are the destination
-		if(start->up == destination)
+
+	loadPath(start->up, start, destination);
+	loadPath(start->down, start, destination);
+	loadPath(start->left, start, destination);
+	loadPath(start->right, start, destination);
+
+	//Check if any of start's directions are the destination
+	if(start->up == destination)
+		potential_path.push_back(start->up);
+	if(start->down == destination)
+		potential_path.push_back(start->down);
+	if(start->left == destination)
+		potential_path.push_back(start->left);
+	if(start->right == destination)
+		potential_path.push_back(start->right);
+
+	if(potential_path.back() == destination)
+		path.push(potential_path.front());
+
+	//if the destination isn't found, load paths that point to other nodes
+	if(potential_path.empty())
+	{
+		if(start->up != start)
 			potential_path.push_back(start->up);
-		if(start->down == destination)
+		if(start->down != start)
 			potential_path.push_back(start->down);
-		if(start->left == destination)
+		if(start->left != start)
 			potential_path.push_back(start->left);
-		if(start->right == destination)
+		if(start->right != start)
 			potential_path.push_back(start->right);
 
-		if(potential_path.back() == destination)
-			path.push(potential_path.front());
+	}
 
-		//if the destination isn't found, load paths that point to other nodes
-		if(potential_path.empty())
-		{
-			if(start->up != start)
-				potential_path.push_back(start->up);
-			if(start->down != start)
-				potential_path.push_back(start->down);
-			if(start->left != start)
-				potential_path.push_back(start->left);
-			if(start->right != start)
-				potential_path.push_back(start->right);
 
-		}
 
-		
-
-		return false;
+	return false;
 }

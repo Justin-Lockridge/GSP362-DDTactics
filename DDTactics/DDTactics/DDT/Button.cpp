@@ -62,3 +62,16 @@ bool Button::isOn(float x, float y, int scale)
 		return true;
 	return false;*/
 }
+
+void Button::checkOn(float x, float y, int scale)
+{
+	if(isOn(x, y, scale))
+	{
+		setHighlight(true);
+		setColor(D3DCOLOR_ARGB(255,255,255,50));
+	}else
+	{
+		setHighlight(false);
+		setColor(D3DCOLOR_ARGB(255,255,255,255));
+	}
+}

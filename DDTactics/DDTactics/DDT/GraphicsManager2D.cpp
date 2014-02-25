@@ -73,6 +73,8 @@ void GraphicsManager2D::init(IDirect3DDevice9 *Device)
 
 	setup(Device, L"Mongoose.png", Mongoose, MongooseInfo);
 	
+	setup(Device, L"status_item_background.png", status_item_background_Texture, status_item_background_Info);
+	setup(Device, L"status_item_button.png", status_item_button_Texture, status_item_button_Info);
 	//////////////////////////////////////////////////////////////////////////////
 
 }
@@ -163,6 +165,9 @@ void GraphicsManager2D::shutdown()
 	textures.clear();
 	
 	//RELEASE Textures from memory
+	SAFE_RELEASE(status_item_background_Texture);
+	SAFE_RELEASE(status_item_button_Texture);
+
 	SAFE_RELEASE(save_text);
 	SAFE_RELEASE(save_buttons_text);
 	SAFE_RELEASE(FFT_shop_text);

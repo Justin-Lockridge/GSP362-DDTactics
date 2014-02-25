@@ -267,7 +267,7 @@ void DDTactics::Render(float dt)
 					battle->Render2D(graphics,D3DSprite,graphics3D,dt,D3DDevice);
 					break;
 				case STATUS:
-					status_menu->Render(graphics, D3DSprite, dt);
+					status_menu->Render(graphics, D3DSprite, player, dt);
 					break;
 				case INTRO:
 					introMenu->Render(graphics, D3DSprite, dt);
