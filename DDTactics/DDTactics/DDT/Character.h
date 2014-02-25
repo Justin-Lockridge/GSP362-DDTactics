@@ -19,6 +19,12 @@ private:
 	Battle_Node *position;	
 	D3DXVECTOR3 rotation;
 	
+	Character* previous;
+	Character* next;
+
+	LPCWSTR name;
+	
+
 	bool enemy;
 public:
 	Character();
@@ -42,6 +48,16 @@ public:
 
 	void setRotation(D3DXVECTOR3 a_vector);
 	D3DXVECTOR3 getRotation();
+
+	
+	void setNext(Character *character);
+	Character* getNext();
+
+	void setPrevious(Character *character);
+	Character* getPrevious();
+
+	void setName(LPCWSTR name);
+	LPCWSTR getName();
 
 	void adjustHealth(int a_amt);
 	void adjustMana(int a_amt);

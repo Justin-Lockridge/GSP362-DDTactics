@@ -144,7 +144,7 @@ void DDTactics::Init(HWND &hWnd, HINSTANCE &hInst, bool bWindowed)
 	battle = Battle::instance();
 
 	status_menu = StatusMenu::instance();
-	status_menu->init();
+	status_menu->init(player);
 
 	ioManager = IOManager::instance();
 	ioManager->init();
@@ -293,11 +293,17 @@ void DDTactics::Render(float dt)
 				case LOAD:
 					textManager->renderSavedGameText(ioManager, m_gameState);
 					break;
+
+				case STATUS:
+					status_menu->drawText(D3DFont, player);
+					break;
 				}
 			}
 		}
 		D3DDevice->EndScene();
 	}
+	
+
 	D3DDevice->Present(0,0,0,0);
 }
 

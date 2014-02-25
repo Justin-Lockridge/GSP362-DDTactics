@@ -31,6 +31,12 @@ Character::Character()
 	};
 
 	currentJobType = 0;
+
+	previous = 0;
+	next = 0;
+
+	name = L"(Name Here)";
+
 }
 
 
@@ -129,4 +135,34 @@ void Character::resetStats(job_mods jobMod){
 	stats.max_mana += this->getJobLevel(this->getCurrentJob()) * jobMod.mod_mana;
 	stats.resist += this->getJobLevel(this->getCurrentJob()) * jobMod.mod_resistance;
 	stats.speed += this->getJobLevel(this->getCurrentJob()) * jobMod.mod_speed;
-};
+}
+
+void Character::setNext(Character *character)
+{
+	next = character;
+}
+
+Character* Character::getNext()
+{
+	return next;
+}
+
+void Character::setPrevious(Character *character)
+{
+	previous = character;
+}
+
+Character* Character::getPrevious()
+{
+	return previous;
+}
+
+void Character::setName(LPCWSTR name)
+{
+	this->name = name;
+}
+
+LPCWSTR Character::getName()
+{
+	return name;
+}

@@ -117,7 +117,10 @@ private:
 						bMageIconInfo,
 						bWarIconInfo;
 	
-	
+	IDirect3DTexture9*  mArrowTexture;
+	D3DXIMAGE_INFO		mArrowInfo;
+
+
 	//////////////////////////////////////////////////////////////////
 
 	GraphicsManager2D();

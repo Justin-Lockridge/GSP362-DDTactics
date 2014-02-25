@@ -75,6 +75,8 @@ void GraphicsManager2D::init(IDirect3DDevice9 *Device)
 	
 	setup(Device, L"status_item_background.png", status_item_background_Texture, status_item_background_Info);
 	setup(Device, L"status_item_button.png", status_item_button_Texture, status_item_button_Info);
+	
+	setup(Device, L"arrow.png", mArrowTexture, mArrowInfo);
 	//////////////////////////////////////////////////////////////////////////////
 
 }
@@ -165,6 +167,7 @@ void GraphicsManager2D::shutdown()
 	textures.clear();
 	
 	//RELEASE Textures from memory
+	SAFE_RELEASE(mArrowTexture);
 	SAFE_RELEASE(status_item_background_Texture);
 	SAFE_RELEASE(status_item_button_Texture);
 
