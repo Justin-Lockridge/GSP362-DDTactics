@@ -2,7 +2,7 @@
 
 Menu::Menu()
 {
-	
+
 }
 
 Menu::~Menu()
@@ -19,7 +19,7 @@ void Menu::Init( )
 {
 	menuState = MENU_MAIN;
 	m_buttons.clear();
-
+	m_logo = true;
 	//RDATA struct moved to MiscStructs.h
 	RData uiData[] = 
 	{
@@ -52,106 +52,127 @@ void Menu::Init( )
 
 void Menu::Update(Cursor *cursor, SoundManager *SManager, InputManager *IManager, int &game_state, float dt)
 {
-	//Play opening fanfare
-	SManager->playStream(SONG_MENU);
-	
-	//No longer need to update keyboard/mouse input, they're taken care of in DDTactics update
-	//Cursor restraints are also taken care of in DDTactics update
-	switch(menuState)
-	{
-
-	case MENU_MAIN:
-		if( IManager->get_mouseX() || IManager->get_mouseY() )
-		{
-			for(auto &buttons: m_buttons)
-			{
-				//added isOn function to button to simplify testing if the cursor is on the button
-				if(buttons.isOn(cursor->cursorPos.x, cursor->cursorPos.y, 3))
-				{
-					//added setColor function to simplify change in text color
-					buttons.setColor(D3DCOLOR_ARGB(255,255,255,0));
-					buttons.setHighlight(true);
-				}
-				else
-				{
-					buttons.setColor(D3DCOLOR_ARGB(255,255,255,255));
-					buttons.setHighlight(false);
-				}
+	if(m_logo){
+		if(dt < 1){
+			SManager->playStream(SOUND_MONGOOSE);
+			m_count+=dt;
+			if(m_count>=5.9){
+				m_logo = false;
+				SManager->stopStream();
 			}
-			
 		}
-
-		if(IManager->check_mouse_button(LEFT_MOUSE_BUTTON))
-		{
-			if(!IManager->check_button_down(DIK_9))
-			{
-				IManager->set_button(DIK_9, true);
-				int selected = 99;
-
-				for(int i = 0; i < 4; i++){
-					if(m_buttons[i].isHighlighted())
-						selected = i;
-				}
-
-				switch(selected)
-				{
-				case 0:
-					SManager->stopStream();
-					//game_state = OVERWORLD;
-					game_state	=	INTRO;
-					break;
-				case 1:
-
-					game_state = LOAD;
-					break;
-				case 2:
-					game_state = OPTIONS;
-					break;
-				case 3:
-					game_state = QUIT;
-					break;
-				}
-			}
-		}else IManager->set_button(DIK_9, false);
-
-		if(IManager->push_button(DIK_B)){
-			SManager->stopStream();
-			game_state = BATTLE;
-		}
-		break;
-
-	/*case MENU_LOAD:
-		game_state = LOAD;
-		break;*/
 	}
+	else{
+		//Play opening fanfare
+		SManager->playStream(SONG_MENU);
 
+		//No longer need to update keyboard/mouse input, they're taken care of in DDTactics update
+		//Cursor restraints are also taken care of in DDTactics update
+		switch(menuState)
+		{
+
+		case MENU_MAIN:
+			if( IManager->get_mouseX() || IManager->get_mouseY() )
+			{
+				for(auto &buttons: m_buttons)
+				{
+					//added isOn function to button to simplify testing if the cursor is on the button
+					if(buttons.isOn(cursor->cursorPos.x, cursor->cursorPos.y, 3))
+					{
+						//added setColor function to simplify change in text color
+						buttons.setColor(D3DCOLOR_ARGB(255,255,255,0));
+						buttons.setHighlight(true);
+					}
+					else
+					{
+						buttons.setColor(D3DCOLOR_ARGB(255,255,255,255));
+						buttons.setHighlight(false);
+					}
+				}
+
+			}
+
+			if(IManager->check_mouse_button(LEFT_MOUSE_BUTTON))
+			{
+				if(!IManager->check_button_down(DIK_9))
+				{
+					IManager->set_button(DIK_9, true);
+					int selected = 99;
+
+					for(int i = 0; i < 4; i++){
+						if(m_buttons[i].isHighlighted())
+							selected = i;
+					}
+
+					switch(selected)
+					{
+					case 0:
+						SManager->stopStream();
+						//game_state = OVERWORLD;
+						game_state	=	INTRO;
+						break;
+					case 1:
+
+						game_state = LOAD;
+						break;
+					case 2:
+						game_state = OPTIONS;
+						break;
+					case 3:
+						game_state = QUIT;
+						break;
+					}
+				}
+			}else IManager->set_button(DIK_9, false);
+
+			if(IManager->push_button(DIK_B)){
+				SManager->stopStream();
+				game_state = BATTLE;
+			}
+			break;
+
+			/*case MENU_LOAD:
+			game_state = LOAD;
+			break;*/
+		}
+	}
 }
 
 void Menu::Render(GraphicsManager2D *GManager, ID3DXSprite *spriteObj, float dt)
 {
-	switch(menuState)
-	{
-	case MENU_MAIN:
-		GManager->Draw2DObject(D3DXVECTOR3(0.70f, 0.50f, 1.0f), 
-								D3DXVECTOR3(310.0f, 200.0f, 0.0f),
-								D3DXVECTOR3(0.0f,0.0f,0.0f), 
-								spriteObj, 
-								GRAPHICS_MENU, 
-								D3DCOLOR_ARGB(255,255,255,255));
-		
-		for(auto &buttons: m_buttons)
+	if(m_logo){
+		GManager->Draw2DObject(D3DXVECTOR3(1.0f, 1.0f, 1.0f), 
+			D3DXVECTOR3(350.0f, 250.0f, 0.0f),
+			D3DXVECTOR3(0.0f,0.0f,0.0f), 
+			spriteObj, 
+			GRAPHICS_MONGOOSE, 
+			D3DCOLOR_ARGB(255,255,255,255));
+	}
+	else{
+		switch(menuState)
 		{
-			GManager->DrawButton(D3DXVECTOR3(0.5f, 0.5f, 0.5f), 
-								D3DXVECTOR3(buttons.getPos().x, buttons.getPos().y, 0.0f),
-								D3DXVECTOR3(0.0f,0.0f,0.0f), 
-								buttons.getRect(),
-								spriteObj,
-								GRAPHICS_MENU_BUTTONS, 
-								buttons.width, 
-								buttons.height,
-								buttons.getColor());  
+		case MENU_MAIN:
+			GManager->Draw2DObject(D3DXVECTOR3(0.70f, 0.50f, 1.0f), 
+				D3DXVECTOR3(310.0f, 200.0f, 0.0f),
+				D3DXVECTOR3(0.0f,0.0f,0.0f), 
+				spriteObj, 
+				GRAPHICS_MENU, 
+				D3DCOLOR_ARGB(255,255,255,255));
+
+			for(auto &buttons: m_buttons)
+			{
+				GManager->DrawButton(D3DXVECTOR3(0.5f, 0.5f, 0.5f), 
+					D3DXVECTOR3(buttons.getPos().x, buttons.getPos().y, 0.0f),
+					D3DXVECTOR3(0.0f,0.0f,0.0f), 
+					buttons.getRect(),
+					spriteObj,
+					GRAPHICS_MENU_BUTTONS, 
+					buttons.width, 
+					buttons.height,
+					buttons.getColor());  
+			}
+			break;
 		}
-		break;
 	}
 }
 

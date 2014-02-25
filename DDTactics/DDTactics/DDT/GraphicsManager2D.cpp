@@ -70,6 +70,9 @@ void GraphicsManager2D::init(IDirect3DDevice9 *Device)
 	setup(Device, L"archerIcon.jpg", bArcherIcon, bArcherIconInfo);
 	setup(Device, L"MageIcon.jpg", bMageIcon, bMageIconInfo);
 	setup(Device, L"WarIcon.jpg", bWarIcon, bWarIconInfo);
+
+	setup(Device, L"Mongoose.png", Mongoose, MongooseInfo);
+	
 	//////////////////////////////////////////////////////////////////////////////
 
 }

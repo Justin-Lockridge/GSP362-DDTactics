@@ -45,7 +45,7 @@ private:
 
 	FMOD::Sound			*introMusic;
 
-
+	FMOD::Sound			*Mongoose;
 	////////////////////////////////////////////////////////////////////////	
 
 	SoundManager();

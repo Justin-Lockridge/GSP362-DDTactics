@@ -98,6 +98,9 @@ private:
 						* bMageIcon,
 						* bWarIcon;
 
+	IDirect3DTexture9	* Mongoose;
+	D3DXIMAGE_INFO		MongooseInfo;
+
 	D3DXIMAGE_INFO		bStatusWindowInfo,
 						bWindowInfo,
 						bMenuInfo,

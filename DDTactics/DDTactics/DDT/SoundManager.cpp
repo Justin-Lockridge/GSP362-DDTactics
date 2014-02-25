@@ -103,6 +103,7 @@ bool SoundManager::init()
 	createStream("FFXI Battle in the Dungeon.mp3", temp_battle);
 
 	createStream("KingdomBaron.mp3", introMusic);
+	createStream("The Fighting Mongooses.mp3",Mongoose);
 	///////////////////////////////////////////////////////////////////////
 
 	//resize vector of bools

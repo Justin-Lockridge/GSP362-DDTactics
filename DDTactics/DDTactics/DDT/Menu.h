@@ -35,7 +35,8 @@ enum PLAYERSAVEDATA
 class Menu
 {
 private:
-	//bool logo;
+	bool	m_logo;
+	float	m_count;
 	int		menuState;
 	int		menuSelection;	
 
