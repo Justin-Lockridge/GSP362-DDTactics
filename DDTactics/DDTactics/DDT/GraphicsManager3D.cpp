@@ -108,7 +108,10 @@ void GraphicsManager3D::Init(IDirect3DDevice9* device)
 	m_pEffect->SetFloatArray("diffuseLight", (float*)&m_Light.Diffuse, 3);
 	m_pEffect->SetFloatArray("lightAttenuation", (float*)&D3DXVECTOR3(m_Light.Attenuation0, m_Light.Attenuation1, m_Light.Attenuation2), 3);
 
-	map.loadMap(L"ClueBoard.x", device, m_pAdjBuffer);
+	map.loadMap(L"GrassPlane.x", device, m_pAdjBuffer);
+	maps_mesh.push_back(map);
+
+	map.loadMap(L"skybox.x", device, m_pAdjBuffer);
 	maps_mesh.push_back(map);
 
 	default_character.loadCharacterMesh(L"dood.x", device, m_pAdjBuffer);

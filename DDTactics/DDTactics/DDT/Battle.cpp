@@ -43,7 +43,7 @@ void Battle::Init(Player* player)
 	m_count = 0;
 	moved = false;
 	acted = false;
-	
+
 	m_charSelected = NULL;
 
 	// generate map
@@ -159,15 +159,34 @@ void Battle::Update(Cursor * cursor, InputManager *IManager, SoundManager *SMana
 					Player *player, int &game_state,  float dt,GraphicsManager3D * GManager3,
 					IDirect3DDevice9 *device)
 {
+	bool allEnemiesDead = true;
+	bool allAlliesDead = true;
+
+	for(auto &unit: m_Units){
+		if (unit.isAnEnemy()){
+			if(unit.getCharacterStats().health > 0)
+				allEnemiesDead = false;
+		}
+		else{
+			if(unit.getCharacterStats().health > 0)
+				allAlliesDead = false;
+		}
+	}
+	if(m_turnIndex >= m_Units.size())
+		m_turnIndex = 0;
 	m_activeChar = &m_Units[m_turnIndex];
 	if(m_activeChar->getCharacterStats().health <= 0){
 		m_activeChar->setRotation(D3DXVECTOR3(90,90,90));
 		m_turnIndex++;
-	}
-	if(m_turnIndex >= m_Units.size()){
-		m_turnIndex = 0;
+		if(m_turnIndex >= m_Units.size())
+			m_turnIndex = 0;
 		m_activeChar = &m_Units[m_turnIndex];
+		m_3Dcursor = m_activeChar->getPosition();
+		moved = false;
+		acted = false;
 	}
+
+
 	GManager3->m_lookAt	= m_3Dcursor->position;	
 
 	D3DXMatrixLookAtLH(
@@ -255,13 +274,22 @@ void Battle::Update(Cursor * cursor, InputManager *IManager, SoundManager *SMana
 			m_3Dcursor = m_Units[m_turnIndex].getPosition();
 		}
 	}
-
+	if(allAlliesDead){
+		game_state = CREDITS;
+		Shutdown();
+	}
+	if(allEnemiesDead){
+		game_state = CREDITS;
+		Shutdown();
+	}
 }
 void Battle::Render3D(GraphicsManager2D *GManager2, ID3DXSprite *spriteObj, GraphicsManager3D * GManager3, 
 					  float dt,IDirect3DDevice9 *device)
 {
 	GManager3->DrawMap(D3DXVECTOR3(5,5,5), D3DXVECTOR3(0,0,0),
 		D3DXVECTOR3(0,0,0), MAP_DEFAULT);
+	GManager3->DrawMap(D3DXVECTOR3(3,3,3), D3DXVECTOR3(-1,-1,-1),
+		D3DXVECTOR3(0,0,0), MAP_SKYBOX);
 	bool notRendered = true;
 	for(auto &unit:m_Units){	
 		if(!unit.isAnEnemy())
@@ -678,8 +706,10 @@ void Battle::Act(Cursor * cursor, InputManager *IManager, SoundManager *SManager
 					// TODO select unit to deal dmg or heal;
 					for(auto &unit: m_Units){
 						if(m_3Dcursor == unit.getPosition()){
-							m_charSelected = &unit;
-							m_actState = ACT_STATE::END;
+							if(m_action == ACTION::ACTION_PHEONIX_DOWN || unit.getCharacterStats().health > 0){
+								m_charSelected = &unit;
+								m_actState = ACT_STATE::END;
+							}
 						}
 					}
 				}
@@ -696,12 +726,16 @@ void Battle::Act(Cursor * cursor, InputManager *IManager, SoundManager *SManager
 			case ACTION::ARROW:
 				m_dmg = (m_charSelected->getCharacterStats().max_health/3)+1;
 				m_charSelected->adjustHealth(-m_dmg);
+				if(m_charSelected->getCharacterStats().health <= 0 )
+					m_charSelected->setRotation(D3DXVECTOR3(90,90,90));
 				m_charSelected = NULL;
 				break;
 
 			case ACTION::THUNDER:
 				m_dmg = (m_charSelected->getCharacterStats().max_health/2)+1;
 				m_charSelected->adjustHealth(-m_dmg);
+				if(m_charSelected->getCharacterStats().health <= 0 )
+					m_charSelected->setRotation(D3DXVECTOR3(90,90,90));
 				m_charSelected = NULL;
 				break;
 
@@ -732,17 +766,18 @@ void Battle::Act(Cursor * cursor, InputManager *IManager, SoundManager *SManager
 			case ACTION::ACTION_PHEONIX_DOWN:
 				m_dmg = (m_charSelected->getCharacterStats().max_health/2);
 				m_charSelected->adjustHealth(m_dmg);
+				m_charSelected->setRotation(D3DXVECTOR3(0,0,0));
 				m_charSelected = NULL;
 				break;
 			}
 		}
 		m_count += dt;
 		if(m_count >= 2.0f){
-		acted = true;
-		m_dmg = 0;
-		m_actState = ACT_STATE::INITIAL;
-		m_charState = CHAR_STATE::START;
-		m_areaHighlight.clear();
+			acted = true;
+			m_dmg = 0;
+			m_actState = ACT_STATE::INITIAL;
+			m_charState = CHAR_STATE::START;
+			m_areaHighlight.clear();
 		}
 
 		break;
@@ -753,6 +788,15 @@ void Battle::Move(Cursor * cursor, InputManager *IManager, SoundManager *SManage
 				  Player *player, int &game_state,  float dt,GraphicsManager3D * GManager3,
 				  IDirect3DDevice9 *device)
 {
+	if(IManager->check_mouse_button(RIGHT_MOUSE_BUTTON)){
+		if(!IManager->check_button_down(DIK_0)){
+			IManager->set_button(DIK_0, true);
+			m_charState = CHAR_STATE::START;
+			m_3Dcursor = m_activeChar->getPosition();
+			m_areaHighlight.clear();
+		}
+	}else IManager->set_button(DIK_0,false);
+
 	if(IManager->push_button(DIK_W)){
 		if(!IManager->check_button_down(DIK_W)){
 			IManager->set_button(DIK_W,true); 

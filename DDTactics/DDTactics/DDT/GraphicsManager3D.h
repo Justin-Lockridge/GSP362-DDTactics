@@ -53,6 +53,7 @@ private:
 	ID3DXBuffer*		m_pAdjBuffer;	
 	
 	Mesh	map;
+
 	Mesh	default_character;
 	Mesh	sword;
 	Mesh	bow;

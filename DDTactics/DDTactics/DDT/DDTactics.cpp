@@ -213,6 +213,7 @@ void DDTactics::Update(float dt)
 	case OVERWORLD:
 		overworld->update(cursor->cursorPos, input, sound, player, m_gameState, dt);
 		break;
+	case CREDITS:
 	case QUIT:
 		DestroyWindow(m_hWnd);
 		break;
