@@ -404,7 +404,7 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 						case 0: //dagger
 							if(player->getMoney() >= 100)
 							{
-								player->addToInventory(2);
+								player->addToInventory(DAGGER);
 								player->adjustMoney(-100);
 							}else
 								noMoney = true;
@@ -412,7 +412,7 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 						case 1: // broad sword
 							if(player->getMoney() >= 200)
 							{
-								player->addToInventory(2);
+								player->addToInventory(BROADSWORD);
 								player->adjustMoney(-200);
 							}else
 								noMoney = true;
@@ -420,7 +420,7 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 						case 2: // rod
 							if(player->getMoney() >= 200)
 							{
-								player->addToInventory(2);
+								player->addToInventory(ROD);
 								player->adjustMoney(-200);
 							}else
 								noMoney = true;
@@ -428,7 +428,7 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 						case 3: // oak staff
 							if(player->getMoney() >= 120)
 							{
-								player->addToInventory(2);
+								player->addToInventory(OAKSTAFF);
 								player->adjustMoney(-120);
 							}else
 								noMoney = true;
@@ -471,7 +471,7 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 						case 0: // Leather Hat
 							if(player->getMoney() >= 150)
 							{
-								player->addToInventory(0);
+								player->addToInventory(LEATHERHAT);
 								player->adjustMoney(-150);
 							}else
 								noMoney = true;
@@ -520,7 +520,7 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 						case 0: // Cloth armor
 							if(player->getMoney() >= 200)
 							{
-								player->addToInventory(1);
+								player->addToInventory(CLOTHARMOR);
 								player->adjustMoney(-150);
 							}else
 								noMoney = true;
@@ -612,7 +612,7 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 						case 0: //Phoenix Down
 							if(player->getMoney() >= 300)
 							{
-								player->addToInventory(7);
+								player->addToInventory(PHOENIXDOWN);
 								player->adjustMoney(-300);
 							}else
 								noMoney = true;
@@ -620,7 +620,7 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 						case 1: // Ether
 							if(player->getMoney() >= 50)
 							{
-								player->addToInventory(5);
+								player->addToInventory(ETHER);
 								player->adjustMoney(-50);
 							}else
 								noMoney = true;
@@ -628,7 +628,7 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 						case 2: // Hi Ether
 							if(player->getMoney() >= 100)
 							{
-								player->addToInventory(6);
+								player->addToInventory(HIETHER);
 								player->adjustMoney(-100);
 							}else
 								noMoney = true;
@@ -636,7 +636,7 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 						case 3: // Potion
 							if(player->getMoney() >= 50)
 							{
-								player->addToInventory(3);
+								player->addToInventory(POTION);
 								player->adjustMoney(-50);
 							}else
 								noMoney = true;
@@ -644,7 +644,7 @@ void Town::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundManager *
 						case 4: // Hi Potion
 							if(player->getMoney() >= 300)
 							{
-								player->addToInventory(4);
+								player->addToInventory(HIPOTION);
 								player->adjustMoney(-100);
 							}else
 								noMoney = true;

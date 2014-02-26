@@ -64,6 +64,7 @@ struct job_mods
 
 struct Items
 {
+	LPCWSTR itemName;
 	int itemCount;
 	int buyPrice;
 	int sellPrice;

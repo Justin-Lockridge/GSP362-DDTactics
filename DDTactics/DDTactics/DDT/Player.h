@@ -35,6 +35,7 @@ public:
 	void addToInventory(int itemType){inventory[itemType].itemCount += 1;}
 	void removeFromInventory(int itemType){if(inventory[itemType].itemCount > 1)inventory[itemType].itemCount -= 1;}
 	bool checkInventoryForItem(int itemType){if(inventory[itemType].itemCount > 1) return true;}
+	Items getItemCount(int itemType){  return inventory[itemType];      }
 	std::vector<Items>* returnInv();
 
 

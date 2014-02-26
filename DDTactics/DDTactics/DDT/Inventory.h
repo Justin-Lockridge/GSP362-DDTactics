@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#define MAX_ITEMS 10
+#define MAX_ITEMS 11
 
 class Inventory
 {

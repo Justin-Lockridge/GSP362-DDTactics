@@ -126,10 +126,10 @@ void StatusMenu::init(Player *player, std::vector<job_mods> &mods)
 	RData temp_jobChange[] =
 	{
 	
-		{25, 0, 65,150, 680, 300, false},
-		{70,0,115,150,680,350,false},
-		{118,0,160,150,680,400,false},
-		{162,0,205,150,680,450,false},
+		{25, 0, 65,150, 580, 250, false},
+		{70,0,115,150,580,300,false},
+		{118,0,160,150,580,350,false},
+		{162,0,205,150,580,400,false},
 	
 	};
 
@@ -911,7 +911,24 @@ void StatusMenu::drawText(ID3DXFont *font, Player *player)
 {
 	switch(status_state)
 	{
-	case STATUS_ITEM:
+	case STATUS_ITEM:  case STATUS_ITEM_USE:
+	
+		r.left = 50;
+		r.top = 110;
+		for(int i = 0; i < player->returnInv()->size(); i++)
+		{
+			if(player->getItemCount(i).itemCount == 0)
+				continue;
+			swprintf(word, 64, L"%s: %d", player->getItemCount(i).itemName, player->getItemCount(i).itemCount);
+			autoText(font);
+			r.left += 250;
+
+			if(r.left > 550)
+			{
+				r.left = 50;
+				r.top += 50; 
+			}
+		}
 
 
 		break;
@@ -975,6 +992,11 @@ void StatusMenu::drawText(ID3DXFont *font, Player *player)
 		swprintf(word, 64, L"Level:  %d", tempChar->getCharacterStats().level);
 		autoText(font);
 
+		r.left = 600;
+		swprintf(word, 64, L"Job Level:  %d", tempChar->getJobLevel(tempChar->getCurrentJob()));
+		autoText(font);
+
+		r.left = 400;
 		r.top += 30;
 		swprintf(word, 64, L"Exp Points:  %d", tempChar->getCharacterStats().xp);
 		autoText(font);
@@ -1060,8 +1082,7 @@ void StatusMenu::drawText(ID3DXFont *font, Player *player)
 		blueText(font);
 
 		break;
-	case STATUS_ITEM_USE:
-		break;
+		
 	case STATUS_ABILITY_USE:
 		break;
 	case STATUS_MAGIC_USE:

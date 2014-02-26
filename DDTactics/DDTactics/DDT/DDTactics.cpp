@@ -7,7 +7,7 @@ DDTactics::DDTactics(void)
 	D3DDevice = 0;
 	m_FPS = 0;
 	m_gameOver = 0;
-	m_gameState = STATUS;
+	m_gameState = MENU;
 
 	//////////////////////////////////
 	//  INFO:  Warrior Job mod 

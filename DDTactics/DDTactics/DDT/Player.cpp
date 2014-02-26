@@ -19,6 +19,20 @@ Player::Player()
 		inventory.push_back(temporary);
 		inventory[i].itemCount = 0;
 	}
+
+	inventory[DAGGER].itemName = L"Dagger";
+	inventory[BROADSWORD].itemName = L"Broad Sword";
+	inventory[ROD].itemName = L"Rod";
+	inventory[OAKSTAFF].itemName = L"Oak Staff";
+	inventory[LEATHERHAT].itemName = L"Leather Hat";
+	inventory[CLOTHARMOR].itemName = L"Cloth Armor";
+	inventory[PHOENIXDOWN].itemName = L"Phoenix Down";
+	inventory[ETHER].itemName = L"Ether";
+	inventory[HIETHER].itemName = L"Hi-Ether";
+	inventory[POTION].itemName = L"Potion";
+	inventory[HIPOTION].itemName = L"Hi-Potion";
+
+
 	money = 1000;
 }
 
