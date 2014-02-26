@@ -66,12 +66,13 @@ public:
 	~StatusMenu();
 	static StatusMenu* instance();
 
-	void init(Player *player);
-	void Update(Cursor *cursor, InputManager *IManager, SoundManager *SManager, Player *player, int &game_state, float dt);
+	void init(Player *player, std::vector<job_mods> &mods);
+	void Update(Cursor *cursor, InputManager *IManager, SoundManager *SManager, Player *player, int &game_state, std::vector<job_mods> &mods, float dt);
 	void Render(GraphicsManager2D *GManager, ID3DXSprite *spriteObj, Player *player, float dt);
 
 	void drawText(ID3DXFont *font, Player * player);
 	void autoText(ID3DXFont *font);
+	void blueText(ID3DXFont *font);
 
 	void recreateList(Player* player);
 

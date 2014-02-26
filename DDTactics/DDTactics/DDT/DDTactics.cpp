@@ -7,7 +7,7 @@ DDTactics::DDTactics(void)
 	D3DDevice = 0;
 	m_FPS = 0;
 	m_gameOver = 0;
-	m_gameState = MENU;
+	m_gameState = STATUS;
 
 	//////////////////////////////////
 	//  INFO:  Warrior Job mod 
@@ -144,7 +144,7 @@ void DDTactics::Init(HWND &hWnd, HINSTANCE &hInst, bool bWindowed)
 	battle = Battle::instance();
 
 	status_menu = StatusMenu::instance();
-	status_menu->init(player);
+	status_menu->init(player, jobMods);
 
 	ioManager = IOManager::instance();
 	ioManager->init();
@@ -221,7 +221,7 @@ void DDTactics::Update(float dt)
 		town->update(cursor->cursorPos, input, sound, m_gameState, dt, player);
 		break;
 	case STATUS:
-		status_menu->Update(cursor, input, sound, player, m_gameState, dt);
+		status_menu->Update(cursor, input, sound, player, m_gameState, jobMods, dt);
 		break;
 	case INTRO:
 		sound->playStream(SONG_INTRO);

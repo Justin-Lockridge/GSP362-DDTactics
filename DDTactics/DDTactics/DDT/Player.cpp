@@ -36,6 +36,11 @@ std::vector<Character>* Player::returnArmy()
 	return &army;
 }
 
+std::vector<Items>* Player::returnInv()
+{
+	return &inventory;
+}
+
 int Player::getMoney()
 {
 	return money;

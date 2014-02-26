@@ -8,6 +8,7 @@ class Character
 {
 private:
 	Character_stats stats;
+	Character_stats mod_stats;
 	int jobLevels[MAXJOBS];
 	int currentJobType;
 	//TODO: create ITEM class
@@ -31,6 +32,7 @@ public:
 	~Character();
 
 	Character_stats getCharacterStats();
+	Character_stats getModStats();
 
 	int getCurrentJob();
 	void setCurrentJob(int job);

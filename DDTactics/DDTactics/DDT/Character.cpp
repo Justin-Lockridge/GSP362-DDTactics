@@ -27,7 +27,7 @@ Character::Character()
 	acc = 0;
 
 	for(int i = 0; i < MAXJOBS; ++i){
-		jobLevels[i] = 0;
+		jobLevels[i] = 2;
 	};
 
 	currentJobType = 0;
@@ -46,30 +46,34 @@ Character::~Character()
 
 void Character::init()
 {
-	stats.level = 1;
-	stats.xp = 0;
+	stats.level = mod_stats.level = 1;
+	stats.xp = mod_stats.xp = 0;
 
-	stats.max_health = rand() % 11 + 25;
-	stats.health = stats.max_health;
-	stats.max_mana = rand() % 11 + 25;
-	stats.mana = stats.max_mana;
+	stats.max_health = mod_stats.max_health = rand() % 11 + 25;
+	stats.health = mod_stats.health = stats.max_health;
+	stats.max_mana = mod_stats.max_mana = rand() % 11 + 25;
+	stats.mana = mod_stats.mana = stats.max_mana;
 
-	stats.attack = rand() % 5 + 5;
-	stats.magic = rand() % 5 + 5;
+	stats.attack = mod_stats.attack = rand() % 5 + 5;
+	stats.magic = mod_stats.magic = rand() % 5 + 5;
 	
-	stats.defense = rand() % 5 + 5;
-	stats.resist = rand() % 5 + 5;	
+	stats.defense = mod_stats.defense = rand() % 5 + 5;
+	stats.resist = mod_stats.resist = rand() % 5 + 5;	
 	
-	stats.hit = rand() % 5 + 5;
-	stats.evasion = rand() % 5 + 5;	
+	stats.hit = mod_stats.hit = rand() % 5 + 5;
+	stats.evasion = mod_stats.evasion = rand() % 5 + 5;	
 	
-	stats.speed = rand() % 5 + 5;
+	stats.speed = mod_stats.speed = rand() % 5 + 5;
 
+	
 
 }
 
 Character_stats Character::getCharacterStats()
 {return stats;}
+
+Character_stats Character::getModStats()
+{return mod_stats;}
 
 int Character::getCurrentJob()
 {return currentJobType;}
@@ -124,17 +128,17 @@ void Character::adjustMana(int a_amt)
 }
 
 void Character::resetStats(job_mods jobMod){
-	stats.attack += this->getJobLevel(this->getCurrentJob()) * jobMod.mod_attack;
-	stats.defense += this->getJobLevel(this->getCurrentJob()) * jobMod.mod_defense;
-	stats.evasion += this->getJobLevel(this->getCurrentJob()) * jobMod.mod_evasion;
-	stats.health += this->getJobLevel(this->getCurrentJob()) * jobMod.mod_health;
-	stats.hit += this->getJobLevel(this->getCurrentJob()) * jobMod.mod_hit;
-	stats.magic += this->getJobLevel(this->getCurrentJob()) * jobMod.mod_magic;
-	stats.mana += this->getJobLevel(this->getCurrentJob()) * jobMod.mod_mana;
-	stats.max_health += this->getJobLevel(this->getCurrentJob()) * jobMod.mod_health;
-	stats.max_mana += this->getJobLevel(this->getCurrentJob()) * jobMod.mod_mana;
-	stats.resist += this->getJobLevel(this->getCurrentJob()) * jobMod.mod_resistance;
-	stats.speed += this->getJobLevel(this->getCurrentJob()) * jobMod.mod_speed;
+	mod_stats.attack = stats.attack + (this->getJobLevel(this->getCurrentJob()) - 1)  * jobMod.mod_attack;
+	mod_stats.defense = stats.defense + (this->getJobLevel(this->getCurrentJob()) - 1) * jobMod.mod_defense;
+	mod_stats.evasion = stats.evasion + (this->getJobLevel(this->getCurrentJob()) - 1) * jobMod.mod_evasion;
+	mod_stats.health = stats.health + (this->getJobLevel(this->getCurrentJob()) - 1) * jobMod.mod_health;
+	mod_stats.hit = stats.hit + (this->getJobLevel(this->getCurrentJob()) - 1) * jobMod.mod_hit;
+	mod_stats.magic = stats.magic + (this->getJobLevel(this->getCurrentJob()) - 1) * jobMod.mod_magic;
+	mod_stats.mana = stats.mana +  (this->getJobLevel(this->getCurrentJob()) - 1) * jobMod.mod_mana;
+	mod_stats.max_health = stats.max_health + (this->getJobLevel(this->getCurrentJob()) - 1) * jobMod.mod_health;
+	mod_stats.max_mana = stats.max_mana + (this->getJobLevel(this->getCurrentJob()) - 1) * jobMod.mod_mana;
+	mod_stats.resist = stats.resist + (this->getJobLevel(this->getCurrentJob()) - 1) * jobMod.mod_resistance;
+	mod_stats.speed = stats.speed + (this->getJobLevel(this->getCurrentJob()) - 1) * jobMod.mod_speed;
 }
 
 void Character::setNext(Character *character)

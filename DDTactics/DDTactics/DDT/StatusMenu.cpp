@@ -17,9 +17,27 @@ StatusMenu* StatusMenu::instance()
 }
 
 
-void StatusMenu::init(Player *player)
+void StatusMenu::init(Player *player, std::vector<job_mods> &mods)
 {
 	status_state = STATUS_MAIN;
+	
+	//reset character stats to reflect changes
+	for(unsigned int i = 0; i < player->returnArmy()->size(); i++)
+	{
+		switch(player->getCharacter(i)->getCurrentJob())
+		{
+		case WARRIOR:
+			player->getCharacter(i)->resetStats(mods[WARRIOR]);
+			break;
+		case ARCHER:
+			player->getCharacter(i)->resetStats(mods[ARCHER]);
+			break;
+		case GREYMAGE:
+			player->getCharacter(i)->resetStats(mods[GREYMAGE]);
+			break;
+		}
+		
+	}
 
 	//initialize buttons
 	RData temp_button[] = 
@@ -121,7 +139,7 @@ void StatusMenu::init(Player *player)
 	tempChar = player->getCharacter(0);
 }
 
-void StatusMenu::Update(Cursor *cursor, InputManager *IManager, SoundManager *SManager, Player *player, int &game_state, float dt)
+void StatusMenu::Update(Cursor *cursor, InputManager *IManager, SoundManager *SManager, Player *player, int &game_state, std::vector<job_mods> &mods, float dt)
 {
 	//update the Linked list in the event the player has added more characters
 	if(player->returnArmy()->size() > playerCharacters)
@@ -340,8 +358,7 @@ void StatusMenu::Update(Cursor *cursor, InputManager *IManager, SoundManager *SM
 
 			}else
 				IManager->set_button(DIK_9, false);
-
-
+			
 
 		}
 
@@ -454,12 +471,15 @@ void StatusMenu::Update(Cursor *cursor, InputManager *IManager, SoundManager *SM
 						{
 						case WARRIOR:
 							tempChar->setCurrentJob(WARRIOR);
+							tempChar->resetStats(mods[WARRIOR]);
 							break;
 						case ARCHER:
 							tempChar->setCurrentJob(ARCHER);
+							tempChar->resetStats(mods[ARCHER]);
 							break;
 						case GREYMAGE:
 							tempChar->setCurrentJob(GREYMAGE);
+							tempChar->resetStats(mods[GREYMAGE]);
 							break;
 						case 3:
 							status_state = STATUS_MAIN;
@@ -892,12 +912,39 @@ void StatusMenu::drawText(ID3DXFont *font, Player *player)
 	switch(status_state)
 	{
 	case STATUS_ITEM:
+
+
 		break;
 	case STATUS_ABILITY:
 		break;
 	case STATUS_MAGIC:
+		
+
 		break;
 	case STATUS_JOB:
+		r.left = 400;
+		r.top = 110;
+
+		swprintf(word, 64, L"%s", tempChar->getName());
+		autoText(font);
+
+		r.top += 30;
+		
+		switch(tempChar->getCurrentJob())
+		{
+		case WARRIOR:
+			tempJobName = L"Warrior";
+			break;
+		case ARCHER:
+			tempJobName = L"Archer";
+			break;
+		case GREYMAGE:
+			tempJobName = L"Mage";
+			break;
+		}
+		swprintf(word, 64, L"Job:  %s", tempJobName);
+		autoText(font);
+
 		break;
 	case STATUS_STATUS:
 		r.left = 400;
@@ -929,44 +976,88 @@ void StatusMenu::drawText(ID3DXFont *font, Player *player)
 		autoText(font);
 
 		r.top += 30;
-		swprintf(word, 64, L"Experience Points:  %d", tempChar->getCharacterStats().xp);
+		swprintf(word, 64, L"Exp Points:  %d", tempChar->getCharacterStats().xp);
 		autoText(font);
 		
 		r.top += 30;
-		swprintf_s(word, 64, L"HP %d/ %d", tempChar->getCharacterStats().health, tempChar->getCharacterStats().max_health);
+		swprintf_s(word, 64, L"HP:            %d/ %d", tempChar->getCharacterStats().health, tempChar->getCharacterStats().max_health);
 		autoText(font);
 
+		r.left = 600;
+		swprintf_s(word, 64, L" (%d/ %d)", tempChar->getModStats().health, tempChar->getModStats().max_health);
+		blueText(font);
+		
+		r.left = 400;
 		r.top += 30;
-		swprintf_s(word, 64, L"MP %d/ %d", tempChar->getCharacterStats().mana, tempChar->getCharacterStats().max_mana);
+		swprintf_s(word, 64, L"MP:            %d/ %d", tempChar->getCharacterStats().mana, tempChar->getCharacterStats().max_mana);
 		autoText(font);
 
+		r.left = 600;
+		swprintf_s(word, 64, L" (%d/ %d)", tempChar->getModStats().mana, tempChar->getModStats().max_mana);
+		blueText(font);
+
+		r.left = 400;
 		r.top += 30;
-		swprintf(word, 64, L"Attack:  %d", tempChar->getCharacterStats().attack);
+		swprintf(word, 64, L"Attack:           %d", tempChar->getCharacterStats().attack);
 		autoText(font);
 
+		r.left = 600;
+		swprintf_s(word, 64, L" (%d)", tempChar->getModStats().attack);
+		blueText(font);
+
+		r.left = 400;
 		r.top += 30;
-		swprintf(word, 64, L"Magic:  %d", tempChar->getCharacterStats().magic);
+		swprintf(word, 64, L"Magic:            %d", tempChar->getCharacterStats().magic);
 		autoText(font);
 
+		r.left = 600;
+		swprintf_s(word, 64, L" (%d)", tempChar->getModStats().magic);
+		blueText(font);
+
+		r.left = 400;
 		r.top += 30;
-		swprintf(word, 64, L"Defense:  %d", tempChar->getCharacterStats().defense);
+		swprintf(word, 64, L"Defense:        %d", tempChar->getCharacterStats().defense);
 		autoText(font);
 
+			r.left = 600;
+			swprintf_s(word, 64, L" (%d)", tempChar->getModStats().defense);
+		blueText(font);
+
+		r.left = 400;
 		r.top += 30;
-		swprintf(word, 64, L"Resistance:  %d", tempChar->getCharacterStats().resist);
+		swprintf(word, 64, L"Resistance:   %d", tempChar->getCharacterStats().resist);
 		autoText(font);
 
+			r.left = 600;
+			swprintf_s(word, 64, L" (%d)", tempChar->getModStats().resist);
+		blueText(font);
+
+		r.left = 400;
 		r.top += 30;
-		swprintf(word, 64, L"Speed:  %d", tempChar->getCharacterStats().speed);
+		swprintf(word, 64, L"Speed:           %d", tempChar->getCharacterStats().speed);
 		autoText(font);
 
+			r.left = 600;
+			swprintf_s(word, 64, L" (%d)", tempChar->getModStats().speed);
+		blueText(font);
+
+		r.left = 400;
 		r.top += 30;
-		swprintf(word, 64, L"Evasion:  %d", tempChar->getCharacterStats().evasion);
+		swprintf(word, 64, L"Evasion:        %d", tempChar->getCharacterStats().evasion);
 		autoText(font);
 
+			r.left = 600;
+			swprintf_s(word, 64, L" (%d)", tempChar->getModStats().evasion);
+		blueText(font);
+
+		r.left = 400;
 		r.top += 30;
-		swprintf(word, 64, L"Hit:  %d", tempChar->getCharacterStats().hit);
+		swprintf(word, 64, L"Hit:                 %d", tempChar->getModStats().hit);
 		autoText(font);
+
+			r.left = 600;
+			swprintf_s(word, 64, L" (%d)", tempChar->getModStats().hit);
+		blueText(font);
 
 		break;
 	case STATUS_ITEM_USE:
@@ -1018,10 +1109,10 @@ void StatusMenu::drawText(ID3DXFont *font, Player *player)
 		r.top = 115;
 		for(unsigned int i = 0; i < drawChar.size(); i++)
 		{
-			swprintf_s(word, 64, L"HP %d", drawChar[i]->getCharacterStats().max_health);
+			swprintf_s(word, 64, L"HP %d", drawChar[i]->getModStats().max_health);
 			font->DrawText(0, word, -1, &r, DT_TOP | DT_LEFT | DT_NOCLIP, D3DCOLOR_ARGB(255,255,255,255));
 			r.left += 90;
-			swprintf_s(word, 64, L"MP %d", drawChar[i]->getCharacterStats().max_mana);
+			swprintf_s(word, 64, L"MP %d", drawChar[i]->getModStats().max_mana);
 			font->DrawText(0, word, -1, &r, DT_TOP | DT_LEFT | DT_NOCLIP, D3DCOLOR_ARGB(255,255,255,255));
 			r.left = 240;
 			r.top += 150;
@@ -1118,4 +1209,9 @@ void StatusMenu::shutdown()
 void StatusMenu::autoText(ID3DXFont *font)
 {
 	font->DrawText(0, word, -1, &r, DT_TOP|DT_LEFT|DT_NOCLIP, D3DCOLOR_ARGB(255,255,255,255));
+}
+
+void StatusMenu::blueText(ID3DXFont *font)
+{
+	font->DrawText(0, word, -1, &r, DT_TOP|DT_LEFT|DT_NOCLIP, D3DCOLOR_ARGB(255,64,64,255));
 }

@@ -493,7 +493,7 @@ void Overworld::update(D3DXVECTOR2 &cursorPos, InputManager *IManager, SoundMana
 		game_state = STATUS;
 		break;
 	case OVERWORLD_OPTION:
-		if(IManager->push_button(DIK_BACKSPACE))
+		//if(IManager->push_button(DIK_BACKSPACE))
 			overworld_state = OVERWORLD_SELECTION;
 		break;
 	case OVERWORLD_BATTLE:
