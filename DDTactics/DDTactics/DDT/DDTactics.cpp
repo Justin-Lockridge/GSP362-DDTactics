@@ -228,7 +228,17 @@ void DDTactics::Update(float dt)
 		textManager->update(dt);
 		introMenu->Update(cursor, input, sound, player, m_gameState, dt);
 		break;
-
+	case WIN:
+	case LOSS:
+		if(input->check_mouse_button(LEFT_MOUSE_BUTTON)){
+			if(!input->check_button_down(DIK_9)){
+				input->set_button(DIK_9, true);
+				m_gameState = QUIT;
+			}
+		}
+		else 
+			input->set_button(DIK_9, false);
+		break;
 	}
 }
 
@@ -297,12 +307,62 @@ void DDTactics::Render(float dt)
 				case STATUS:
 					status_menu->drawText(D3DFont, player);
 					break;
+				case WIN:
+					RECT rect;
+					rect.right = 400;
+					rect.top = 35;
+					D3DFont->DrawText(0, L"WINNER!", -1, &rect, DT_TOP | DT_RIGHT | DT_NOCLIP, D3DCOLOR_ARGB(255, 0, 255, 0));
+					rect.right = 400;
+					rect.top = 60;
+					D3DFont->DrawText(0, L"Credits", -1, &rect, DT_TOP | DT_RIGHT | DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 255, 255));
+					rect.right = 250;
+					rect.top = 80;
+					D3DFont->DrawText(0, L"Programmers:", -1, &rect, DT_TOP | DT_RIGHT | DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 255, 255));
+					rect.right = 350;
+					rect.top = 110;
+					D3DFont->DrawText(0, L"Cameren Sales\n  Justin Lockridge\nRicky Rivera\nSmyth Chang", -1, &rect, DT_TOP | DT_RIGHT | DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 255, 255));
+					rect.right = 225;
+					rect.top = 250;
+					D3DFont->DrawText(0, L"Art work by:", -1, &rect, DT_TOP | DT_RIGHT | DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 255, 255));
+					rect.right = 400;
+					rect.top = 280;
+					D3DFont->DrawText(0, L"Leonardo Ochoa, Cameren Sales", -1, &rect, DT_TOP | DT_RIGHT | DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 255, 255));
+					rect.right = 450;
+					rect.top = 320;
+					D3DFont->DrawText(0, L"Some Splash screens from:\nFinal Fantasy Tactics, Tactics Ogre", -1, &rect,
+						DT_TOP | DT_RIGHT | DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 255, 255));
+					break;
+				case LOSS:
+					RECT rectL;
+					rectL.right = 400;
+					rectL.top = 35;
+					D3DFont->DrawText(0, L"LOSER!", -1, &rectL, DT_TOP | DT_RIGHT | DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 0, 0));
+					rect.right = 400;
+					rect.top = 60;
+					D3DFont->DrawText(0, L"Credits", -1, &rect, DT_TOP | DT_RIGHT | DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 255, 255));
+					rect.right = 250;
+					rect.top = 80;
+					D3DFont->DrawText(0, L"Programmers:", -1, &rect, DT_TOP | DT_RIGHT | DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 255, 255));
+					rect.right = 350;
+					rect.top = 110;
+					D3DFont->DrawText(0, L"Cameren Sales\n  Justin Lockridge\nRicky Rivera\nSmyth Chang", -1, &rect, DT_TOP | DT_RIGHT | DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 255, 255));
+					rect.right = 225;
+					rect.top = 250;
+					D3DFont->DrawText(0, L"Art work by:", -1, &rect, DT_TOP | DT_RIGHT | DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 255, 255));
+					rect.right = 400;
+					rect.top = 280;
+					D3DFont->DrawText(0, L"Leonardo Ochoa, Cameren Sales", -1, &rect, DT_TOP | DT_RIGHT | DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 255, 255));
+					rect.right = 450;
+					rect.top = 320;
+					D3DFont->DrawText(0, L"Some Splash screens from:\nFinal Fantasy Tactics, Tactics Ogre", -1, &rect,
+						DT_TOP | DT_RIGHT | DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 255, 255));
+					break;
 				}
 			}
 		}
 		D3DDevice->EndScene();
 	}
-	
+
 
 	D3DDevice->Present(0,0,0,0);
 }

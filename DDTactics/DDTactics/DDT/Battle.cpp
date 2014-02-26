@@ -303,11 +303,11 @@ void Battle::Update(Cursor * cursor, InputManager *IManager, SoundManager *SMana
 		}
 	}
 	if(allAlliesDead){
-		game_state = CREDITS;
+		game_state = LOSS;
 		Shutdown();
 	}
 	if(allEnemiesDead){
-		game_state = CREDITS;
+		game_state = WIN;
 		Shutdown();
 	}
 }
