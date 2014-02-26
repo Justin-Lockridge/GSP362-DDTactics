@@ -77,6 +77,12 @@ void GraphicsManager2D::init(IDirect3DDevice9 *Device)
 	setup(Device, L"status_item_button.png", status_item_button_Texture, status_item_button_Info);
 	
 	setup(Device, L"arrow.png", mArrowTexture, mArrowInfo);
+
+	setup(Device, L"WarFull.png", mWarFullTexture, mWarFullInfo);
+	setup(Device, L"ArcherFull.png", mArcherFullTexture, mArcherFullInfo);
+	setup(Device, L"MageFull.png", mMageFullTexture, mMageFullInfo);
+
+	setup(Device, L"JobSelectionWords.png", mJobSelectTexture, mJobSelectInfo);
 	//////////////////////////////////////////////////////////////////////////////
 
 }
@@ -167,6 +173,12 @@ void GraphicsManager2D::shutdown()
 	textures.clear();
 	
 	//RELEASE Textures from memory
+	SAFE_RELEASE(mJobSelectTexture);
+
+	SAFE_RELEASE(mMageFullTexture);
+	SAFE_RELEASE(mArcherFullTexture);
+	SAFE_RELEASE(mWarFullTexture);
+
 	SAFE_RELEASE(mArrowTexture);
 	SAFE_RELEASE(status_item_background_Texture);
 	SAFE_RELEASE(status_item_button_Texture);

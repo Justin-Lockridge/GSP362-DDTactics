@@ -120,7 +120,13 @@ private:
 	IDirect3DTexture9*  mArrowTexture;
 	D3DXIMAGE_INFO		mArrowInfo;
 
+	IDirect3DTexture9* mWarFullTexture,
+					   *mArcherFullTexture,
+					   *mMageFullTexture;
+	D3DXIMAGE_INFO	   mWarFullInfo, mArcherFullInfo, mMageFullInfo;
 
+	IDirect3DTexture9* mJobSelectTexture;
+	D3DXIMAGE_INFO		mJobSelectInfo;
 	//////////////////////////////////////////////////////////////////
 
 	GraphicsManager2D();

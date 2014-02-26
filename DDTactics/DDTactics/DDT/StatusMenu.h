@@ -11,6 +11,21 @@
 
 #define MAX_STATUS_BUTTONS 7
 
+enum STATUSABILITY
+{
+	STATUSABILITY_USE,
+	STATUSABILITY_ORGANIZE,
+	STATUSABILITY_BACK,
+
+};
+
+enum STATUSMAGIC
+{
+	STATUSMAGIC_USE,
+	STATUSMAGIC_ORGANIZE,
+	STATUSMAGIC_BACK,
+};
+
 class StatusMenu
 {
 private:
@@ -23,15 +38,20 @@ private:
 
 
 	std::vector<Button> status_item_buttons;
-	std::vector<Button> status_ability_buttons;
-	std::vector<Button> status_magic_buttons;
+	
+	std::vector<Button> status_job_arrows;
+	std::vector<Button> status_job_buttons;
+
 	std::vector<Button> status_status_buttons;
 
 	std::vector<Character*> drawChar;
 	std::vector<Character*> copyChar;
 	std::vector<D3DXVECTOR3> screenPos;
 	int playerCharacters;
-	
+
+	Character* tempChar;
+
+		
 	int status_state;
 
 	wchar_t word[64];
@@ -53,6 +73,6 @@ public:
 
 	void shutdown();
 
-	void PushDemButtons(RData buttons[], int size, std::vector<Button> &container);
+	void PushDemButtons(RData buttons[], unsigned int size, std::vector<Button> &container);
 
 };
