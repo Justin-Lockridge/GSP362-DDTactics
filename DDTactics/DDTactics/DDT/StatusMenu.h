@@ -73,6 +73,7 @@ public:
 	void drawText(ID3DXFont *font, Player * player);
 	void autoText(ID3DXFont *font);
 	void blueText(ID3DXFont *font);
+	void redText(ID3DXFont *font);
 
 	void recreateList(Player* player);
 

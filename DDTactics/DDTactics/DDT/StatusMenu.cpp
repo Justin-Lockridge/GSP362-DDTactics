@@ -135,8 +135,8 @@ void StatusMenu::init(Player *player, std::vector<job_mods> &mods)
 
 	PushDemButtons(temp_jobChange, 4, status_job_buttons);
 
-	//set tempChar to the first character of the player army
-	tempChar = player->getCharacter(0);
+	//set tempChar to the first character of the drawChar
+	tempChar = drawChar[0];
 }
 
 void StatusMenu::Update(Cursor *cursor, InputManager *IManager, SoundManager *SManager, Player *player, int &game_state, std::vector<job_mods> &mods, float dt)
@@ -282,6 +282,7 @@ void StatusMenu::Update(Cursor *cursor, InputManager *IManager, SoundManager *SM
 				IManager->set_button(DIK_9, false);
 
 		}
+		tempChar = drawChar[0];
 
 		break;
 
@@ -640,6 +641,8 @@ void StatusMenu::Render(GraphicsManager2D *GManager, ID3DXSprite *spriteObj, Pla
 
 
 		}
+
+
 		break;
 	case STATUS_JOB:
 		
@@ -935,7 +938,18 @@ void StatusMenu::drawText(ID3DXFont *font, Player *player)
 	case STATUS_ABILITY:
 		break;
 	case STATUS_MAGIC:
+		r.left = 50;
+		r.top = 110;
+		if(drawChar[0]->getCurrentJob() == GREYMAGE)
+		{
+			swprintf(word, 64, L"Thunder");
+			autoText(font);
+			
+			r.left += 250;
+			swprintf(word, 64, L"Cure");
+			autoText(font);
 		
+		}
 
 		break;
 	case STATUS_JOB:
@@ -1002,7 +1016,11 @@ void StatusMenu::drawText(ID3DXFont *font, Player *player)
 		autoText(font);
 		
 		r.top += 30;
-		swprintf_s(word, 64, L"HP:            %d/ %d", tempChar->getCharacterStats().health, tempChar->getCharacterStats().max_health);
+		swprintf_s(word, 64, L"HP:");
+		autoText(font);
+
+		r.left = 520;
+		swprintf_s(word, 64, L"%d/%d",  tempChar->getCharacterStats().health, tempChar->getCharacterStats().max_health);
 		autoText(font);
 
 		r.left = 600;
@@ -1011,7 +1029,11 @@ void StatusMenu::drawText(ID3DXFont *font, Player *player)
 		
 		r.left = 400;
 		r.top += 30;
-		swprintf_s(word, 64, L"MP:            %d/ %d", tempChar->getCharacterStats().mana, tempChar->getCharacterStats().max_mana);
+		swprintf_s(word, 64, L"MP:");
+		autoText(font);
+
+		r.left = 520;
+		swprintf_s(word, 64, L"%d/%d", tempChar->getCharacterStats().mana, tempChar->getCharacterStats().max_mana);
 		autoText(font);
 
 		r.left = 600;
@@ -1020,7 +1042,11 @@ void StatusMenu::drawText(ID3DXFont *font, Player *player)
 
 		r.left = 400;
 		r.top += 30;
-		swprintf(word, 64, L"Attack:           %d", tempChar->getCharacterStats().attack);
+		swprintf(word, 64, L"Attack:");
+		autoText(font);
+
+		r.left = 560;
+		swprintf(word, 64, L"%d", tempChar->getCharacterStats().attack);
 		autoText(font);
 
 		r.left = 600;
@@ -1029,7 +1055,11 @@ void StatusMenu::drawText(ID3DXFont *font, Player *player)
 
 		r.left = 400;
 		r.top += 30;
-		swprintf(word, 64, L"Magic:            %d", tempChar->getCharacterStats().magic);
+		swprintf(word, 64, L"Magic:");
+		autoText(font);
+
+		r.left = 560;
+		swprintf(word, 64, L"%d", tempChar->getCharacterStats().magic);
 		autoText(font);
 
 		r.left = 600;
@@ -1038,7 +1068,11 @@ void StatusMenu::drawText(ID3DXFont *font, Player *player)
 
 		r.left = 400;
 		r.top += 30;
-		swprintf(word, 64, L"Defense:        %d", tempChar->getCharacterStats().defense);
+		swprintf(word, 64, L"Defense:");
+		autoText(font);
+
+		r.left = 560;
+		swprintf(word, 64, L"%d", tempChar->getCharacterStats().defense);
 		autoText(font);
 
 			r.left = 600;
@@ -1047,7 +1081,11 @@ void StatusMenu::drawText(ID3DXFont *font, Player *player)
 
 		r.left = 400;
 		r.top += 30;
-		swprintf(word, 64, L"Resistance:   %d", tempChar->getCharacterStats().resist);
+		swprintf(word, 64, L"Resistance:");
+		autoText(font);
+
+		r.left = 560;
+		swprintf(word, 64, L"%d", tempChar->getCharacterStats().resist);
 		autoText(font);
 
 			r.left = 600;
@@ -1056,7 +1094,11 @@ void StatusMenu::drawText(ID3DXFont *font, Player *player)
 
 		r.left = 400;
 		r.top += 30;
-		swprintf(word, 64, L"Speed:           %d", tempChar->getCharacterStats().speed);
+		swprintf(word, 64, L"Speed:");
+		autoText(font);
+
+		r.left = 560;
+		swprintf(word, 64, L"%d", tempChar->getCharacterStats().speed);
 		autoText(font);
 
 			r.left = 600;
@@ -1065,7 +1107,11 @@ void StatusMenu::drawText(ID3DXFont *font, Player *player)
 
 		r.left = 400;
 		r.top += 30;
-		swprintf(word, 64, L"Evasion:        %d", tempChar->getCharacterStats().evasion);
+		swprintf(word, 64, L"Evasion:");
+		autoText(font);
+
+		r.left = 560;
+		swprintf(word, 64, L"%d", tempChar->getCharacterStats().evasion);
 		autoText(font);
 
 			r.left = 600;
@@ -1074,7 +1120,11 @@ void StatusMenu::drawText(ID3DXFont *font, Player *player)
 
 		r.left = 400;
 		r.top += 30;
-		swprintf(word, 64, L"Hit:                 %d", tempChar->getModStats().hit);
+		swprintf(word, 64, L"Hit:");
+		autoText(font);
+
+		r.left = 560;
+		swprintf(word, 64, L"%d", tempChar->getCharacterStats().hit);
 		autoText(font);
 
 			r.left = 600;
@@ -1092,14 +1142,17 @@ void StatusMenu::drawText(ID3DXFont *font, Player *player)
 		r.left = 680;
 		r.top = 525;
 		swprintf_s(word, 64, L"Money\n  %d", player->getMoney());
-		font->DrawText(0, word, -1, &r, DT_TOP | DT_LEFT | DT_NOCLIP, D3DCOLOR_ARGB(255,255,255,255));
+		autoText(font);
 
 		r.left = 260;
 		r.top = 65;
 		for(unsigned int i = 0; i < drawChar.size(); i++)
 		{
 			swprintf_s(word, 64, drawChar[i]->getName());
-			font->DrawText(0, word, -1, &r, DT_TOP | DT_LEFT | DT_NOCLIP, D3DCOLOR_ARGB(255,255,255,255));
+			if(i == 0)
+				redText(font);
+			else
+				autoText(font);
 			r.top += 150;
 
 		}
@@ -1121,7 +1174,10 @@ void StatusMenu::drawText(ID3DXFont *font, Player *player)
 				break;			
 
 			}
-			font->DrawText(0, word, -1, &r, DT_TOP | DT_LEFT | DT_NOCLIP, D3DCOLOR_ARGB(255,255,255,255));
+			if(i == 0)
+				redText(font);
+			else
+				autoText(font);
 			r.top += 150;
 
 		}
@@ -1131,10 +1187,16 @@ void StatusMenu::drawText(ID3DXFont *font, Player *player)
 		for(unsigned int i = 0; i < drawChar.size(); i++)
 		{
 			swprintf_s(word, 64, L"HP %d", drawChar[i]->getModStats().max_health);
-			font->DrawText(0, word, -1, &r, DT_TOP | DT_LEFT | DT_NOCLIP, D3DCOLOR_ARGB(255,255,255,255));
+			if(i == 0)
+				redText(font);
+			else
+				autoText(font);
 			r.left += 90;
 			swprintf_s(word, 64, L"MP %d", drawChar[i]->getModStats().max_mana);
-			font->DrawText(0, word, -1, &r, DT_TOP | DT_LEFT | DT_NOCLIP, D3DCOLOR_ARGB(255,255,255,255));
+			if(i == 0)
+				redText(font);
+			else
+				autoText(font);
 			r.left = 240;
 			r.top += 150;
 		}
@@ -1235,4 +1297,9 @@ void StatusMenu::autoText(ID3DXFont *font)
 void StatusMenu::blueText(ID3DXFont *font)
 {
 	font->DrawText(0, word, -1, &r, DT_TOP|DT_LEFT|DT_NOCLIP, D3DCOLOR_ARGB(255,64,64,255));
+}
+
+void StatusMenu::redText(ID3DXFont *font)
+{
+	font->DrawText(0, word, -1, &r, DT_TOP|DT_LEFT|DT_NOCLIP, D3DCOLOR_ARGB(255,255,64,64));
 }
