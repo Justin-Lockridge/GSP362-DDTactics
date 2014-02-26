@@ -47,10 +47,13 @@ private:
 	std::vector<Character*> drawChar;
 	std::vector<Character*> copyChar;
 	std::vector<D3DXVECTOR3> screenPos;
-	int playerCharacters;
+	unsigned int playerCharacters;
 
 	Character* tempChar;
 
+	int tempValue;
+	RECT r;
+	LPCWSTR tempJobName;
 		
 	int status_state;
 
@@ -68,6 +71,7 @@ public:
 	void Render(GraphicsManager2D *GManager, ID3DXSprite *spriteObj, Player *player, float dt);
 
 	void drawText(ID3DXFont *font, Player * player);
+	void autoText(ID3DXFont *font);
 
 	void recreateList(Player* player);
 

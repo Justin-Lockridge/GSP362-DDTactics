@@ -478,6 +478,42 @@ void StatusMenu::Update(Cursor *cursor, InputManager *IManager, SoundManager *SM
 
 		break;
 	case STATUS_STATUS:
+		if(IManager->check_mouse_button(RIGHT_MOUSE_BUTTON))
+			status_state = STATUS_MAIN;
+
+		for(unsigned int i = 0; i < status_job_arrows.size(); i++)
+		{
+			status_job_arrows[i].checkOn(cursor->cursorPos.x, cursor->cursorPos.y, 4);
+			if(IManager->check_mouse_button(LEFT_MOUSE_BUTTON))
+			{
+				if(status_job_arrows[i].isHighlighted())
+				{
+					//Limit the check by forcing a check on another button
+					if(!IManager->check_button_down(DIK_9))
+					{
+						IManager->set_button(DIK_9, true);
+
+						//change characters depending on which arrow was pushed
+						switch(i)
+						{
+							
+						case 0:	//left arrow
+							//set current active character to previous character
+							tempChar = tempChar->getPrevious();
+							break;
+							
+						case 1: //right arrow
+							//set current active character to next character
+							tempChar = tempChar->getNext();
+							break;
+
+						}
+					}
+				}
+			}else
+				IManager->set_button(DIK_9, false);
+		}
+		
 		//Starts on the first character, arrows left and right to click and cycle through
 		//Display character status and equip
 		//Change equipment throught the status screen
@@ -586,8 +622,7 @@ void StatusMenu::Render(GraphicsManager2D *GManager, ID3DXSprite *spriteObj, Pla
 		}
 		break;
 	case STATUS_JOB:
-		int tempValue;
-
+		
 		switch(tempChar->getCurrentJob())
 		{
 		case WARRIOR:
@@ -650,6 +685,54 @@ void StatusMenu::Render(GraphicsManager2D *GManager, ID3DXSprite *spriteObj, Pla
 		//Show list of jobs
 		break;
 	case STATUS_STATUS:
+		//int tempValue;
+
+		switch(tempChar->getCurrentJob())
+		{
+		case WARRIOR:
+			tempValue = GRAPHICS_MENU_WAR_FULL;
+			break;
+		case ARCHER:
+			tempValue = GRAPHICS_MENU_ARCHER_FULL;
+			break;
+		case GREYMAGE:
+			tempValue = GRAPHICS_MENU_MAGE_FULL;
+			break;			
+		}
+		//Draw the background
+		GManager->Draw2DObject(D3DXVECTOR3(0.775f, 0.575f, 1.0f),
+			D3DXVECTOR3(312.0f, 180.f, 0.0f),
+			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+			spriteObj,
+			GRAPHICS_ITEM_BACKGROUND,
+			D3DCOLOR_ARGB(255,255,255,255)
+			);
+
+		//Draw current job sprite
+		GManager->Draw2DObject(D3DXVECTOR3(.75f, 0.75f, 1.0f),
+			D3DXVECTOR3(150.0f, 290.0f, 0.0f),
+			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+			spriteObj,
+			tempValue,
+			D3DCOLOR_ARGB(255,255,255,255));
+
+		//Draw arrows
+		GManager->DrawButton( D3DXVECTOR3(0.5f, 0.5f, 1.0f),
+			D3DXVECTOR3(status_job_arrows[0].getPos().x, status_job_arrows[0].getPos().y, 0.0f),
+			D3DXVECTOR3(0.0f, 0.0f, 180.0f),
+			status_job_arrows[0].getRect(), spriteObj, GRAPHICS_ITEM_ARROW,
+			status_job_arrows[0].width, status_job_arrows[0].height,
+			status_job_arrows[0].getColor()
+			);
+
+		GManager->DrawButton( D3DXVECTOR3(0.5f, 0.5f, 1.0f),
+			D3DXVECTOR3(status_job_arrows[1].getPos().x, status_job_arrows[1].getPos().y, 0.0f),
+			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+			status_job_arrows[1].getRect(), spriteObj, GRAPHICS_ITEM_ARROW,
+			status_job_arrows[1].width, status_job_arrows[1].height,
+			status_job_arrows[1].getColor()
+			);
+
 		break;
 	case STATUS_ITEM_USE:
 		GManager->Draw2DObject(D3DXVECTOR3(0.775f, 0.575f, 1.0f),
@@ -817,6 +900,74 @@ void StatusMenu::drawText(ID3DXFont *font, Player *player)
 	case STATUS_JOB:
 		break;
 	case STATUS_STATUS:
+		r.left = 400;
+
+
+		r.top = 110;
+		swprintf(word, 64, L"%s", tempChar->getName());
+		autoText(font);
+
+		r.top += 30;
+		
+		switch(tempChar->getCurrentJob())
+		{
+		case WARRIOR:
+			tempJobName = L"Warrior";
+			break;
+		case ARCHER:
+			tempJobName = L"Archer";
+			break;
+		case GREYMAGE:
+			tempJobName = L"Mage";
+			break;
+		}
+		swprintf(word, 64, L"Job:  %s", tempJobName);
+		autoText(font);
+
+		r.top += 30;
+		swprintf(word, 64, L"Level:  %d", tempChar->getCharacterStats().level);
+		autoText(font);
+
+		r.top += 30;
+		swprintf(word, 64, L"Experience Points:  %d", tempChar->getCharacterStats().xp);
+		autoText(font);
+		
+		r.top += 30;
+		swprintf_s(word, 64, L"HP %d/ %d", tempChar->getCharacterStats().health, tempChar->getCharacterStats().max_health);
+		autoText(font);
+
+		r.top += 30;
+		swprintf_s(word, 64, L"MP %d/ %d", tempChar->getCharacterStats().mana, tempChar->getCharacterStats().max_mana);
+		autoText(font);
+
+		r.top += 30;
+		swprintf(word, 64, L"Attack:  %d", tempChar->getCharacterStats().attack);
+		autoText(font);
+
+		r.top += 30;
+		swprintf(word, 64, L"Magic:  %d", tempChar->getCharacterStats().magic);
+		autoText(font);
+
+		r.top += 30;
+		swprintf(word, 64, L"Defense:  %d", tempChar->getCharacterStats().defense);
+		autoText(font);
+
+		r.top += 30;
+		swprintf(word, 64, L"Resistance:  %d", tempChar->getCharacterStats().resist);
+		autoText(font);
+
+		r.top += 30;
+		swprintf(word, 64, L"Speed:  %d", tempChar->getCharacterStats().speed);
+		autoText(font);
+
+		r.top += 30;
+		swprintf(word, 64, L"Evasion:  %d", tempChar->getCharacterStats().evasion);
+		autoText(font);
+
+		r.top += 30;
+		swprintf(word, 64, L"Hit:  %d", tempChar->getCharacterStats().hit);
+		autoText(font);
+
 		break;
 	case STATUS_ITEM_USE:
 		break;
@@ -825,7 +976,7 @@ void StatusMenu::drawText(ID3DXFont *font, Player *player)
 	case STATUS_MAGIC_USE:
 		break;
 	default:
-		RECT r;
+		
 		r.left = 680;
 		r.top = 525;
 		swprintf_s(word, 64, L"Money\n  %d", player->getMoney());
@@ -962,4 +1113,9 @@ void StatusMenu::shutdown()
 
 	tempChar = nullptr;
 
+}
+
+void StatusMenu::autoText(ID3DXFont *font)
+{
+	font->DrawText(0, word, -1, &r, DT_TOP|DT_LEFT|DT_NOCLIP, D3DCOLOR_ARGB(255,255,255,255));
 }
