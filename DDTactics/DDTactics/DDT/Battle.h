@@ -92,5 +92,8 @@ public:
 	void Wait(Cursor * cursor, InputManager *IManager, SoundManager *SManager, 
 				Player *player, int &game_state,  float dt,GraphicsManager3D * GManager3,
 				IDirect3DDevice9 *device);
+
+	// delete later bad AI
+	//Battle_Node* A_I_Move(Battle_Node* a_node);
 };
 

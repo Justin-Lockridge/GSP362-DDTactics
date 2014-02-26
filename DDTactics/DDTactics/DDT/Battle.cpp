@@ -264,14 +264,42 @@ void Battle::Update(Cursor * cursor, InputManager *IManager, SoundManager *SMana
 			break;
 		}
 	}
-	else{
+	else{ ///////////////////// TODO: ADD A.I /////////////////////////////////////////////////
+		//if(!acted)
+		//	switch(m_activeChar->getCurrentJob())
+		//{
+		//	case JOB::ARCHER:
+		//	case JOB::GREYMAGE:
+		//		//psuedocode
+		//		//
+		//		//	find range ( probly highlightMap(range) )
+		//		highlightMap(8);
+		//		//	is a player in range
+		//		for(auto &unit:m_Units){
+		//			if(!unit.isAnEnemy()){
+		//				if(checkHighlight(unit.getPosition())){
+		//					//	move into attack range
+
+		//				}
+		//			}
+		//		}
+
+		//		//	attack
+		//		//		
+		//		acted = true;
+		//		break;
+		//	case JOB::WARRIOR:
+		//		acted = true;
+		//		break;
+		//}
 		m_count+=dt;
-		if(m_count > 1.0f){
+		if(m_count > 2.0f){
 			m_count = 0;
 			m_turnIndex++;
 			if(m_turnIndex >= m_Units.size())
 				m_turnIndex = 0;
 			m_3Dcursor = m_Units[m_turnIndex].getPosition();
+			acted = false; moved = false;
 		}
 	}
 	if(allAlliesDead){
@@ -289,7 +317,7 @@ void Battle::Render3D(GraphicsManager2D *GManager2, ID3DXSprite *spriteObj, Grap
 	GManager3->DrawMap(D3DXVECTOR3(5,5,5), D3DXVECTOR3(0,0,0),
 		D3DXVECTOR3(0,0,0), MAP_DEFAULT);
 	GManager3->DrawMap(D3DXVECTOR3(3,3,3), D3DXVECTOR3(-1,-1,-1),
-		D3DXVECTOR3(0,0,0), MAP_SKYBOX);
+		D3DXVECTOR3(0,-90,0), MAP_SKYBOX);
 	bool notRendered = true;
 	for(auto &unit:m_Units){	
 		if(!unit.isAnEnemy())
@@ -939,7 +967,7 @@ void Battle::highlightMap(int dist)
 				for(auto & unit : m_Units )
 					if(edge == unit.getPosition())
 						clear = false;
-				if(clear || m_charState == CHAR_STATE::ACT)
+				if(clear || m_charState == CHAR_STATE::ACT || m_activeChar->isAnEnemy())
 					m_areaHighlight.push_back(edge);
 				else
 					clear = true;
@@ -964,3 +992,5 @@ bool Battle::checkHighlight(Battle_Node* a_node){
 			return true;
 	return false;
 };
+
+
