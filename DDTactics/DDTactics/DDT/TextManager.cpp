@@ -50,31 +50,56 @@ void TextManager::renderSavedGameText(IOManager* file, int gameState){
 	rectangle.left = 200;
 	rectangle.right = 400;
 	wchar_t buffer[128];
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	//  INFO:  For 3 save files, display all 3 characters and their 3 job levels
 	for(int i = 0; i < 3; ++i){
+		int testing = 0;
 		for(int j = 0; j < 3; j++){
-			switch(file->m_gameSave[i][j*4]){
-			case WARRIOR:
-				swprintf_s(buffer, 128, L"Warrior:  %d", file->m_gameSave[i][1+j*4]);
-				m_pD3DFont->DrawText(0, buffer, -1, &rectangle, DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 125,0));
-				rectangle.top		+=	30;
-				rectangle.bottom	+=	30;
+			rectangle.top = 165 + i * 160;
+			rectangle.left = 200 + 190 * j;
+			rectangle.right = 350 + 190 * j;
+			switch(j){
+			case 0:
+				swprintf_s(buffer, 128, L"Cameren\nLevel:  %d", file->m_gameSave[i][1]);
 				break;
-			case ARCHER:
-				swprintf_s(buffer, 128, L"Archer:  %d", file->m_gameSave[i][2+j*4]);
-				m_pD3DFont->DrawText(0, buffer, -1, &rectangle, DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 125,0));
-				rectangle.top		+=	30;
-				rectangle.bottom	+=	30;
+			case 1:
+				swprintf_s(buffer, 128, L"Justin\nLevel:  %d", file->m_gameSave[i][1 + j * 8]);
 				break;
-			case GREYMAGE:
-				swprintf_s(buffer, 128, L"GreyMage:  %d", file->m_gameSave[i][3+j*4]);
-				m_pD3DFont->DrawText(0, buffer, -1, &rectangle, DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 125,0));
-				rectangle.top		+=	30;
-				rectangle.bottom	+=	30;
+			case 2:
+				swprintf_s(buffer, 128, L"Smyth\nLevel:  %d", file->m_gameSave[i][1 + j * 8]);
 				break;
+
 			}
+
+			m_pD3DFont->DrawText(0, buffer, -1, &rectangle, DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 125,0));
+			rectangle.top			+=		60;
+			rectangle.bottom		=		500;
+
+			for(int k = 0; k < 3; ++k){
+				switch(file->m_gameSave[i][k*8]){
+				case WARRIOR:
+					swprintf_s(buffer, 128, L"Warrior:  %d", file->m_gameSave[i][2+k*8]);
+					m_pD3DFont->DrawText(0, buffer, -1, &rectangle, DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 125,0));
+					rectangle.top		+=	30;
+					rectangle.bottom	+=	30;
+					break;
+				case ARCHER:
+					swprintf_s(buffer, 128, L"Archer:  %d", file->m_gameSave[i][4+k*8]);
+					m_pD3DFont->DrawText(0, buffer, -1, &rectangle, DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 125,0));
+					rectangle.top		+=	30;
+					rectangle.bottom	+=	30;
+					break;
+				case GREYMAGE:
+					swprintf_s(buffer, 128, L"GreyMage:  %d", file->m_gameSave[i][6+k*8]);
+					m_pD3DFont->DrawText(0, buffer, -1, &rectangle, DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 125,0));
+					rectangle.top		+=	30;
+					rectangle.bottom	+=	30;
+					break;
+				}
+			}
+			rectangle.top += 70;
+			rectangle.bottom += 70;
 		}
-		rectangle.top += 70;
-		rectangle.bottom += 70;
 	}
 
 	wchar_t currentState[16];

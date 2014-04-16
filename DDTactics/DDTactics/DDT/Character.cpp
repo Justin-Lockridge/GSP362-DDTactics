@@ -28,6 +28,7 @@ Character::Character()
 
 	for(int i = 0; i < MAXJOBS; ++i){
 		jobLevels[i] = 2;
+		jobExperience[i] = 0;
 	};
 
 	currentJobType = 0;
@@ -170,3 +171,15 @@ LPCWSTR Character::getName()
 {
 	return name;
 }
+
+void Character::setJobExperience(int job, int experience){
+	jobExperience[job] = experience;
+};
+
+int Character::getJobExperience(int job){
+	return jobExperience[job];
+};
+
+void Character::setCharacterLevelOnly(int level){
+	stats.level = level;
+};

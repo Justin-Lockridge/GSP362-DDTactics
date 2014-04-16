@@ -119,6 +119,7 @@
     <ClInclude Include="Town.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="SaveDataTests.txt" />
     <Text Include="SavedGames.txt" />
   </ItemGroup>
   <ItemGroup>

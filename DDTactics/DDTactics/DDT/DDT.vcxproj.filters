@@ -187,6 +187,9 @@
     <Text Include="SavedGames.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="SaveDataTests.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader.fx">

@@ -194,14 +194,28 @@ void IOManager::savegame(int fileNumber, Player *player, Overworld *overworld){
 	//////////////////////////////////////////////////////////
 	//  INFO:  Opens up save file
 	savedGameFile.open("SavedGames.txt");
+	//////////////////////////////////////////////////////////
+	//  INFO:  Saves character data to appropriate save array
 	for(int i = 0; i < 3; ++i){
-		m_gameSave[fileNumber][0+i*4] = player->getCharacter(i)->getCurrentJob();
-		m_gameSave[fileNumber][1+i*4] = player->getCharacter(i)->getJobLevel(WARRIOR);
-		m_gameSave[fileNumber][2+i*4] = player->getCharacter(i)->getJobLevel(ARCHER);
-		m_gameSave[fileNumber][3+i*4] = player->getCharacter(i)->getJobLevel(GREYMAGE);
+		m_gameSave[fileNumber][0+i*8] = player->getCharacter(i)->getCurrentJob();
+		m_gameSave[fileNumber][1+i*8] = player->getCharacter(i)->getCharacterStats().level;
+		m_gameSave[fileNumber][2+i*8] = player->getCharacter(i)->getJobLevel(WARRIOR);
+		m_gameSave[fileNumber][3+i*8] = player->getCharacter(i)->getJobExperience(WARRIOR);
+		m_gameSave[fileNumber][4+i*8] = player->getCharacter(i)->getJobLevel(ARCHER);
+		m_gameSave[fileNumber][5+i*8] = player->getCharacter(i)->getJobExperience(ARCHER);
+		m_gameSave[fileNumber][6+i*8] = player->getCharacter(i)->getJobLevel(GREYMAGE);
+		m_gameSave[fileNumber][7+i*8] = player->getCharacter(i)->getJobExperience(GREYMAGE);
 	}
+	/////////////////////////////////////////////////////////
+	//  INFO:  Saves inventory to appropriate save array
+	for(int i = 0; i < MAX_ITEMS; ++i){
+		m_gameSave[fileNumber][i+24] = player->getItemCount(i).itemCount;
+	}
+	m_gameSave[fileNumber][35] = player->getMoney();
+	/////////////////////////////////////////////////////////
+	//  INFO:  Writes save data to text file
 	for(int i = 0; i < MAXSAVES; ++i){
-		for(int j = 0; j < 12; ++j){
+		for(int j = 0; j < 36; ++j){
 			savedGameFile << m_gameSave[i][j];
 			savedGameFile << '!';
 		}
@@ -212,14 +226,25 @@ void IOManager::savegame(int fileNumber, Player *player, Overworld *overworld){
 
 void IOManager::loadgame(int fileNumber, Player *player, Overworld *overworld){
 	std::string temp;
+	///////////////////////////////////////////////////////////////////////////////
+	//  INFO:  Loads player and character data
 	for(int i = 0; i < 3; ++i){
-		for(int j = 0; j < 4; ++j){
-			player->setActiveJob(i, m_gameSave[fileNumber][0+i*4]);
-			player->setCharacterLevel(i, 0, m_gameSave[fileNumber][1+i*4]);
-			player->setCharacterLevel(i, 1, m_gameSave[fileNumber][2+i*4]);
-			player->setCharacterLevel(i, 2, m_gameSave[fileNumber][3+i*4]);
-		}
+		player->setActiveJob(i, m_gameSave[fileNumber][i*8]);
+		player->setCharacterLevel(i, m_gameSave[fileNumber][1 + i * 8]);
+		player->setCharacterJobLevel(i, WARRIOR, m_gameSave[fileNumber][2+i*8]);
+		player->setCharacterJobExperience(i, WARRIOR, m_gameSave[fileNumber][3+i*8]);
+		player->setCharacterJobLevel(i, ARCHER, m_gameSave[fileNumber][4+i*8]);
+		player->setCharacterJobExperience(i, ARCHER, m_gameSave[fileNumber][5+i*8]);
+		player->setCharacterJobLevel(i, GREYMAGE, m_gameSave[fileNumber][6+i*8]);
+		player->setCharacterJobExperience(i, GREYMAGE, m_gameSave[fileNumber][7+i*8]);
+
 	}
+	//////////////////////////////////////////////////////////////////////////////
+	//  INFO:  Loads inventory
+	for(int i = 0; i < MAX_ITEMS; ++i){
+		player->fillInventoryAfterLoading(i, m_gameSave[fileNumber][i+24]);
+	}
+	player->setMoney(m_gameSave[fileNumber][35]);
 };
 
 void IOManager::loadSaves(){
@@ -230,9 +255,10 @@ void IOManager::loadSaves(){
 	trial.close();
 	std::string temp;// = m_saveString[0];
 	temp.clear();
+
 	int iter = 0;
 	for(int i = 0; i < MAXSAVES; ++i){
-		for(int j = 0; iter < 12; ++j){  //  TODO:  Replace 11 with all player data to save (Make a #define)
+		for(int j = 0; iter < 36; ++j){  //  TODO:  Replace 35 with all player data to save (Make a #define)
 			char temporary = m_saveString[i][j];
 			if(temporary == '!'){
 				int testing = stoi(temp);

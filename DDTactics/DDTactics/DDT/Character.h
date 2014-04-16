@@ -17,6 +17,10 @@ private:
 	int head;
 	int acc;
 
+	/////////////////////////////////////////////
+	//  INFO:  Array for job experience
+	int jobExperience[MAXJOBS];
+
 	Battle_Node *position;	
 	D3DXVECTOR3 rotation;
 	
@@ -71,4 +75,7 @@ public:
 	bool operator()(Character l, Character r){ return l.getCharacterStats().speed > r.getCharacterStats().speed;}
 
 	void resetStats(job_mods jobMod);
+	void setJobExperience(int job, int experience);
+	int  getJobExperience(int job);
+	void setCharacterLevelOnly(int level);
 };

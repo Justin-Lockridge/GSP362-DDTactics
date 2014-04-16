@@ -66,12 +66,28 @@ Inventory Player::getInventory()
 	return temp;
 }
 
-void Player::setCharacterLevel(int iter, int job, int level)
+void Player::setCharacterJobLevel(int iter, int job, int level)
 {
 	army[iter].setJobLevel(job, level);
 }
 
+void Player::setCharacterLevel(int index, int level){
+	army[index].setCharacterLevelOnly(level);
+};
+
 void Player::resetStats(int iter, job_mods jobMod)
 {
 	army[iter].resetStats(jobMod);
+};
+
+void Player::setCharacterJobExperience(int iter, int job, int experience){
+	army[iter].setJobExperience(job, experience);
+};
+
+void Player::fillInventoryAfterLoading(int item, int amount){
+	inventory[item].itemCount = amount;
+};
+
+void Player::setMoney(int amount){
+	money = amount;
 };

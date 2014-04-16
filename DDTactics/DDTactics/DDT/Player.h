@@ -30,7 +30,8 @@ public:
 	
 	std::vector<Character>* returnArmy();
 	Character* getCharacter(int iter){return &army[iter];}
-	void setCharacterLevel(int iter, int job, int level);
+	void setCharacterJobLevel(int iter, int job, int level);
+	void setCharacterLevel(int index, int level);
 
 	void addToInventory(int itemType){inventory[itemType].itemCount += 1;}
 	void removeFromInventory(int itemType){if(inventory[itemType].itemCount > 1)inventory[itemType].itemCount -= 1;}
@@ -46,4 +47,10 @@ public:
 	
 	void setActiveJob(int iter, int job){army[iter].setCurrentJob(job);}
 	void resetStats(int iter, job_mods jobMod);
+
+	/////////////////////////////////////////////////////////
+	//  INFO:  For giving a character experience
+	void setCharacterJobExperience(int iter, int job, int experience);
+	void fillInventoryAfterLoading(int item, int amount);
+	void setMoney(int amount);
 };
